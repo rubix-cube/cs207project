@@ -56,7 +56,7 @@ class TimeSeries:
 			self._time = list(input_time)
 		else:
 			self._time = range(1, len(input_value) + 1)
-		self._value = list(input_series)
+		self._value = list(input_value)
 		self._timeseries = zip(self._time, self_value)
 		self._dict = dict(zip(self._time), range(0, len(self._time)))
 
@@ -118,9 +118,15 @@ class TimeSeries:
 		return 'TimeSe({})'.format([i for i in self._timeseries]) 	
 
     def __iter__(self):
+        for v in self._value:
+            yield v
+
+    def itertimes(self):
+        for t in self._time:
+            yield t
+
+    def iteritems(self):
         for item in self._timeseries:
             yield item
 
-    def itertimes(self):
-        pass
 
