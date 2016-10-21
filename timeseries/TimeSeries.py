@@ -7,26 +7,21 @@ class TimeSeries:
         
     Notes
     -----
-    PRE: `da_array` is sorted in non-decreasing order (thus items in
-        `da_array` must be comparable: implement < and ==)
+    PRE: 
+        - The values within input_value are of the same type and are numbers.
+        - Input time is a series of numbers representaing time. The values are
+          of the same type and should be numbers.
     POST: 
         - `da_array` is not changed by this function (immutable)
-        - returns `index`=-1 if `needle` is not in `da_array`
-        - returns an int `index ` in [0:len(da_array)] if
-          `index` is in `da_array`
-    INVARIANTS:
-        - If `needle` in `da_array`, needle in `da_array[rangemin:rangemax]`
-          is a loop invariant in the while loop below.
     WARNINGS:
         - If you provide an unsorted array this function is not guaranteed to terminate
-        - for multiple copies of a value in the arrar secrched for, the one returned is not guaranteed
-        - to be the smallest one.
+        
         
     Examples
     --------
-    >>> input = list(range(10))
-    >>> binary_search(input, 5)
-    5
+    >>> ts = TimeSeries(range(1,1000))
+    >>> ts[1]
+    1
     """
     
 
@@ -39,7 +34,8 @@ class TimeSeries:
                 a sequence of values in time series 
             input_time : sequence, optional
                 a sequence of time intervals for the time series
-
+                if no input time is given, a default evenly spaced time interval
+                will be used
             Returns
             -------
             timeseries: TimeSeries
@@ -65,6 +61,19 @@ class TimeSeries:
 		return len(self._value)
 
 	def __getitem__(self, index):
+        """ Get item for time series
+            
+            Parameters
+            ----------
+            index : time
+                The time(s) in time series for which value is needed.
+                A range can be specified using slice notation [x:y:z] where
+                x,y,z are valid times.
+
+            Returns
+            -------
+            value : the value in time series corresponding to given time input
+        """
 		if isinstance(index, slice):
 			new_slice = slice(self._dict[index.start], self._dict[index.stop], index.step)
 			return TimeSeries(self._value, self._time)
