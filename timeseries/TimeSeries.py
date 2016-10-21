@@ -55,10 +55,10 @@ class TimeSeries:
 				raise ValueError("Argument input_value must have same length with input_time")
 			self._time = list(input_time)
 		else:
-			self._time = range(1, len(input_value) + 1)
-		self._value = list(input_series)
-		self._timeseries = zip(self._time, self_value)
-		self._dict = dict(zip(self._time), range(0, len(self._time)))
+			self._time = list(range(1, len(input_value) + 1))
+		self._value = list(input_value)
+		self._timeseries = zip(self._time, self._value)
+		self._dict = dict(zip(self._time, range(0, len(self._time))))
 
 
 	def __len__(self):
