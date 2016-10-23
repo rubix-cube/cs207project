@@ -89,7 +89,7 @@ class TimeSeries:
 			self._value[self._dict[index]] = value
 			self._timeseries[self._dict[index]] = (value, index)
 
-	def interpolate(newTimes):
+	def interpolate(self, newTimes):
 		"""returns a new TimeSeries objects with times given and newly computed values 
 			The times passed in should be in ascending order and be numbers.
 
@@ -114,8 +114,9 @@ class TimeSeries:
 	            elif time[counter-1] <= t <= time[counter]:
 	                newVal = t + t * ((value[counter]-value[counter-1]) / (time[counter] - time[counter-1]))
 	                newValues.append(newVal)
-	                counter += 1
 	                break
+	            else:
+	            	counter += 1
 	    return TimeSeries(newValues, newTimes)
 
 	def __repr__(self):
