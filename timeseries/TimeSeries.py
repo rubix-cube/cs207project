@@ -1,6 +1,5 @@
 import reprlib, numbers, collections
 
-
 class TimeSeries:
 	"""
 	Description of time series class
@@ -53,19 +52,19 @@ class TimeSeries:
 		return len(self._value)
 
 	def __getitem__(self, index):
-        """ Get item for time series
-            
-            Parameters
-            ----------
-            index : time
-                The time(s) in time series for which value is needed.
-                A range can be specified using slice notation [x:y:z] where
-                x,y,z are valid times.
+		""" Get item for time series
 
-            Returns
-            -------
-            value : the value in time series corresponding to given time input
-        """
+			Parameters
+			----------
+			index : time
+			The time(s) in time series for which value is needed.
+			A range can be specified using slice notation [x:y:z] where
+			x,y,z are valid times.
+
+			Returns
+			-------
+			value : the value in time series corresponding to given time input
+		"""
 		if isinstance(index, slice):
 			# new_slice = slice(self._dict[index.start], self._dict[index.stop], index.step)
 			return TimeSeries(self._value[index], self._time[index])
@@ -97,24 +96,24 @@ class TimeSeries:
 			Returns
 			-------
 		"""
-	    newValues = []
-	    time, value = self._time, self._value
-	    counter, n = 1, len(time)
-	    for t in newTimes:
-	        while counter < n:
-	            if t < time[0]:
-	                newValues.append(value[0])
-	                break
-	            elif t > time[n-1]:
-	                newValues.append(value[n-1])
-	                break
-	            elif time[counter-1] <= t <= time[counter]:
-	                newVal = t + t * ((value[counter]-value[counter-1]) / (time[counter] - time[counter-1]))
-	                newValues.append(newVal)
-	                break
-	            else:
-	            	counter += 1
-	    return TimeSeries(newValues, newTimes)
+		newValues = []
+		time, value = self._time, self._value
+		counter, n = 1, len(time)
+		for t in newTimes:
+			while counter < n:
+				if t < time[0]:
+					newValues.append(value[0])
+					break
+				elif t > time[n-1]:
+					newValues.append(value[n-1])
+					break
+				elif time[counter-1] <= t <= time[counter]:
+					newVal = t + t * ((value[counter]-value[counter-1]) / (time[counter] - time[counter-1]))
+					newValues.append(newVal)
+					break
+				else:
+					counter += 1
+		return TimeSeries(newValues, newTimes)
 
 	def __repr__(self):
 		#return 'TimeSeries({})'.format([i for i in self._timeseries])
@@ -150,7 +149,7 @@ class TimeSeries:
 
 	# Peilin: Not sure about this method ???
 	def times(self):
-		return no.array(self._time)
+		return np.array(self._time)
 
 	def itertimes(self):
 		return iter(self._time)
@@ -174,48 +173,40 @@ class TimeSeries:
 
 	def __add__(self, otherTS):
 		# check otherTS type
-		if (not isinstance(otherTS, TimeSeries)) {
+		if not isinstance(otherTS, TimeSeries):
 			raise TypeError('Can only add with time series')
-		}
 		# check they have the same length and has equal time domain
-		if (len(self) != len(otherTS) or self._time != otherTS._time) {
-			raise ValueError(str(self)+' and '+str(otherTS)+' must have the same time points')
-		}
+		if len(self) != len(otherTS) or self._time != otherTS._time:
+			raise ValueError(str(self)+' and '+ str(otherTS) + ' must have the same time points')
 		return TimeSeries(self._time, self._value + otherTS._value)
 
 	def __sub__(self, otherTS):
 		# check otherTS type
-		if (not isinstance(otherTS, TimeSeries)) {
+		if not isinstance(otherTS, TimeSeries):
 			raise TypeError('Can only subtract with time series')
-		}
 		# check they have the same length and has equal time domain
-		if (len(self) != len(otherTS) or self._time != otherTS._time) {
-			raise ValueError(str(self)+' and '+str(otherTS)+' must have the same time points')
-		}
+		if len(self) != len(otherTS) or self._time != otherTS._time:
+			raise ValueError(str(self)+' and '+ str(otherTS) + ' must have the same time points')
 		return TimeSeries(self._time, self._value - otherTS._value)
 
 
 	def __eq__(self, otherTS):
 		# check otherTS type
-		if (not isinstance(otherTS, TimeSeries)) {
+		if not isinstance(otherTS, TimeSeries):
 			raise TypeError('Can only eval equal on time series')
-		}
 		# check they have the same length and has equal time domain
-		if (len(self) != len(otherTS) or self._time != otherTS._time) {
+		if len(self) != len(otherTS) or self._time != otherTS._time:
 			raise ValueError(str(self)+' and '+str(otherTS)+' must have the same time points')
-		}
 		return self._timeseries == otherTS._timeseries
 
 
 	def __mul__(self, otherTS):
 		# check otherTS type
-		if (not isinstance(otherTS, TimeSeries)) {
+		if not isinstance(otherTS, TimeSeries):
 			raise TypeError('Can only multiply with time series')
-		}
 		# check they have the same length and has equal time domain
-		if (len(self) != len(otherTS) or self._time != otherTS._time) {
+		if len(self) != len(otherTS) or self._time != otherTS._time:
 			raise ValueError(str(self)+' and '+str(otherTS)+' must have the same time points')
-		}
 		return TimeSeries(self._time, list(np.array(self._value) * np.array(otherTS._value)))
 
 
@@ -227,7 +218,7 @@ class TimeSeries:
 		return bool(abs(self))
 
 	def __neg__(self):
-		return TimeSeries(self._time, -v for v in self._value)
+		return TimeSeries(self._time, (-v for v in self._value))
 
 	def __pos__(self):
 		return TimeSeries(self._time, self._value)
