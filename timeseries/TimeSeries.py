@@ -51,10 +51,10 @@ class TimeSeries:
 				raise ValueError("Argument input_value must have same length with input_time")
 			self._time = list(input_time)
 		else:
-			self._time = range(1, len(input_value) + 1)
-		self._value = list(input_series)
-		self._timeseries = zip(self._time, self_value)
-		self._dict = dict(zip(self._time), range(0, len(self._time)))
+			self._time = list(range(1, len(input_value) + 1))
+		self._value = list(input_value)
+		self._timeseries = zip(self._time, self._value)
+		self._dict = dict(zip(self._time, range(0, len(self._time))))
 
 
 	def __len__(self):
@@ -83,15 +83,15 @@ class TimeSeries:
 			return self._timeseries[index]
 
 	def __setitem__(self, index, value):
-        # if isinstance(index, slice):
-        #     print("Slice: ", index)
-        #     return cls(self._timeseries[index])
-        # elif isinstance(index, numbers.Integral): 
-        #     return self._timeseries[index]
-        # else:
-        #     msg = '{cls.__name__} indices must be integers' 
-        #     raise TypeError(msg.format(cls=cls))
-        #
+		# if isinstance(index, slice):
+		#     print("Slice: ", index)
+		#     return cls(self._timeseries[index])
+		# elif isinstance(index, numbers.Integral): 
+		#     return self._timeseries[index]
+		# else:
+		#     msg = '{cls.__name__} indices must be integers' 
+		#     raise TypeError(msg.format(cls=cls))
+		#
 		if not isinstance(index, type(self._time[0])):
 			raise TypeError("Argument index must have same type as time item")
 		else:
@@ -107,18 +107,18 @@ class TimeSeries:
 		return 'TimeSe({})'.format([i for i in self._timeseries]) 	
 
 	def __str__(self):
-        """ Returns a string represenation of the TimeSeries.
-        If there are more than 100 elements, the rest are abbreviated.
-            
-            Parameters
-            ----------
-            None
+		""" Returns a string represenation of the TimeSeries.
+		If there are more than 100 elements, the rest are abbreviated.
+			
+			Parameters
+			----------
+			None
 
-            Returns
-            -------
-            s : string
-                a string representation of the time series
-        """
+			Returns
+			-------
+			s : string
+				a string representation of the time series
+		"""
 
 		if len(self._timeseries) > 10:
 			return 'TimeSeries(['+', '.join('{}'.format(i) for i in self._timeseries[:5])+\
@@ -126,10 +126,10 @@ class TimeSeries:
 					+ ' -- omitting {} objects'.format(len(self._timeseries) - 10)
 		return 'TimeSe({})'.format([i for i in self._timeseries]) 	
 
-    def __iter__(self):
-        for item in self._timeseries:
-            yield item
+	def __iter__(self):
+		for item in self._timeseries:
+			yield item
 
-    def itertimes(self):
-        pass
+	def itertimes(self):
+		pass
 
