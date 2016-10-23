@@ -2,7 +2,6 @@ import reprlib, numbers, collections
 
 
 class TimeSeries:
-<<<<<<< HEAD
 	"""
 	Description of time series class
 	
@@ -35,47 +34,6 @@ class TimeSeries:
 			timeseries: TimeSeries
 				Description of timeseries object
 		"""
-=======
-    """
-    Description of time series
-        
-    Notes
-    -----
-    PRE: 
-        - The values within input_value are of the same type and are numbers.
-        - Input time is a series of numbers representaing time. The values are
-          of the same type and should be numbers.
-    POST: 
-        - `da_array` is not changed by this function (immutable)
-    WARNINGS:
-        - If you provide an unsorted array this function is not guaranteed to terminate
-        
-        
-    Examples
-    --------
-    >>> ts = TimeSeries(range(1,1000))
-    >>> ts[1]
-    1
-    """
-    
-
-	def __init__(self, input_value, input_time = None):
-        """ Constructor for time series
-            
-            Parameters
-            ----------
-            input_series : sequence
-                a sequence of values in time series 
-            input_time : sequence, optional
-                a sequence of time intervals for the time series
-                if no input time is given, a default evenly spaced time interval
-                will be used
-            Returns
-            -------
-            timeseries: TimeSeries
-                Description of timeseries object
-        """
->>>>>>> 113e40800b6ba169f94fbeb9ce105096391206d0
 
 		if not isinstance(input_value, collections.Sequence):
 			raise TypeError("Argument input_value must be Python sequence ")
