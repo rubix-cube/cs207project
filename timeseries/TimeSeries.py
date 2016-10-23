@@ -2,6 +2,7 @@ import reprlib, numbers, collections
 
 
 class TimeSeries:
+<<<<<<< HEAD
 	"""
 	Description of time series class
 	
@@ -34,6 +35,47 @@ class TimeSeries:
 			timeseries: TimeSeries
 				Description of timeseries object
 		"""
+=======
+    """
+    Description of time series
+        
+    Notes
+    -----
+    PRE: 
+        - The values within input_value are of the same type and are numbers.
+        - Input time is a series of numbers representaing time. The values are
+          of the same type and should be numbers.
+    POST: 
+        - `da_array` is not changed by this function (immutable)
+    WARNINGS:
+        - If you provide an unsorted array this function is not guaranteed to terminate
+        
+        
+    Examples
+    --------
+    >>> ts = TimeSeries(range(1,1000))
+    >>> ts[1]
+    1
+    """
+    
+
+	def __init__(self, input_value, input_time = None):
+        """ Constructor for time series
+            
+            Parameters
+            ----------
+            input_series : sequence
+                a sequence of values in time series 
+            input_time : sequence, optional
+                a sequence of time intervals for the time series
+                if no input time is given, a default evenly spaced time interval
+                will be used
+            Returns
+            -------
+            timeseries: TimeSeries
+                Description of timeseries object
+        """
+>>>>>>> 113e40800b6ba169f94fbeb9ce105096391206d0
 
 		if not isinstance(input_value, collections.Sequence):
 			raise TypeError("Argument input_value must be Python sequence ")
@@ -53,6 +95,19 @@ class TimeSeries:
 		return len(self._value)
 
 	def __getitem__(self, index):
+        """ Get item for time series
+            
+            Parameters
+            ----------
+            index : time
+                The time(s) in time series for which value is needed.
+                A range can be specified using slice notation [x:y:z] where
+                x,y,z are valid times.
+
+            Returns
+            -------
+            value : the value in time series corresponding to given time input
+        """
 		if isinstance(index, slice):
 			# new_slice = slice(self._dict[index.start], self._dict[index.stop], index.step)
 			return TimeSeries(self._value[index], self._time[index])
@@ -72,6 +127,36 @@ class TimeSeries:
 		# else:
 		# 	self._value[self._dict[index]] = value
 		# 	self._timeseries[self._dict[index]] = (value, index)
+
+	def interpolate(self, newTimes):
+		"""returns a new TimeSeries objects with times given and newly computed values 
+			The times passed in should be in ascending order and be numbers.
+
+			Parameters
+			----------
+			None
+
+			Returns
+			-------
+		"""
+	    newValues = []
+	    time, value = self._time, self._value
+	    counter, n = 1, len(time)
+	    for t in newTimes:
+	        while counter < n:
+	            if t < time[0]:
+	                newValues.append(value[0])
+	                break
+	            elif t > time[n-1]:
+	                newValues.append(value[n-1])
+	                break
+	            elif time[counter-1] <= t <= time[counter]:
+	                newVal = t + t * ((value[counter]-value[counter-1]) / (time[counter] - time[counter-1]))
+	                newValues.append(newVal)
+	                break
+	            else:
+	            	counter += 1
+	    return TimeSeries(newValues, newTimes)
 
 	def __repr__(self):
 		#return 'TimeSeries({})'.format([i for i in self._timeseries])
