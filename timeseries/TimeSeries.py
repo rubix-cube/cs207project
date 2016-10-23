@@ -83,20 +83,40 @@ class TimeSeries:
 			return self._timeseries[index]
 
 	def __setitem__(self, index, value):
-		# if isinstance(index, slice):
-		#     print("Slice: ", index)
-		#     return cls(self._timeseries[index])
-		# elif isinstance(index, numbers.Integral): 
-		#     return self._timeseries[index]
-		# else:
-		#     msg = '{cls.__name__} indices must be integers' 
-		#     raise TypeError(msg.format(cls=cls))
-		#
 		if not isinstance(index, type(self._time[0])):
 			raise TypeError("Argument index must have same type as time item")
 		else:
 			self._value[self._dict[index]] = value
 			self._timeseries[self._dict[index]] = (value, index)
+
+	def interpolate(newTimes):
+		"""returns a new TimeSeries objects with times given and newly computed values 
+			The times passed in should be in ascending order and be numbers.
+
+			Parameters
+			----------
+			None
+
+			Returns
+			-------
+		"""
+	    newValues = []
+	    time, value = self._time, self._value
+	    counter, n = 1, len(time)
+	    for t in newTimes:
+	        while counter < n:
+	            if t < time[0]:
+	                newValues.append(value[0])
+	                break
+	            elif t > time[n-1]:
+	                newValues.append(value[n-1])
+	                break
+	            elif time[counter-1] <= t <= time[counter]:
+	                newVal = t + t * ((value[counter]-value[counter-1]) / (time[counter] - time[counter-1]))
+	                newValues.append(newVal)
+	                counter += 1
+	                break
+	    return TimeSeries(newValues, newTimes)
 
 	def __repr__(self):
 		#return 'TimeSeries({})'.format([i for i in self._timeseries])
