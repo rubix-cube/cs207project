@@ -1,8 +1,9 @@
 import numpy as np
 import collections
 from TimeSeries import TimeSeries 
+
+
 class ArrayTimeSeries(TimeSeries):
->>>>>>> 5bafaed00952e8d8c5cadaa68a779d88e8fe4d39
 
     def __init__(self, input_value, input_time):
         if not isinstance(input_value, collections.Sequence):
@@ -37,9 +38,23 @@ class ArrayTimeSeries(TimeSeries):
     def __len__(self):
         return len(self._value)
 
-    #def __iter__(self):
+    def __iter__(self):
+        """returns values
+
+        """
+        for t in self._value:
+            yield t
 
 
-    #def itertimes(self): 
+    def itertimes(self): 
+        """returns times
+        """
+        for v in self._value:
+            yield v
         
-    #def iteritems(self):
+    def iteritems(self):
+        """returns k/v tuples
+
+        """
+        for v in self._timeseries:
+            yield v
