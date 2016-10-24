@@ -1,4 +1,6 @@
 import numpy as np
+from TimeSeries import TimeSeries
+
 class ArrayTimeSeries(TimeSeries):
 	def __init__(self, seq):
 		if not isinstance(input_value, collections.Sequence):
@@ -13,5 +15,5 @@ class ArrayTimeSeries(TimeSeries):
 			self._time = np.arange(1, len(input_value) + 1)
 		self._value = np.array(input_value)
 		self._timeseries = np.array(zip(self._time, self_value))
-		self._dict = dict(zip(self._time), range(0, len(self._time)))
+		# self._dict = dict(zip(self._time), range(0, len(self._time)))
 

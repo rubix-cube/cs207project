@@ -1,4 +1,5 @@
 import reprlib, numbers, collections
+import math
 
 class TimeSeries:
 	"""
@@ -23,15 +24,16 @@ class TimeSeries:
 			
 			Parameters
 			----------
-			input_series : sequence
-				a sequence of data
+			input_value : sequence
+				a sequence of data, must be numerics
+
 			input_time : sequence, optional
-				a sequence of time
+				a sequence of time, must be numerics (datetime maybe supported in the future)
 
 			Returns
 			-------
 			timeseries: TimeSeries
-				Description of timeseries object
+				a TimeSeries object
 		"""
 
 		if not isinstance(input_value, collections.Sequence):
@@ -45,7 +47,7 @@ class TimeSeries:
 		else:
 			self._time = range(1, len(input_value) + 1)
 		self._value = list(input_value)
-		self._timeseries = zip(self._time, self_value)
+		self._timeseries = list(zip(self._time, self._value))
 		# self._dict = dict(zip(self._time), range(0, len(self._time)))
 
 	def __len__(self):
@@ -71,7 +73,7 @@ class TimeSeries:
 		if not isinstance(index, numbers.Integral):
 			raise TypeError("Argument index must be either Python slice object or Python int")
 		else:
-			return self._timeseries[index]
+			return self._value[index]
 
 	def __setitem__(self, index, value):
 		if isinstance(index, numbers.Integral): 
@@ -118,10 +120,10 @@ class TimeSeries:
 	def __repr__(self):
 		#return 'TimeSeries({})'.format([i for i in self._timeseries])
 		if len(self._timeseries) > 10:
-			return 'TimeSeries(['+', '.join('{}'.format(i) for i in self._timeseries[:5])+\
-					'...'+', '.join('{}'.format(i) for i in self._timeseries[-5:])\
+			return 'TimeSeries(['+','.join('{}'.format(i) for i in self._timeseries[:5])\
+					+ '...'+','.join('{}'.format(i) for i in self._timeseries[-5:]) + '])'\
 					+ ' -- omitting {} objects'.format(len(self._timeseries) - 10)
-		return 'TimeSe({})'.format([i for i in self._timeseries]) 	
+		return 'TimeSeries({})'.format([i for i in self._timeseries]) 	
 
 	def __str__(self):
 		""" Returns a string represenation of the TimeSeries.
@@ -138,10 +140,10 @@ class TimeSeries:
 		"""
 
 		if len(self._timeseries) > 10:
-			return 'TimeSeries(['+', '.join('{}'.format(i) for i in self._timeseries[:5])+\
-					'...'+', '.join('{}'.format(i) for i in self._timeseries[-5:])\
+			return 'TimeSeries(['+','.join('{}'.format(i) for i in self._timeseries[:5])\
+					+ '...'+','.join('{}'.format(i) for i in self._timeseries[-5:]) + '])'\
 					+ ' -- omitting {} objects'.format(len(self._timeseries) - 10)
-		return 'TimeSe({})'.format([i for i in self._timeseries]) 	
+		return 'TimeSeries({})'.format([i for i in self._timeseries])	
 
 	def __iter__(self):
 		for v in self._value:
@@ -178,7 +180,7 @@ class TimeSeries:
 		# check they have the same length and has equal time domain
 		if len(self) != len(otherTS) or self._time != otherTS._time:
 			raise ValueError(str(self)+' and '+ str(otherTS) + ' must have the same time points')
-		return TimeSeries(self._time, self._value + otherTS._value)
+		return TimeSeries(list(map(lambda t: t[0] + t[1], zip(self._value, otherTS._value))), self._time)
 
 	def __sub__(self, otherTS):
 		# check otherTS type
@@ -186,8 +188,8 @@ class TimeSeries:
 			raise TypeError('Can only subtract with time series')
 		# check they have the same length and has equal time domain
 		if len(self) != len(otherTS) or self._time != otherTS._time:
-			raise ValueError(str(self)+' and '+ str(otherTS) + ' must have the same time points')
-		return TimeSeries(self._time, self._value - otherTS._value)
+			raise ValueError(str(self) + ' and ' + str(otherTS) + ' must have the same time points')
+		return TimeSeries(list(map(lambda t: t[0] - t[1], zip(self._value, otherTS._value))), self._time)
 
 
 	def __eq__(self, otherTS):
@@ -196,7 +198,7 @@ class TimeSeries:
 			raise TypeError('Can only eval equal on time series')
 		# check they have the same length and has equal time domain
 		if len(self) != len(otherTS) or self._time != otherTS._time:
-			raise ValueError(str(self)+' and '+str(otherTS)+' must have the same time points')
+			raise ValueError(str(self) + ' and ' + str(otherTS) + ' must have the same time points')
 		return self._timeseries == otherTS._timeseries
 
 
@@ -206,8 +208,8 @@ class TimeSeries:
 			raise TypeError('Can only multiply with time series')
 		# check they have the same length and has equal time domain
 		if len(self) != len(otherTS) or self._time != otherTS._time:
-			raise ValueError(str(self)+' and '+str(otherTS)+' must have the same time points')
-		return TimeSeries(self._time, list(np.array(self._value) * np.array(otherTS._value)))
+			raise ValueError(str(self) + ' and ' + str(otherTS) + ' must have the same time points')
+		return TimeSeries(list(map(lambda t: t[0] * t[1], zip(self._value, otherTS._value))), self._time)
 
 
 	def __abs__(self):
@@ -218,7 +220,7 @@ class TimeSeries:
 		return bool(abs(self))
 
 	def __neg__(self):
-		return TimeSeries(self._time, (-v for v in self._value))
+		return TimeSeries([-v for v in self._value], self._time)
 
 	def __pos__(self):
-		return TimeSeries(self._time, self._value)
+		return TimeSeries(self._value, self._time)
