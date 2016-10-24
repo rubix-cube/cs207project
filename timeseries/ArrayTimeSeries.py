@@ -3,7 +3,7 @@ import collections
 from TimeSeries import TimeSeries 
 class ArrayTimeSeries(TimeSeries):
 
-    def __init__(self, input_value, input_time = None):
+    def __init__(self, input_value, input_time):
         if not isinstance(input_value, collections.Sequence):
             raise TypeError("Argument input_value must be Python sequence ")
         if not isinstance(input_time, collections.Sequence):
