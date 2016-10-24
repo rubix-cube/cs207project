@@ -18,7 +18,7 @@ class TimeSeries:
 	"""
 	
 
-	def __init__(self, input_value, input_time = None):
+	def __init__(self, input_value, input_time ):
 		""" Constructor for time series
 			
 			Parameters
