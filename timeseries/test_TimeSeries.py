@@ -1,96 +1,111 @@
-from pytest import raises
+# from pytest import raises
 from TimeSeries import TimeSeries
+import unittest
+import random
+from numpy.linalg import norm
+import numpy as np
 
-#Test constructor
+'''
 def test_valid_ts_no_time():
-	ts = TimeSeries([9,3])
-	assert ts._value == [9,3]
-	assert ts._time == [1,2]
+	self.ts = TimeSeries([9,3])
+	assert self.ts.value == [9,3]
+	assert self.ts.time == [1,2]
 
 def test_valid_ts_with_time():
-	ts = TimeSeries([9,3],[3,5])
-	assert ts._value == [9,3]
-	assert ts._time == [3,5]
+	self.ts = TimeSeries([9,3],[3,5])
+	assert self.ts.value == [9,3]
+	assert self.ts.time == [3,5]
 
 def test_not_seq_no_time():
 	with raises(TypeError):
 		TimeSeries(3)
 
-def test_not_seq_with_time():
+def test_not_seq_no_time():
 	with raises(TypeError):
 		TimeSeries(3, [1])
-
+    
 def test_length_not_match_time():
 	with raises(ValueError):
 		TimeSeries([3,9], [1])
-
+        
 def test_length_not_match_val():
-	with raises(ValueError):
+    with raises(ValueError):
 		TimeSeries([3], [1,2])
-
-#Test length function
-def test_length():
-	assert len(TimeSeries([1,4,3])) == 3
-
-#Test getitem
-def test_get_with_time():
-	ts = TimeSeries([9,3],[3,5])
-	assert ts[3] == (3,9)
-
-def test_get_no_time():
-	ts = TimeSeries([9,3])
-	assert ts[2] == (2,3)
-
-def test_get_out_of_range_no_time():
-	ts = TimeSeries([9,3])
-	with raises(TypeError):
-		ts[3]
-
 '''
-def test_get_out_of_range_with_time():
-	ts = TimeSeries([9,3],[4,8])
-	with raises(TypeError):
-		ts[5]
-'''
+class MyTest(unittest.TestCase):
+
+	def setUp(self):
+		self.ts = TimeSeries([1,2,3],[0.1,0.2,0.3])
+		self.ts2 = TimeSeries([1,2,3],[0.1,0.2,0.5])
+		self.ts3 = TimeSeries([1,2,5],[0.1,0.2,0.3])
+		self.ts4 = TimeSeries(range(1, 12), range(1, 12))
+		
+		self.val1 = random.sample(range(100), 20)
+		self.val2 = random.sample(range(100), 20)
+		self.time = [random.random() for i in range(20)]
+
+		self.ts5 = TimeSeries(self.val1, self.time)
+		self.ts6 = TimeSeries(self.val2, self.time)
 
 
-#Test setitem
-def test_set_with_time():
-	ts = TimeSeries([9,3],[3,5])
-	ts[3] = 8
-	assert ts[3] == (3,8)
+	def test_init(self):
+		self.assertEqual(self.ts._value, [1,2,3])
+		self.assertEqual(self.ts._time, [0.1,0.2,0.3])
+		self.assertEqual(list(self.ts._timeseries), [(0.1,1),(0.2,2),(0.3,3)])
 
-def test_set_no_time():
-	ts = TimeSeries([9,3])
-	ts[2] = 10
-	assert ts[2] == (2,10)
+	def test_equal(self):
+		self.assertTrue(self.ts == self.ts)
+		self.assertFalse(self.ts == self.ts3)
+		with self.assertRaises(ValueError):
+			self.ts == self.ts2
+		
 
-def test_set_out_of_range_no_time():
-	ts = TimeSeries([9,3])
-	with raises(TypeError):
-		ts[3] = 10
+	def test_getitem(self):
+		self.ts = TimeSeries([1,2,3],[0.1,0.2,0.3])
+		self.assertEqual(self.ts[0], 1)
+		self.assertTrue(self.ts[0:2] == TimeSeries([1,2], [0.1,0.2]))
 
-'''
-def test_set_out_of_range_with_time():
-	ts = TimeSeries([9,3],[4,8])
-	with raises(TypeError):
-		ts[5] = 10
-'''
+	def test_setitem(self):
+		self.ts[0] = 0.5
+		self.assertEqual(self.ts[0], 0.5)
+
+	def test_print(self):
+		self.assertEqual(str(self.ts), 'TimeSeries([(0.1, 1), (0.2, 2), (0.3, 3)])')
+		self.assertEqual(str(self.ts4), 'TimeSeries([(1, 1),(2, 2),(3, 3),(4, 4),(5, 5)...(7, 7),(8, 8),(9, 9),(10, 10),(11, 11)]) -- omitting 1 objects')
+
+		self.assertEqual(repr(self.ts), 'TimeSeries([(0.1, 1), (0.2, 2), (0.3, 3)])')
+		self.assertEqual(repr(self.ts4), 'TimeSeries([(1, 1),(2, 2),(3, 3),(4, 4),(5, 5)...(7, 7),(8, 8),(9, 9),(10, 10),(11, 11)]) -- omitting 1 objects')
+
+	def test_iters(self):
+		self.assertEqual(list(self.ts.itertimes()), [0.1,0.2,0.3])
+		self.assertEqual(list(self.ts.itervalues()), [1,2,3])
+		self.assertEqual(list(self.ts.iteritems()), [(0.1,1),(0.2,2),(0.3,3)])
+
+	def test_add_mul_sub(self):
+		ts = self.ts5 + self.ts6
+		self.assertEqual(ts._value, list(np.array(self.val1) + np.array(self.val2)))
+		self.assertEqual(ts._time, self.ts5._time)
+
+		ts = self.ts5 - self.ts6
+		self.assertTrue(ts._value, list(np.array(self.val1) - np.array(self.val2)))
+		self.assertEqual(ts._time, self.ts5._time)
+
+		ts = self.ts5 * self.ts6
+		self.assertTrue(ts._value, list(np.array(self.val1) * np.array(self.val2)))
+		self.assertEqual(ts._time, self.ts5._time)
+
+	def test_abs(self):
+		self.assertEqual(abs(self.ts5), norm(self.ts5._value))
+
+	def test_neg_pos(self):
+		ts = -self.ts5
+		self.assertEqual(ts._value, list(-1 * np.array(self.ts5._value)))
+		self.assertEqual(ts._time, self.ts5._time)
+
+		ts = +self.ts5
+		self.assertEqual(ts._value,self.ts5._value)
+		self.assertEqual(ts._time, self.ts5._time)
 
 
-#Test __repr__
-def test_repr_with_time():
-	assert repr(TimeSeries([1,3,5])=="[(1,1), (2,3), (3,5)]")
-
-def test_repr_no_time():
-	assert repr(TimeSeries([1,3,5], [5,7,9])=="[(5,1), (7,3), (9,5)]")
-
-
-#Test __str__
-def test_str_with_time():
-	assert str(TimeSeries([1,3,5])=="[(1,1), (2,3), (3,5)]")
-
-def test_str_no_time():
-	assert str(TimeSeries([1,3,5], [5,7,9])=="[(5,1), (7,3), (9,5)]")
 
 

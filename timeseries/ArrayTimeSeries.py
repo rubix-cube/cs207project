@@ -2,6 +2,7 @@ import numpy as np
 import collections
 from TimeSeries import TimeSeries 
 class ArrayTimeSeries(TimeSeries):
+>>>>>>> 5bafaed00952e8d8c5cadaa68a779d88e8fe4d39
 
     def __init__(self, input_value, input_time):
         if not isinstance(input_value, collections.Sequence):
