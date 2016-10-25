@@ -1,5 +1,6 @@
 import reprlib, numbers, collections
 import math
+from lazy import lazy
 
 class TimeSeries:
 	"""
@@ -224,3 +225,16 @@ class TimeSeries:
 
 	def __pos__(self):
 		return TimeSeries(self._value, self._time)
+
+
+@lazy
+def check_length(a,b):
+	return len(a) == len(b)
+
+if __name__ == "__main__":
+	t = check_length(TimeSeries(range(0,4), range(1,5)), TimeSeries(range(1,5), range(2,6)))
+	print(t.eval())
+
+
+
+
