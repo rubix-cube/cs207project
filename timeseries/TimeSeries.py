@@ -120,11 +120,24 @@ class TimeSeries:
 
 	def __repr__(self):
 		#return 'TimeSeries({})'.format([i for i in self._timeseries])
+		"""
 		if len(self._timeseries) > 10:
 			return 'TimeSeries(['+','.join('{}'.format(i) for i in self._timeseries[:5])\
 					+ '...'+','.join('{}'.format(i) for i in self._timeseries[-5:]) + '])'\
 					+ ' -- omitting {} objects'.format(len(self._timeseries) - 10)
-		return 'TimeSeries({})'.format([i for i in self._timeseries]) 	
+		return 'TimeSeries({})'.format([i for i in self._timeseries]) 
+		"""
+		if len(self._timeseries) > 10:
+			return "TimeSeries: " + str([(t,v) for (t, v) in zip(self._time[:5], self._value[:5])])\
+			+ ".....omitting {} pairs.....".format(len(self._value) - 10) \
+			+ str([(t,v) for (t, v) in zip(self._time[-5:], self._value[-5:])])
+			'''
+			return "TimeSeries" + str([ i for i in self._timeseries[:5]])\
+			+ ".....omitting {} pairs.....".format(len(self._value) - 10) \
+			+ str([ i  for i in self._timeseries[-5:]])
+			'''	
+		return 'TimeSeries: ' + str([(t,v) for (t, v) in zip(self._time, self._value)])
+
 
 	def __str__(self):
 		""" Returns a string represenation of the TimeSeries.
@@ -139,12 +152,11 @@ class TimeSeries:
 			s : string
 				a string representation of the time series
 		"""
-
 		if len(self._timeseries) > 10:
-			return 'TimeSeries(['+','.join('{}'.format(i) for i in self._timeseries[:5])\
-					+ '...'+','.join('{}'.format(i) for i in self._timeseries[-5:]) + '])'\
-					+ ' -- omitting {} objects'.format(len(self._timeseries) - 10)
-		return 'TimeSeries({})'.format([i for i in self._timeseries])	
+			return "TimeSeries: " + str([(t,v) for (t, v) in zip(self._time[:5], self._value[:5])])\
+			+ ".....omitting {} pairs.....".format(len(self._value) - 10) \
+			+ str([(t,v) for (t, v) in zip(self._time[-5:], self._value[-5:])])
+		return 'TimeSeries: ' + str([(t,v) for (t, v) in zip(self._time, self._value)])
 
 	def __iter__(self):
 		for v in self._value:
