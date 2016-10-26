@@ -1,6 +1,7 @@
 import reprlib, numbers, collections
 import math
 from lazy import lazy
+import numpy as np
 
 class TimeSeries:
 	"""
@@ -20,7 +21,7 @@ class TimeSeries:
 	"""
 	
 
-	def __init__(self, input_value, input_time ):
+	def __init__(self, input_value, input_time):
 		""" Constructor for time series
 			
 			Parameters
@@ -79,8 +80,7 @@ class TimeSeries:
 	def __setitem__(self, index, value):
 		if isinstance(index, numbers.Integral): 
 		    self._value[index] = value
-		    # Zelong Qiu Update timeseries again
-		    self._timeseries[index][1] = value
+		    self._timeseries[index] = (self._time[index], value) 
 		else:
 		    raise TypeError('Index must be integers')
 		#
@@ -250,12 +250,7 @@ def check_length(a,b):
 	return len(a) == len(b)
 
 if __name__ == "__main__":
-	# t = check_length(TimeSeries(range(0,4), range(1,5)), TimeSeries(range(1,5), range(2,6)))
+	t = check_length(TimeSeries(range(0,4), range(1,5)), TimeSeries(range(1,5), range(2,6)))
 	# print(t.eval())
-	# x = TimeSeries([1,2,3,4],[5,6,7,8])
-	# print(x)
-	# print(x.lazy.eval())
-
-
-
-
+	x = TimeSeries(range(100),range(100))
+	print(x == x.lazy.eval())

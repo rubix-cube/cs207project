@@ -61,20 +61,29 @@ class MyTest(unittest.TestCase):
 		
 
 	def test_getitem(self):
-		self.ts = TimeSeries([1,2,3],[0.1,0.2,0.3])
+		# self.ts = TimeSeries([1,2,3],[0.1,0.2,0.3])
 		self.assertEqual(self.ts[0], 1)
+		self.assertEqual(self.ts[1], 2)
+		self.assertEqual(self.ts[2], 3)
 		self.assertTrue(self.ts[0:2] == TimeSeries([1,2], [0.1,0.2]))
 
 	def test_setitem(self):
 		self.ts[0] = 0.5
-		self.assertEqual(self.ts[0], 0.5)
+		self.ts[1] = 0.6
+		self.ts[2] = 0.7
+		self.assertTrue(self.ts == TimeSeries([0.5,0.6,0.7], [0.1,0.2,0.3]))
+		
 
 	def test_print(self):
-		self.assertEqual(str(self.ts), 'TimeSeries([(0.1, 1), (0.2, 2), (0.3, 3)])')
-		self.assertEqual(str(self.ts4), 'TimeSeries([(1, 1),(2, 2),(3, 3),(4, 4),(5, 5)...(7, 7),(8, 8),(9, 9),(10, 10),(11, 11)]) -- omitting 1 objects')
+		self.assertEqual(str(self.ts), 'TimeSeries: [(0.1, 1), (0.2, 2), (0.3, 3)]')
+		self.ts[0] = 0.5
+		self.ts[1] = 0.6
+		self.ts[2] = 0.7
+		self.assertEqual(str(self.ts), 'TimeSeries: [(0.1, 0.5), (0.2, 0.6), (0.3, 0.7)]')
 
-		self.assertEqual(repr(self.ts), 'TimeSeries([(0.1, 1), (0.2, 2), (0.3, 3)])')
-		self.assertEqual(repr(self.ts4), 'TimeSeries([(1, 1),(2, 2),(3, 3),(4, 4),(5, 5)...(7, 7),(8, 8),(9, 9),(10, 10),(11, 11)]) -- omitting 1 objects')
+		self.assertEqual(str(self.ts4), 'TimeSeries: [(1, 1), (2, 2), (3, 3), (4, 4), (5, 5)].....omitting 1 pairs.....[(7, 7), (8, 8), (9, 9), (10, 10), (11, 11)]')
+
+		self.assertEqual(repr(self.ts4), 'TimeSeries: [(1, 1), (2, 2), (3, 3), (4, 4), (5, 5)].....omitting 1 pairs.....[(7, 7), (8, 8), (9, 9), (10, 10), (11, 11)]')
 
 	def test_iters(self):
 		self.assertEqual(list(self.ts.itertimes()), [0.1,0.2,0.3])
@@ -105,6 +114,7 @@ class MyTest(unittest.TestCase):
 		ts = +self.ts5
 		self.assertEqual(ts._value,self.ts5._value)
 		self.assertEqual(ts._time, self.ts5._time)
+
 
 
 
