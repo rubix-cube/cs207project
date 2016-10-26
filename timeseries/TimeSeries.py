@@ -254,3 +254,9 @@ if __name__ == "__main__":
 	# print(t.eval())
 	x = TimeSeries(range(100),range(100))
 	print(x == x.lazy.eval())
+
+	t = TimeSeries([1,2,3], [0,5,10])
+	print(t.interpolate([1]))
+	print(t.interpolate([-100,100]))
+	# t = check_length(TimeSeries(range(0,4), range(1,5)), TimeSeries(range(1,5), range(2,6)))
+	# print(t.eval())

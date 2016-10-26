@@ -6,23 +6,21 @@ from TimeSeries import TimeSeries
 
 class ArrayTimeSeries(TimeSeries):
 
-    def __init__(self, input_value, input_time):
-        if not isinstance(input_value, collections.Sequence):
+    def __init__(self, input_time, input_value):
+        if not isinstance(input_value, collections.Sequence) and not isinstance(input_value, np.ndarray):
             raise TypeError("Argument input_value must be Python sequence ")
-        if not isinstance(input_time, collections.Sequence):
+        if not isinstance(input_time, collections.Sequence) and not isinstance(input_value, np.ndarray):
             raise TypeError("Argument input_time must be Python sequence ")
         if len(input_time) != len(input_value):
             raise ValueError("Argument input_value must have same length with input_time")
         self._time = np.array(input_time)
         self._value = np.array(input_value)
         self._timeseries = np.array(list(zip(self._time, self._value)))
-        #self._dict = dict(zip(self._time), range(0, len(self._time)))
 
 
     def __getitem__(self, index):
         if isinstance(index, slice):
-        # new_slice = slice(self._dict[index.start], self._dict[index.stop], index.step)
-            return TimeSeries(list(self._value[index]), list(self._time[index]))
+            return TimeSeries(list(self._time[index]), list(self._value[index]))
         if not isinstance(index, numbers.Integral):
             raise TypeError("Argument index must be either Python slice object or Python int")
         else:
@@ -60,4 +58,50 @@ class ArrayTimeSeries(TimeSeries):
         """
         for v in self._timeseries:
             yield v
+
+
+    def __add__(self, otherTS):
+        # check otherTS type
+        if not isinstance(otherTS, TimeSeries):
+            raise TypeError('Can only add with time series')
+        # check they have the same length and has equal time domain
+        if len(self) != len(otherTS) or np.any(self._time != otherTS._time):
+            raise ValueError(str(self)+' and '+ str(otherTS) + ' must have the same time points')
+        return ArrayTimeSeries(self._time, self._value + otherTS._value)
+
+    def __sub__(self, otherTS):
+        # check otherTS type
+        if not isinstance(otherTS, TimeSeries):
+            raise TypeError('Can only subtract with time series')
+        # check they have the same length and has equal time domain
+        if len(self) != len(otherTS) or np.any(self._time != otherTS._time):
+            raise ValueError(str(self) + ' and ' + str(otherTS) + ' must have the same time points')
+        return ArrayTimeSeries(self._time, self._value - otherTS._value)
+
+
+    def __eq__(self, otherTS):
+        # check otherTS type
+        if not isinstance(otherTS, TimeSeries):
+            raise TypeError('Can only eval equal on time series')
+        # check they have the same length and has equal time domain
+        if len(self) != len(otherTS) or np.any(self._time != otherTS._time):
+            raise ValueError(str(self) + ' and ' + str(otherTS) + ' must have the same time points')
+        return np.all(self._value == otherTS._value)
+
+
+    def __mul__(self, otherTS):
+        # check otherTS type
+        if not isinstance(otherTS, TimeSeries):
+            raise TypeError('Can only multiply with time series')
+        # check they have the same length and has equal time domain
+        if len(self) != len(otherTS) or np.any(self._time != otherTS._time):
+            raise ValueError(str(self) + ' and ' + str(otherTS) + ' must have the same time points')
+        return ArrayTimeSeries(self._time, self._value * otherTS._value)
+
+    def __neg__(self):
+        return ArrayTimeSeries(self._time, - self._value)
+
+    def __pos__(self):
+        return ArrayTimeSeries(self._time, self._value)
+
     
