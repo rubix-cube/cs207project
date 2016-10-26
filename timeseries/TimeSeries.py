@@ -79,6 +79,8 @@ class TimeSeries:
 	def __setitem__(self, index, value):
 		if isinstance(index, numbers.Integral): 
 		    self._value[index] = value
+		    # Zelong Qiu Update timeseries again
+		    self._timeseries[index][1] = value
 		else:
 		    raise TypeError('Index must be integers')
 		#
