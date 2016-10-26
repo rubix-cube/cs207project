@@ -1,5 +1,6 @@
 import numpy as np
-import collections
+import reprlib, numbers, collections
+import math
 from TimeSeries import TimeSeries 
 
 
@@ -12,16 +13,16 @@ class ArrayTimeSeries(TimeSeries):
             raise TypeError("Argument input_time must be Python sequence ")
         if len(input_time) != len(input_value):
             raise ValueError("Argument input_value must have same length with input_time")
-        self._time = np.array([input_time])
-        self._value = np.array([input_value])
-        self._timeseries = np.array(zip(self._time, self_value))
+        self._time = np.array(input_time)
+        self._value = np.array(input_value)
+        self._timeseries = np.array(list(zip(self._time, self._value)))
         #self._dict = dict(zip(self._time), range(0, len(self._time)))
 
 
     def __getitem__(self, index):
         if isinstance(index, slice):
         # new_slice = slice(self._dict[index.start], self._dict[index.stop], index.step)
-            return TimeSeries(self._value[index], self._time[index])
+            return TimeSeries(list(self._value[index]), list(self._time[index]))
         if not isinstance(index, numbers.Integral):
             raise TypeError("Argument index must be either Python slice object or Python int")
         else:
@@ -31,6 +32,7 @@ class ArrayTimeSeries(TimeSeries):
     def __setitem__(self, index, value):
         if isinstance(index, numbers.Integral): 
             self._value[index] = value
+            self._timeseries[index][1] = value
         else:
             raise TypeError('Index must be integers')
 
@@ -49,7 +51,7 @@ class ArrayTimeSeries(TimeSeries):
     def itertimes(self): 
         """returns times
         """
-        for v in self._value:
+        for v in self._time:
             yield v
         
     def iteritems(self):
@@ -58,3 +60,4 @@ class ArrayTimeSeries(TimeSeries):
         """
         for v in self._timeseries:
             yield v
+    
