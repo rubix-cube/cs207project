@@ -226,14 +226,21 @@ class TimeSeries:
 	def __pos__(self):
 		return TimeSeries(self._value, self._time)
 
+	@property
+	def lazy(self):
+		thunk = lazy(lambda x : x) #identity function
+		return thunk(self)
 
 @lazy
 def check_length(a,b):
 	return len(a) == len(b)
 
 if __name__ == "__main__":
-	t = check_length(TimeSeries(range(0,4), range(1,5)), TimeSeries(range(1,5), range(2,6)))
-	print(t.eval())
+	# t = check_length(TimeSeries(range(0,4), range(1,5)), TimeSeries(range(1,5), range(2,6)))
+	# print(t.eval())
+	# x = TimeSeries([1,2,3,4],[5,6,7,8])
+	# print(x)
+	# print(x.lazy.eval())
 
 
 
