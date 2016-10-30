@@ -89,7 +89,7 @@ def test_set_out_of_range_with_time():
 
 def test_set_out_of_range_empty():
 	ts = ArrayTimeSeries([],[])
-	with raises(ValueError):
+	with raises(IndexError):
 		ts[1] = 10
 
 #Test __repr__
