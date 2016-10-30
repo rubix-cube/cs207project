@@ -113,7 +113,7 @@ class TimeSeries:
 					newValues.append(value[n-1])
 					break
 				elif time[counter-1] <= t <= time[counter]:
-					newVal = t + t * ((value[counter]-value[counter-1]) / (time[counter] - time[counter-1]))
+					newVal = value[counter-1]+ (t-time[counter-1]) * (value[counter]-value[counter-1]) / (time[counter] - time[counter-1])
 					newValues.append(newVal)
 					break
 				else:

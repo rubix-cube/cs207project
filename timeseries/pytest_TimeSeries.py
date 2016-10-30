@@ -4,8 +4,6 @@ import numpy as np
 import math
 
 #Test constructor
-
-
 def test_valid_ts_no_time():
 	ts = TimeSeries([9,3])
 	assert ts._value == [9,3]
@@ -40,7 +38,7 @@ def test_not_seq_no_time():
 	with raises(TypeError):
 		TimeSeries(3)
 
-def test_not_seq_time_val():
+def test_not_seq_val():
 	with raises(TypeError):
 		TimeSeries(3, [1])
 
@@ -141,29 +139,29 @@ def test_set_out_of_range_empty():
 		ts[1] = 10
 
 #Test __repr__
-def test_repr_with_time():
+def test_repr_no_time():
 	assert str(TimeSeries([1,3,5]))=="TimeSeries: [(1, 1), (2, 3), (3, 5)]"
 
-def test_repr_no_time():
+def test_repr_with_time():
 	assert str(TimeSeries([1,3,5], [5,7,9]))=="TimeSeries: [(5, 1), (7, 3), (9, 5)]"
 
-def test_repr_with_time_long():
+def test_repr_no_time_long():
 	assert str(TimeSeries(range(1,30,2)))=="TimeSeries: [(1, 1), (2, 3), (3, 5), (4, 7), (5, 9)].....omitting 5 pairs.....[(11, 21), (12, 23), (13, 25), (14, 27), (15, 29)]"
 
-def test_repr_no_time_long():
+def test_repr_with_time_long():
 	assert str(TimeSeries(range(1,30,2),range(5,34,2)))=="TimeSeries: [(5, 1), (7, 3), (9, 5), (11, 7), (13, 9)].....omitting 5 pairs.....[(25, 21), (27, 23), (29, 25), (31, 27), (33, 29)]"
 
 #Test __str__
-def test_str_with_time():
+def test_str_no_time():
 	assert str(TimeSeries([1,3,5]))=="TimeSeries: [(1, 1), (2, 3), (3, 5)]"
 
-def test_str_no_time():
+def test_str_with_time():
 	assert str(TimeSeries([1,3,5], [5,7,9]))=="TimeSeries: [(5, 1), (7, 3), (9, 5)]"
 
-def test_str_with_time_long():
+def test_str_no_time_long():
 	assert str(TimeSeries(range(1,30,2)))=="TimeSeries: [(1, 1), (2, 3), (3, 5), (4, 7), (5, 9)].....omitting 5 pairs.....[(11, 21), (12, 23), (13, 25), (14, 27), (15, 29)]"
 
-def test_str_no_time_long():
+def test_str_with_time_long():
 	assert str(TimeSeries(range(1,30,2),range(5,34,2)))=="TimeSeries: [(5, 1), (7, 3), (9, 5), (11, 7), (13, 9)].....omitting 5 pairs.....[(25, 21), (27, 23), (29, 25), (31, 27), (33, 29)]"
 
 #Test iters
