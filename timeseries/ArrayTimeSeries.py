@@ -1,10 +1,10 @@
 import numpy as np
 import reprlib, numbers, collections
 import math
-from TimeSeries import TimeSeries 
+from SizedContainerTimeSeriesInterface import SizedContainerTimeSeriesInterface
 
 
-class ArrayTimeSeries(TimeSeries):
+class ArrayTimeSeries(SizedContainerTimeSeriesInterface):
 
     def __init__(self, input_time, input_value):
         if not isinstance(input_value, collections.Sequence) and not isinstance(input_value, np.ndarray):
@@ -45,6 +45,9 @@ class ArrayTimeSeries(TimeSeries):
         for t in self._value:
             yield t
 
+    def itervalues(self):
+        for v in self._value:
+            yield v
 
     def itertimes(self): 
         """returns times
@@ -62,7 +65,7 @@ class ArrayTimeSeries(TimeSeries):
 
     def __add__(self, otherTS):
         # check otherTS type
-        if not isinstance(otherTS, TimeSeries):
+        if not isinstance(otherTS, ArrayTimeSeries):
             raise TypeError('Can only add with time series')
         # check they have the same length and has equal time domain
         if len(self) != len(otherTS) or np.any(self._time != otherTS._time):
@@ -71,7 +74,7 @@ class ArrayTimeSeries(TimeSeries):
 
     def __sub__(self, otherTS):
         # check otherTS type
-        if not isinstance(otherTS, TimeSeries):
+        if not isinstance(otherTS, ArrayTimeSeries):
             raise TypeError('Can only subtract with time series')
         # check they have the same length and has equal time domain
         if len(self) != len(otherTS) or np.any(self._time != otherTS._time):
@@ -81,7 +84,7 @@ class ArrayTimeSeries(TimeSeries):
 
     def __eq__(self, otherTS):
         # check otherTS type
-        if not isinstance(otherTS, TimeSeries):
+        if not isinstance(otherTS, ArrayTimeSeries):
             raise TypeError('Can only eval equal on time series')
         # check they have the same length and has equal time domain
         if len(self) != len(otherTS) or np.any(self._time != otherTS._time):
@@ -91,7 +94,7 @@ class ArrayTimeSeries(TimeSeries):
 
     def __mul__(self, otherTS):
         # check otherTS type
-        if not isinstance(otherTS, TimeSeries):
+        if not isinstance(otherTS, ArrayTimeSeries):
             raise TypeError('Can only multiply with time series')
         # check they have the same length and has equal time domain
         if len(self) != len(otherTS) or np.any(self._time != otherTS._time):
