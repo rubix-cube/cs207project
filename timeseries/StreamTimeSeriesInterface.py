@@ -1,6 +1,7 @@
+from TimeSeriesInterface import TimeSeriesInterface
 import abc
 
-class StreamTimeSeriesInterface(abc.ABC):
+class StreamTimeSeriesInterface(TimeSeriesInterface):
 
 	@abc.abstractmethod
 	def produce(self, chunk=1):

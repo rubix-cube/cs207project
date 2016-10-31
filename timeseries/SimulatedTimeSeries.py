@@ -23,9 +23,19 @@ class SimulatedTimeSeries(StreamTimeSeriesInterface):
 		finally:
 			return results
 
+	def __iter__(self):
+		for v in self._gen:
+			yield v
+
+	# def __str__(self):
+	# 	return 'SimulatedTimeSeries'
+
+	# def __repr__(self):
+	# 	return 'SimulatedTimeSeries'
+
 
 if __name__ == "__main__":
 	s = SimulatedTimeSeries(make_data(1,7))
-# 	print(s.produce(3))
-# 	print(s.produce(3))
-# 	print(s.produce(3))
+	print(s)
+	print(s.produce(3))
+	print(s.produce(3))

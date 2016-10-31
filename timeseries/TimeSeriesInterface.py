@@ -6,3 +6,4 @@ class TimeSeriesInterface(metaclass = ABCMeta):
     def __iter__(self):
         raise NotImplementedError('Concrete Implementation are missing for iter')
 
+    
