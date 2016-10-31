@@ -114,7 +114,9 @@ class TimeSeries(SizedContainerTimeSeriesInterface):
 					newValues.append(value[n-1])
 					break
 				elif time[counter-1] <= t <= time[counter]:
-					newVal = t + t * ((value[counter]-value[counter-1]) / (time[counter] - time[counter-1]))
+					# newVal = t + t * ((value[counter]-value[counter-1]) / (time[counter] - time[counter-1]))
+					# t-time[counter-1] * value[counter]-value[counter-1]
+					newVal = ((value[counter]-value[counter-1])/(time[counter]-time[counter-1]))*(t-time[counter-1]) + value[counter-1]
 					newValues.append(newVal)
 					break
 				else:
@@ -208,8 +210,8 @@ if __name__ == "__main__":
 	x = TimeSeries(range(100),range(100))
 	print(x == x.lazy.eval())
 
-	t = TimeSeries([1,2,3], [1,5,10])
-	print(t.interpolate([0,1]))
+	t = TimeSeries([1,2,3], [0,5,10])
+	print(t.interpolate([0,1,1.2]))
 	print(t.interpolate([-100,100]))
 	# t = check_length(TimeSeries(range(0,4), range(1,5)), TimeSeries(range(1,5), range(2,6)))
 	# print(t.eval())
