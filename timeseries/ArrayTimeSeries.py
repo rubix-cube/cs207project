@@ -20,7 +20,7 @@ class ArrayTimeSeries(SizedContainerTimeSeriesInterface):
 
     def __getitem__(self, index):
         if isinstance(index, slice):
-            return (TimeSeries(list(self._time[index]), list(self._value[index])))._timeseries
+            return TimeSeries(list(self._time[index]), list(self._value[index]))
         if not isinstance(index, numbers.Integral):
             raise TypeError("Argument index must be either Python slice object or Python int")
         else:

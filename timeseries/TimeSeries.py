@@ -22,7 +22,7 @@ class TimeSeries(SizedContainerTimeSeriesInterface):
 	"""
 	
 
-	def __init__(self, input_value, input_time=None):
+	def __init__(self, input_value, input_time):
 		""" Constructor for time series
 			
 			Parameters
@@ -48,7 +48,7 @@ class TimeSeries(SizedContainerTimeSeriesInterface):
 				raise ValueError("Argument input_value must have same length with input_time")
 			self._time = list(input_time)
 		else:
-			self._time = list(range(1, len(input_value) + 1))
+			self._time = range(1, len(input_value) + 1)
 		self._value = list(input_value)
 		self._timeseries = list(zip(self._time, self._value))
 		# self._dict = dict(zip(self._time), range(0, len(self._time)))
@@ -72,11 +72,11 @@ class TimeSeries(SizedContainerTimeSeriesInterface):
 		"""
 		if isinstance(index, slice):
 			# new_slice = slice(self._dict[index.start], self._dict[index.stop], index.step)
-			return (TimeSeries(self._value[index], self._time[index]))._timeseries
+			return TimeSeries(self._value[index], self._time[index])
 		if not isinstance(index, numbers.Integral):
 			raise TypeError("Argument index must be either Python slice object or Python int")
 		else:
-			return self._timeseries[index]
+			return self._value[index]
 
 	def __setitem__(self, index, value):
 		if isinstance(index, numbers.Integral): 
@@ -114,13 +114,9 @@ class TimeSeries(SizedContainerTimeSeriesInterface):
 					newValues.append(value[n-1])
 					break
 				elif time[counter-1] <= t <= time[counter]:
-<<<<<<< HEAD
-					newVal = value[counter-1]+ (t-time[counter-1]) * (value[counter]-value[counter-1]) / (time[counter] - time[counter-1])
-=======
 					# newVal = t + t * ((value[counter]-value[counter-1]) / (time[counter] - time[counter-1]))
 					# t-time[counter-1] * value[counter]-value[counter-1]
 					newVal = ((value[counter]-value[counter-1])/(time[counter]-time[counter-1]))*(t-time[counter-1]) + value[counter-1]
->>>>>>> upstream/master
 					newValues.append(newVal)
 					break
 				else:
