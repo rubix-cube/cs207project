@@ -70,6 +70,15 @@ class ArrayTimeSeries(SizedContainerTimeSeriesInterface):
     #     for v in self._timeseries:
     #         yield v
 
+    def times(self):
+        return self._time
+
+    def values(self):
+        return self._value
+
+    def items(self):
+        return list(self._timeseries)
+
     def interpolate(self, newTimes):
         newValues = []
         time, value = self._time, self._value

@@ -65,6 +65,15 @@ class SizedContainerTimeSeriesInterface(TimeSeriesInterface):
 			Return a new TimeSeries object with times given and newly computed values which are linearly interpolated using orginal time series
 			The times passed in should be in ascending order
 
+		values():
+			Return value component as a numpy array
+
+		times():
+			Return time component as a numpy array
+
+		items():
+			Return list of (time, value) pairs
+
 	"""
 
 	def __len__(self):
@@ -77,7 +86,6 @@ class SizedContainerTimeSeriesInterface(TimeSeriesInterface):
 	@abstractmethod
 	def __setitem__(self, index, value):
 		raise NotImplementedError('Concrete Implementation are missing for __setitem__')
-
 
 	def __iter__(self):
 		# raise NotImplementedError('Concrete Implementation are missing for __iter__')
@@ -95,6 +103,18 @@ class SizedContainerTimeSeriesInterface(TimeSeriesInterface):
 	def iteritems(self):
 		# raise NotImplementedError('Concrete Implementation are missing for iteritems')
 		return iter(self._timeseries)
+
+	@abstractmethod
+	def times(self):
+		raise NotImplementedError('Concrete Implementation are missing for times()')
+
+	@abstractmethod
+	def values(self):
+		raise NotImplementedError('Concrete Implementation are missing for values()')
+
+	@abstractmethod
+	def items(self):
+		raise NotImplementedError('Concrete Implementation are missing for items()')
 
 	@abstractmethod
 	def __add__(self, otherTS):
@@ -131,7 +151,7 @@ class SizedContainerTimeSeriesInterface(TimeSeriesInterface):
 
 	@abstractmethod
 	def interpolate(self, newTimes):
-		raise NotImplementedError('Concrete Implementation are missing for interpolate')
+		raise NotImplementedError('Concrete Implementation are missing for interpolate()')
 
 	def __repr__(self):
 		#return 'TimeSeries({})'.format([i for i in self._timeseries])

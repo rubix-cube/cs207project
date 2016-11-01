@@ -22,16 +22,7 @@ class TimeSeries(SizedContainerTimeSeriesInterface):
 
 	Methods
 	-------
-	Most methods are inherited from SizedContainerTimeSeriesInterface, refer to SizedContainerTimeSeriesInterface for more details
-	Subclass methods:
-		values():
-			Return value component as a numpy array
-
-		times():
-			Return time component as a numpy array
-
-		items():
-			Return list of (time, value) pairs as a numpy array
+	Methods are inherited from SizedContainerTimeSeriesInterface, refer to SizedContainerTimeSeriesInterface for more details
 
 	"""
 	
@@ -89,6 +80,37 @@ class TimeSeries(SizedContainerTimeSeriesInterface):
 		# 	self._value[self._dict[index]] = value
 		# 	self._timeseries[self._dict[index]] = (value, index)
 
+	def interpolate(self, newTimes):
+		"""returns a new TimeSeries objects with times given and newly computed values 
+			The times passed in should be in ascending order and be numbers.
+
+			Parameters
+			----------
+			None
+
+			Returns
+			-------
+		"""
+		newValues = []
+		time, value = self._time, self._value
+		counter, n = 1, len(time)
+		for t in newTimes:
+			while counter < n:
+				if t < time[0]:
+					newValues.append(value[0])
+					break
+				elif t > time[n-1]:
+					newValues.append(value[n-1])
+					break
+				elif time[counter-1] <= t <= time[counter]:
+					# newVal = t + t * ((value[counter]-value[counter-1]) / (time[counter] - time[counter-1]))
+					# t-time[counter-1] * value[counter]-value[counter-1]
+					newVal = ((value[counter]-value[counter-1])/(time[counter]-time[counter-1]))*(t-time[counter-1]) + value[counter-1]
+					newValues.append(newVal)
+					break
+				else:
+					counter += 1
+		return TimeSeries(newValues, newTimes)
 
 	# def __iter__(self):
 	# 	for v in self._value:
@@ -157,25 +179,6 @@ class TimeSeries(SizedContainerTimeSeriesInterface):
 	def __pos__(self):
 		return TimeSeries(self._value, self._time)
 
-	def interpolate(self, newTimes):
-		newValues = []
-		time, value = self._time, self._value
-		counter, n = 1, len(time)
-		for t in newTimes:
-			while counter < n:
-				if t < time[0]:
-					newValues.append(value[0])
-					break
-				elif t > time[n-1]:
-					newValues.append(value[n-1])
-					break
-				elif time[counter-1] <= t <= time[counter]:
-					newVal = t + t * ((value[counter]-value[counter-1]) / (time[counter] - time[counter-1]))
-					newValues.append(newVal)
-					break
-				else:
-					counter += 1
-		return TimeSeries(newValues, newTimes)
 
 	@property
 	def lazy(self):
@@ -191,9 +194,9 @@ if __name__ == "__main__":
 	# print(t.eval())
 	x = TimeSeries(range(100),range(100))
 	print(x == x.lazy.eval())
-
+	
 	t = TimeSeries([1,2,3], [0,5,10])
-	print(t.interpolate([1]))
+	print(t.interpolate([0,1,1.2]))
 	print(t.interpolate([-100,100]))
 	# t = check_length(TimeSeries(range(0,4), range(1,5)), TimeSeries(range(1,5), range(2,6)))
 	# print(t.eval())
