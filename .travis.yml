@@ -6,8 +6,8 @@ before_install:
   - pip install coveralls
 # command to run tests
 script: 
-  - py.test --cov-report term-missing --cov=timeseris/Timeseries.py timeseries/pytest_TimeSeries.py
-  - py.test --cov-report term-missing --cov=timeseris/ArrayTimeseries.py timeseries/pytest_ArrayTimeSeries.py
-  - py.test --cov-report term-missing --cov=timeseris/Timeseries.py timeseries/pytest_SimulatedSeries.py
+  - py.test --cov-report term-missing --cov=timeseries/Timeseries.py timeseries/pytest_TimeSeries.py
+  - py.test --cov-report term-missing --cov=timeseries/ArrayTimeseries.py timeseries/pytest_ArrayTimeSeries.py
+  - py.test --cov-report term-missing --cov=timeseries/Timeseries.py timeseries/pytest_SimulatedSeries.py
 after_success:
   - coveralls
