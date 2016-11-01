@@ -9,3 +9,5 @@ script:
   - py.test timeseries/pytest_TimeSeries.py
   - py.test timeseries/pytest_ArrayTimeSeries.py
   - py.test timeseries/pytest_Simulated.py
+after_success:
+  - coveralls
