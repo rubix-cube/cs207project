@@ -1,6 +1,7 @@
 from StreamTimeSeriesInterface import StreamTimeSeriesInterface
 from itertools import count
 
+
 """
 A helper function for initializing a SimulatedTimeSeries object
 For demonstration purpose only
@@ -10,6 +11,7 @@ def make_data(start=0, stop=None):
 		if stop and _ > stop:
 			break
 		yield (_,_) 
+
 
 class SimulatedTimeSeries(StreamTimeSeriesInterface):
 
@@ -156,6 +158,8 @@ class SimulatedTimeSeries(StreamTimeSeriesInterface):
 
 
 if __name__ == "__main__":
+	for i in make_data(1,7):
+		print(i)
 	s = SimulatedTimeSeries(make_data(1,7))
 	# print(s)
 	# print(s.produce(3))
