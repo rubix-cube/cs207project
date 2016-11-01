@@ -1,0 +1,13 @@
+language: python
+python:
+  - "3.5"
+before_install:
+  - pip install pytest pytest-cov
+  - pip install coveralls
+# command to run tests
+script: 
+  - py.test pytest_TimeSeries.py
+  - py.test pytest_ArrayTimeSeries.py
+  - py.test pytest_SimulatedSeries.py
+after_success:
+  - coveralls

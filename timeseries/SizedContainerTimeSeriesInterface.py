@@ -1,6 +1,6 @@
 from TimeSeriesInterface import TimeSeriesInterface
 from abc import abstractmethod, ABCMeta
-import numpy as numpy
+import numpy as np
 import math
 
 class SizedContainerTimeSeriesInterface(TimeSeriesInterface):
@@ -20,6 +20,9 @@ class SizedContainerTimeSeriesInterface(TimeSeriesInterface):
 		__len__():
 			Get the length of our time series
 
+		__contains__(value):
+			True if 
+
 	Iterations over time series:
 		__iter__():
 			A generator function yielding the value component of our time series
@@ -31,29 +34,29 @@ class SizedContainerTimeSeriesInterface(TimeSeriesInterface):
 			Return a iterator to the time component of our time series
 
 		iteritems():
-			Return a iterator to the list of (time, value) tuple
+			Return a iterator that iterate through list of (time, value) tuple
 
 	Arithmetic operations:
 		__add__(otherTimeSeries):
-			Return a new TimeSeries object whose value is the component-wise addition of the value of our time series and the value of otherTimeSeries
+			Return a new time series object whose value is the component-wise addition of the value of our time series and the value of otherTimeSeries
 			otherTimeSeries must have exactly the same time component with our time series
 
 		__sub__(otherTimeSeries):
-			Return a new TimeSeries object whose value is the component-wise difference of the value of our time series and the value of otherTimeSeries
+			Return a new time series object whose value is the component-wise difference of the value of our time series and the value of otherTimeSeries
 			otherTimeSeries must have exactly the same time component with our time series
 
 		__mul__(otherTimeSeries):
-			Return a new TimeSeries object whose value is the component-wise product of the value of our time series and the value of otherTimeSeries
+			Return a new time series object whose value is the component-wise product of the value of our time series and the value of otherTimeSeries
 			otherTimeSeries must have exactly the same time component with our time series
 
 		__eq__(otherTimeSeries):
 			Return True if both time and value components of our time series are exactly the same with those of otherTimeSeries
 
 		__neg__():
-			Return a new TimeSeries object whose value is the component-wise negation of the value of our time series
+			Return a new time series object whose value is the component-wise negation of the value of our time series
 
 		__pos__():
-			Return a new TimeSeries object which is identical to our time series
+			Return a new time series object which is identical to our time series
 
 		__abs__():
 			Return the 2-norm of the value component of our time series
@@ -62,7 +65,7 @@ class SizedContainerTimeSeriesInterface(TimeSeriesInterface):
 			True if the 2-norm of the value component of our time series is greater than 0, False otherwise
 
 		interpolate(times):
-			Return a new TimeSeries object with times given and newly computed values which are linearly interpolated using orginal time series
+			Return a new time series object with times given and newly computed values which are linearly interpolated using orginal time series
 			The times passed in should be in ascending order
 
 		values():
@@ -73,6 +76,12 @@ class SizedContainerTimeSeriesInterface(TimeSeriesInterface):
 
 		items():
 			Return list of (time, value) pairs
+
+		mean():
+			Return the mean of our time series values
+
+		std():
+			Return the standard deviation of our time series values
 
 	"""
 
@@ -149,39 +158,16 @@ class SizedContainerTimeSeriesInterface(TimeSeriesInterface):
 	def __bool__(self):
 		return bool(abs(self))
 
+	def mean(self):
+		return np.mean(self._values)
+
+	def std(self):
+		return np.std(self._values)
+
 	@abstractmethod
 	def interpolate(self, newTimes):
 		raise NotImplementedError('Concrete Implementation are missing for interpolate()')
 
-	def __repr__(self):
-		#return 'TimeSeries({})'.format([i for i in self._timeseries])
-		'''
-		if len(self._timeseries) > 10:
-			return 'TimeSeries(['+','.join('{}'.format(i) for i in self._timeseries[:5])\
-					+ '...'+','.join('{}'.format(i) for i in self._timeseries[-5:]) + '])'\
-					+ ' -- omitting {} objects'.format(len(self._timeseries) - 10)
-		return 'TimeSeries({})'.format([i for i in self._timeseries]) 
-		'''
-		if len(self._timeseries) > 10:
-			return "TimeSeries: " + str([(t,v) for (t, v) in zip(self._time[:5], self._value[:5])])\
-			+ ".....omitting {} pairs.....".format(len(self._value) - 10) \
-			+ str([(t,v) for (t, v) in zip(self._time[-5:], self._value[-5:])])
-			'''
-			return "TimeSeries" + str([ i for i in self._timeseries[:5]])\
-			+ ".....omitting {} pairs.....".format(len(self._value) - 10)\
-			+ str([ i  for i in self._timeseries[-5:]])
-			'''	
-		return 'TimeSeries: ' + str([(t,v) for (t, v) in zip(self._time, self._value)])
-
-	def __str__(self):
-		""" Returns a string represenation of the TimeSeries.
-		If there are more than 10 elements, the rest are abbreviated.
-		"""
-		if len(self._timeseries) > 10:
-			return "TimeSeries: " + str([(t,v) for (t, v) in zip(self._time[:5], self._value[:5])])\
-			+ ".....omitting {} pairs.....".format(len(self._value) - 10) \
-			+ str([(t,v) for (t, v) in zip(self._time[-5:], self._value[-5:])])
-		return 'TimeSeries: ' + str([(t,v) for (t, v) in zip(self._time, self._value)])
 
 
 
