@@ -1,7 +1,6 @@
 # cs207project
 
-**Part 1**
-    *Timeseries Class
-    * __init__, __len__, __getitem__, and __setitem__, __str__
-    * smoke test
+### Timeseries Classes
+
+[![Build Status](https://travis-ci.org/rubix-cube/cs207project.svg?branch=master)](https://travis-ci.org/rubix-cube/cs207project)
 
