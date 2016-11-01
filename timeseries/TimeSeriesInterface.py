@@ -4,7 +4,7 @@ class TimeSeriesInterface(metaclass = ABCMeta):
     """
     Interface for time series class
     """
-    
+
     @abstractmethod
     def __iter__(self):
         raise NotImplementedError('Concrete Implementation are missing for iter')
@@ -16,3 +16,4 @@ class TimeSeriesInterface(metaclass = ABCMeta):
     @abstractmethod
     def __repr__(self):
         return "This is the TimeSeriesInterface, implement it in subclasses"    	
+  	
