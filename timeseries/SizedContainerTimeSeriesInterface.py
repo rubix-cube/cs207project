@@ -120,7 +120,7 @@ class SizedContainerTimeSeriesInterface(TimeSeriesInterface):
 	def __pos__(self):
 		raise NotImplementedError('Concrete Implementation are missing for __pos__')
 
-	def __contains__(self):
+	def __contains__(self, value):
 		return value in self._value 	
 
 	def __abs__(self):
@@ -129,25 +129,9 @@ class SizedContainerTimeSeriesInterface(TimeSeriesInterface):
 	def __bool__(self):
 		return bool(abs(self))
 
+	@abstractmethod
 	def interpolate(self, newTimes):
-		newValues = []
-		time, value = self._time, self._value
-		counter, n = 1, len(time)
-		for t in newTimes:
-			while counter < n:
-				if t < time[0]:
-					newValues.append(value[0])
-					break
-				elif t > time[n-1]:
-					newValues.append(value[n-1])
-					break
-				elif time[counter-1] <= t <= time[counter]:
-					newVal = t + t * ((value[counter]-value[counter-1]) / (time[counter] - time[counter-1]))
-					newValues.append(newVal)
-					break
-				else:
-					counter += 1
-		return TimeSeries(newValues, newTimes)
+		raise NotImplementedError('Concrete Implementation are missing for interpolate')
 
 	def __repr__(self):
 		#return 'TimeSeries({})'.format([i for i in self._timeseries])
