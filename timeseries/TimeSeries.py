@@ -6,23 +6,28 @@ import numpy as np
 
 class TimeSeries(SizedContainerTimeSeriesInterface):
 	"""
-	Description of time series class
+	TimeSeries class inherited from SizedContainerTimeSeriesInterface
+	Underlying storage for time series are lists
 	
 	Attributes
 	----------
+	_time: list of numerics
+		time component of our time series
 
+	_value: list of numerics
+		value component of our time series
+
+	_timeseries: list of 2-tuples
+		(time, value) pair representation of our time series
 
 	Methods
 	-------
-
-
-	Notes
-	-----
+	Methods are inherited from SizedContainerTimeSeriesInterface, refer to SizedContainerTimeSeriesInterface for more details
 
 	"""
 	
 
-	def __init__(self, input_value, input_time):
+	def __init__(self, input_value, input_time=None):
 		""" Constructor for time series
 			
 			Parameters
@@ -48,35 +53,19 @@ class TimeSeries(SizedContainerTimeSeriesInterface):
 				raise ValueError("Argument input_value must have same length with input_time")
 			self._time = list(input_time)
 		else:
-			self._time = range(1, len(input_value) + 1)
+			self._time = list(range(1, len(input_value) + 1))
 		self._value = list(input_value)
 		self._timeseries = list(zip(self._time, self._value))
 		# self._dict = dict(zip(self._time), range(0, len(self._time)))
 
-	def __len__(self):
-		return len(self._value)
-
 	def __getitem__(self, index):
-		""" Get item for time series
-
-			Parameters
-			----------
-			index : time
-			The time(s) in time series for which value is needed.
-			A range can be specified using slice notation [x:y:z] where
-			x,y,z are valid times.
-
-			Returns
-			-------
-			value : the value in time series corresponding to given time input
-		"""
 		if isinstance(index, slice):
 			# new_slice = slice(self._dict[index.start], self._dict[index.stop], index.step)
 			return TimeSeries(self._value[index], self._time[index])
 		if not isinstance(index, numbers.Integral):
 			raise TypeError("Argument index must be either Python slice object or Python int")
 		else:
-			return self._value[index]
+			return self._timeseries[index]
 
 	def __setitem__(self, index, value):
 		if isinstance(index, numbers.Integral): 
@@ -123,32 +112,27 @@ class TimeSeries(SizedContainerTimeSeriesInterface):
 					counter += 1
 		return TimeSeries(newValues, newTimes)
 
-	def __iter__(self):
-		for v in self._value:
-			yield v
+	# def __iter__(self):
+	# 	for v in self._value:
+	# 		yield v
 
-	# Peilin: Not sure about this method ???
 	def times(self):
 		return np.array(self._time)
 
-	def itertimes(self):
-		return iter(self._time)
+	# def itertimes(self):
+	# 	return iter(self._time)
 
-	def __contains__(self, value):
-		return value in self._value
-
-	# Peilin: Not sure about this method ???
 	def values(self):
 		return np.array(self._value)
 
-	def itervalues(self):
-		return iter(self._value)
+	# def itervalues(self):
+	# 	return iter(self._value)
 
 	def items(self):
 		return self._timeseries
 
-	def iteritems(self):
-		return iter(self._timeseries)
+	# def iteritems(self):
+	# 	return iter(self._timeseries)
 
 
 	def __add__(self, otherTS):
@@ -194,6 +178,7 @@ class TimeSeries(SizedContainerTimeSeriesInterface):
 
 	def __pos__(self):
 		return TimeSeries(self._value, self._time)
+
 
 	@property
 	def lazy(self):
