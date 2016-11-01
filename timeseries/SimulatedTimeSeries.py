@@ -37,13 +37,13 @@ class SimulatedTimeSeries(StreamTimeSeriesInterface):
 	"""
 	def itervalues(self):
 		for v in self._gen:
-			yield v[0] # Assumes value is at index 0 in tuple
+			yield v[1] # Assumes value is at index 0 in tuple
 
 	"""Iterator function iterates through TS times
 	"""
 	def itertimes(self):
 		for v in self._gen:
-			yield v[1] # Assumes time is at index 1 in tuple
+			yield v[0] # Assumes time is at index 1 in tuple
 
 	"""String representation of Simulated TS
 	"""
