@@ -138,16 +138,16 @@ def test_set_out_of_range_empty():
 
 #Test __repr__
 def test_repr_no_time():
-	assert str(TimeSeries([1,3,5]))=="TimeSeries: [(1, 1), (2, 3), (3, 5)]"
+	assert repr(TimeSeries([1,3,5]))=="TimeSeries: [(1, 1), (2, 3), (3, 5)]"
 
 def test_repr_with_time():
-	assert str(TimeSeries([1,3,5], [5,7,9]))=="TimeSeries: [(5, 1), (7, 3), (9, 5)]"
+	assert repr(TimeSeries([1,3,5], [5,7,9]))=="TimeSeries: [(5, 1), (7, 3), (9, 5)]"
 
 def test_repr_no_time_long():
-	assert str(TimeSeries(range(1,30,2)))=="TimeSeries: [(1, 1), (2, 3), (3, 5), (4, 7), (5, 9)].....omitting 5 pairs.....[(11, 21), (12, 23), (13, 25), (14, 27), (15, 29)]"
+	assert repr(TimeSeries(range(1,30,2)))=="TimeSeries: [(1, 1), (2, 3), (3, 5), (4, 7), (5, 9)].....omitting 5 pairs.....[(11, 21), (12, 23), (13, 25), (14, 27), (15, 29)]"
 
 def test_repr_with_time_long():
-	assert str(TimeSeries(range(1,30,2),range(5,34,2)))=="TimeSeries: [(5, 1), (7, 3), (9, 5), (11, 7), (13, 9)].....omitting 5 pairs.....[(25, 21), (27, 23), (29, 25), (31, 27), (33, 29)]"
+	assert repr(TimeSeries(range(1,30,2),range(5,34,2)))=="TimeSeries: [(5, 1), (7, 3), (9, 5), (11, 7), (13, 9)].....omitting 5 pairs.....[(25, 21), (27, 23), (29, 25), (31, 27), (33, 29)]"
 
 #Test __str__
 def test_str_no_time():

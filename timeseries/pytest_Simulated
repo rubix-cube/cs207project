@@ -1,5 +1,19 @@
 from pytest import raises
-from SimulatedTimeSeries import ArrayTimeSeries
+from SimulatedTimeSeries import SimulatedTimeSeries
 import numpy as np
 import math
 
+
+
+def test_iter():
+	ts = SimulatedTimeSeries(r[(1,1), (2,2), (3,3)])
+	assert list(iter(ts)) == [1,2,3]
+
+def test_produce():
+	ts = SimulatedTimeSeries([(1,1), (2,2), (3,3)])
+	assert ts.produe(chunk = 2) == [1,2]
+
+def test_produce_more():
+	ts = SimulatedTimeSeries([(1,1), (2,2), (3,3)])
+	assert ts.produe(chunk = 2) == [1,2]
+	assert ts.produe(chunk = 4) == [3]
