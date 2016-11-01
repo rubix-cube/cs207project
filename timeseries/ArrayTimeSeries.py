@@ -7,8 +7,22 @@ from SizedContainerTimeSeriesInterface import SizedContainerTimeSeriesInterface
 class ArrayTimeSeries(SizedContainerTimeSeriesInterface):
     """ 
     ArrayTimeSeries class, inherited form SizedContainerTimeSeriesInterface
-    
-    """
+    Underlying storage are numpy arrays rather than lists
+
+    Attributes
+    ----------
+    _time: numpy array of numerics
+        time component of our time series
+
+    _value: numpy array of numerics
+        value component of our time series
+
+    _timeseries: numpy array of 2-tuples
+        [time, value] pair representation of our time series
+
+
+    Methods description are the same with TimeSeries class
+    """ 
     def __init__(self, input_time, input_value):
         if not isinstance(input_value, collections.Sequence) and not isinstance(input_value, np.ndarray):
             raise TypeError("Argument input_value must be Python sequence ")
@@ -23,12 +37,11 @@ class ArrayTimeSeries(SizedContainerTimeSeriesInterface):
 
     def __getitem__(self, index):
         if isinstance(index, slice):
-            return TimeSeries(list(self._time[index]), list(self._value[index]))
+            return ArrayTimeSeries(list(self._time[index]), list(self._value[index]))
         if not isinstance(index, numbers.Integral):
             raise TypeError("Argument index must be either Python slice object or Python int")
         else:
             return self._timeseries[index]
-
 
     def __setitem__(self, index, value):
         if isinstance(index, numbers.Integral): 
@@ -38,24 +51,24 @@ class ArrayTimeSeries(SizedContainerTimeSeriesInterface):
             raise TypeError('Index must be integers')
 
 
-    def __len__(self):
-        return len(self._value)
+    # def __len__(self):
+    #     return len(self._value)
 
-    def __iter__(self):
-        for t in self._value:
-            yield t
+    # def __iter__(self):
+    #     for t in self._value:
+    #         yield t
 
-    def itervalues(self):
-        for v in self._value:
-            yield v
+    # def itervalues(self):
+    #     for v in self._value:
+    #         yield v
 
-    def itertimes(self): 
-        for v in self._time:
-            yield v
+    # def itertimes(self): 
+    #     for v in self._time:
+    #         yield v
         
-    def iteritems(self):
-        for v in self._timeseries:
-            yield v
+    # def iteritems(self):
+    #     for v in self._timeseries:
+    #         yield v
 
 
     def __add__(self, otherTS):

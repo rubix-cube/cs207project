@@ -7,7 +7,7 @@ import numpy as np
 class TimeSeries(SizedContainerTimeSeriesInterface):
 	"""
 	TimeSeries class inherited from SizedContainerTimeSeriesInterface
-	Has underlying storage for time series
+	Underlying storage for time series are lists
 	
 	Attributes
 	----------
@@ -22,62 +22,8 @@ class TimeSeries(SizedContainerTimeSeriesInterface):
 
 	Methods
 	-------
-	Common sequence operations: 
-		__getitem__(index):
-			Get a (time, value) tuple at 'index' in our time series (index can be a slice object, in which case we get a new TimeSeries object)
-
-		__setitem__(index, value):
-			Set the value of the (time, value) tupe at 'index' in our times series (index can only be a integer)
-
-		__len__():
-			Get the length of our time series
-
-	Iterations over time series:
-		__iter__():
-			A generator function yielding the value component of our time series
-
-		itervalues():
-			Return a iterator to the value component of our time series
-		
-		itertimes():
-			Return a iterator to the time component of our time series
-
-		iteritems():
-			Return a iterator to the list of (time, value) tuple
-
-	Arithmetic operations:
-		__add__(otherTimeSeries):
-			Return a new TimeSeries object whose value is the component-wise addition of the value of our time series and the value of otherTimeSeries
-			otherTimeSeries must have exactly the same time component with our time series
-
-		__sub__(otherTimeSeries):
-			Return a new TimeSeries object whose value is the component-wise difference of the value of our time series and the value of otherTimeSeries
-			otherTimeSeries must have exactly the same time component with our time series
-
-		__mul__(otherTimeSeries):
-			Return a new TimeSeries object whose value is the component-wise product of the value of our time series and the value of otherTimeSeries
-			otherTimeSeries must have exactly the same time component with our time series
-
-		__eq__(otherTimeSeries):
-			Return True if both time and value components of our time series are exactly the same with those of otherTimeSeries
-
-		__neg__():
-			Return a new TimeSeries object whose value is the component-wise negation of the value of our time series
-
-		__pos__():
-			Return a new TimeSeries object which is identical to our time series
-
-		__abs__():
-			Return the 2-norm of the value component of our time series
-		
-		__bool__():
-			True if the 2-norm of the value component of our time series is greater than 0, False otherwise
-
-		interpolate(times):
-			Return a new TimeSeries object with times given and newly computed values which are linearly interpolated using orginal time series
-			The times passed in should be in ascending order
-
-	Other methods:
+	Most methods are inherited from SizedContainerTimeSeriesInterface, refer to SizedContainerTimeSeriesInterface for more details
+	Subclass methods:
 		values():
 			Return value component as a numpy array
 
@@ -116,13 +62,10 @@ class TimeSeries(SizedContainerTimeSeriesInterface):
 				raise ValueError("Argument input_value must have same length with input_time")
 			self._time = list(input_time)
 		else:
-			self._time = range(1, len(input_value) + 1)
+			self._time = list(range(1, len(input_value) + 1))
 		self._value = list(input_value)
 		self._timeseries = list(zip(self._time, self._value))
 		# self._dict = dict(zip(self._time), range(0, len(self._time)))
-
-	def __len__(self):
-		return len(self._value)
 
 	def __getitem__(self, index):
 		if isinstance(index, slice):
@@ -146,52 +89,28 @@ class TimeSeries(SizedContainerTimeSeriesInterface):
 		# 	self._value[self._dict[index]] = value
 		# 	self._timeseries[self._dict[index]] = (value, index)
 
-	def interpolate(self, newTimes):
-		newValues = []
-		time, value = self._time, self._value
-		counter, n = 1, len(time)
-		for t in newTimes:
-			while counter < n:
-				if t < time[0]:
-					newValues.append(value[0])
-					break
-				elif t > time[n-1]:
-					newValues.append(value[n-1])
-					break
-				elif time[counter-1] <= t <= time[counter]:
-					newVal = t + t * ((value[counter]-value[counter-1]) / (time[counter] - time[counter-1]))
-					newValues.append(newVal)
-					break
-				else:
-					counter += 1
-		return TimeSeries(newValues, newTimes)
 
-	def __iter__(self):
-		for v in self._value:
-			yield v
+	# def __iter__(self):
+	# 	for v in self._value:
+	# 		yield v
 
-	# Peilin: Not sure about this method ???
 	def times(self):
 		return np.array(self._time)
 
-	def itertimes(self):
-		return iter(self._time)
+	# def itertimes(self):
+	# 	return iter(self._time)
 
-	def __contains__(self, value):
-		return value in self._value
-
-	# Peilin: Not sure about this method ???
 	def values(self):
 		return np.array(self._value)
 
-	def itervalues(self):
-		return iter(self._value)
+	# def itervalues(self):
+	# 	return iter(self._value)
 
 	def items(self):
 		return self._timeseries
 
-	def iteritems(self):
-		return iter(self._timeseries)
+	# def iteritems(self):
+	# 	return iter(self._timeseries)
 
 
 	def __add__(self, otherTS):
