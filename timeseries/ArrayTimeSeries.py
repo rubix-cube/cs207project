@@ -5,7 +5,10 @@ from SizedContainerTimeSeriesInterface import SizedContainerTimeSeriesInterface
 
 
 class ArrayTimeSeries(SizedContainerTimeSeriesInterface):
-
+    """ 
+    ArrayTimeSeries class, inherited form SizedContainerTimeSeriesInterface
+    
+    """
     def __init__(self, input_time, input_value):
         if not isinstance(input_value, collections.Sequence) and not isinstance(input_value, np.ndarray):
             raise TypeError("Argument input_value must be Python sequence ")
@@ -39,9 +42,6 @@ class ArrayTimeSeries(SizedContainerTimeSeriesInterface):
         return len(self._value)
 
     def __iter__(self):
-        """returns values
-
-        """
         for t in self._value:
             yield t
 
@@ -50,15 +50,10 @@ class ArrayTimeSeries(SizedContainerTimeSeriesInterface):
             yield v
 
     def itertimes(self): 
-        """returns times
-        """
         for v in self._time:
             yield v
         
     def iteritems(self):
-        """returns k/v tuples
-
-        """
         for v in self._timeseries:
             yield v
 

@@ -4,6 +4,10 @@ import numpy as numpy
 import math
 
 class SizedContainerTimeSeriesInterface(TimeSeriesInterface):
+	"""
+	Interface for time series classes which supports 
+	"""
+
 
 	@abstractmethod
 	def __len__(self):
@@ -57,6 +61,10 @@ class SizedContainerTimeSeriesInterface(TimeSeriesInterface):
 	def __pos__(self):
 		raise NotImplementedError('Concrete Implementation are missing for __pos__')
 
+	@abstractmethod
+	def __contains__(self):
+		raise NotImplementedError('Concrete Implementation are missing for __contains__')		
+
 	def __abs__(self):
 		return math.sqrt(sum(x * x for x in self))
 
@@ -85,16 +93,7 @@ class SizedContainerTimeSeriesInterface(TimeSeriesInterface):
 
 	def __str__(self):
 		""" Returns a string represenation of the TimeSeries.
-		If there are more than 100 elements, the rest are abbreviated.
-			
-			Parameters
-			----------
-			None
-
-			Returns
-			-------
-			s : string
-				a string representation of the time series
+		If there are more than 10 elements, the rest are abbreviated.
 		"""
 		if len(self._timeseries) > 10:
 			return "TimeSeries: " + str([(t,v) for (t, v) in zip(self._time[:5], self._value[:5])])\

@@ -6,18 +6,86 @@ import numpy as np
 
 class TimeSeries(SizedContainerTimeSeriesInterface):
 	"""
-	Description of time series class
+	TimeSeries class inherited from SizedContainerTimeSeriesInterface
+	Has underlying storage for time series
 	
 	Attributes
 	----------
+	_time: list of numerics
+		time component of our time series
 
+	_value: list of numerics
+		value component of our time series
+
+	_timeseries: list of 2-tuples
+		(time, value) pair representation of our time series
 
 	Methods
 	-------
+	Common sequence operations: 
+		__getitem__(index):
+			Get a (time, value) tuple at 'index' in our time series (index can be a slice object, in which case we get a new TimeSeries object)
 
+		__setitem__(index, value):
+			Set the value of the (time, value) tupe at 'index' in our times series (index can only be a integer)
 
-	Notes
-	-----
+		__len__():
+			Get the length of our time series
+
+	Iterations over time series:
+		__iter__():
+			A generator function yielding the value component of our time series
+
+		itervalues():
+			Return a iterator to the value component of our time series
+		
+		itertimes():
+			Return a iterator to the time component of our time series
+
+		iteritems():
+			Return a iterator to the list of (time, value) tuple
+
+	Arithmetic operations:
+		__add__(otherTimeSeries):
+			Return a new TimeSeries object whose value is the component-wise addition of the value of our time series and the value of otherTimeSeries
+			otherTimeSeries must have exactly the same time component with our time series
+
+		__sub__(otherTimeSeries):
+			Return a new TimeSeries object whose value is the component-wise difference of the value of our time series and the value of otherTimeSeries
+			otherTimeSeries must have exactly the same time component with our time series
+
+		__mul__(otherTimeSeries):
+			Return a new TimeSeries object whose value is the component-wise product of the value of our time series and the value of otherTimeSeries
+			otherTimeSeries must have exactly the same time component with our time series
+
+		__eq__(otherTimeSeries):
+			Return True if both time and value components of our time series are exactly the same with those of otherTimeSeries
+
+		__neg__():
+			Return a new TimeSeries object whose value is the component-wise negation of the value of our time series
+
+		__pos__():
+			Return a new TimeSeries object which is identical to our time series
+
+		__abs__():
+			Return the 2-norm of the value component of our time series
+		
+		__bool__():
+			True if the 2-norm of the value component of our time series is greater than 0, False otherwise
+
+		interpolate(times):
+			Return a new TimeSeries object with times given and newly computed values which are linearly interpolated using orginal time series
+			The times passed in should be in ascending order
+
+	Other methods:
+		values():
+			Return value component as a numpy array
+
+		times():
+			Return time component as a numpy array
+
+		items():
+			Return list of (time, value) pairs as a numpy array
 
 	"""
 	
@@ -57,26 +125,13 @@ class TimeSeries(SizedContainerTimeSeriesInterface):
 		return len(self._value)
 
 	def __getitem__(self, index):
-		""" Get item for time series
-
-			Parameters
-			----------
-			index : time
-			The time(s) in time series for which value is needed.
-			A range can be specified using slice notation [x:y:z] where
-			x,y,z are valid times.
-
-			Returns
-			-------
-			value : the value in time series corresponding to given time input
-		"""
 		if isinstance(index, slice):
 			# new_slice = slice(self._dict[index.start], self._dict[index.stop], index.step)
 			return TimeSeries(self._value[index], self._time[index])
 		if not isinstance(index, numbers.Integral):
 			raise TypeError("Argument index must be either Python slice object or Python int")
 		else:
-			return self._value[index]
+			return self._timeseries[index]
 
 	def __setitem__(self, index, value):
 		if isinstance(index, numbers.Integral): 
@@ -92,16 +147,6 @@ class TimeSeries(SizedContainerTimeSeriesInterface):
 		# 	self._timeseries[self._dict[index]] = (value, index)
 
 	def interpolate(self, newTimes):
-		"""returns a new TimeSeries objects with times given and newly computed values 
-			The times passed in should be in ascending order and be numbers.
-
-			Parameters
-			----------
-			None
-
-			Returns
-			-------
-		"""
 		newValues = []
 		time, value = self._time, self._value
 		counter, n = 1, len(time)
