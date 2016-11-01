@@ -22,7 +22,7 @@ class TimeSeries(SizedContainerTimeSeriesInterface):
 	"""
 	
 
-	def __init__(self, input_value, input_time):
+	def __init__(self, input_value, input_time = None):
 		""" Constructor for time series
 			
 			Parameters
@@ -48,7 +48,7 @@ class TimeSeries(SizedContainerTimeSeriesInterface):
 				raise ValueError("Argument input_value must have same length with input_time")
 			self._time = list(input_time)
 		else:
-			self._time = range(1, len(input_value) + 1)
+			self._time = list(range(1, len(input_value) + 1))
 		self._value = list(input_value)
 		self._timeseries = list(zip(self._time, self._value))
 		# self._dict = dict(zip(self._time), range(0, len(self._time)))
@@ -76,7 +76,7 @@ class TimeSeries(SizedContainerTimeSeriesInterface):
 		if not isinstance(index, numbers.Integral):
 			raise TypeError("Argument index must be either Python slice object or Python int")
 		else:
-			return self._value[index]
+			return self._timeseries[index]
 
 	def __setitem__(self, index, value):
 		if isinstance(index, numbers.Integral): 

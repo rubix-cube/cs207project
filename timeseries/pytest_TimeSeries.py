@@ -2,12 +2,12 @@ from pytest import raises
 from TimeSeries import TimeSeries
 import numpy as np
 import math
-
+from TimeSeries import check_length
 #Test constructor
 def test_valid_ts_no_time():
 	ts = TimeSeries([9,3])
 	assert ts._value == [9,3]
-	assert ts._time == [1,2]
+	assert list(ts._time) == [1,2]
 	assert ts._timeseries == [(1,9),(2,3)]
 
 def test_valid_ts_with_time():
@@ -19,7 +19,7 @@ def test_valid_ts_with_time():
 def test_valid_ts_range_no_time():
 	ts = TimeSeries(range(0,5))
 	assert ts._value == [0,1,2,3,4]
-	assert ts._time == [1,2,3,4,5]
+	assert list(ts._time) == [1,2,3,4,5]
 	assert ts._timeseries == [(1,0),(2,1),(3,2),(4,3),(5,4)]
 
 def test_valid_ts_range_time():
@@ -31,7 +31,7 @@ def test_valid_ts_range_time():
 def test_empty_ts():
 	ts = TimeSeries([])
 	assert ts._value == []
-	assert ts._time == []
+	assert list(ts._time) == []
 	assert ts._timeseries == []
 
 def test_not_seq_no_time():
@@ -86,21 +86,19 @@ def test_get_out_of_range_time():
 #Test getitem with slice object
 def test_get_slice_time():
 	ts = TimeSeries([9,3,12],[3,5,7])
-	assert ts[1:3:1] == [(5,3),(7,12)]
+	assert ts[1:3:1] == TimeSeries([3,12],[5,7])
 
 def test_get_slice_no_time():
 	ts = TimeSeries([9,3,12])
-	assert ts[1:3:1] == [(2,3),(3,12)]
+	assert ts[1:3:1] == TimeSeries([3,12],[2,3])
 
 def test_get_out_of_range_slice_no_time():
 	ts = TimeSeries([9,3])
-	with raises(IndexError):
-		ts[2:4:1]
+	assert ts[2:4:1] == TimeSeries([],[])
 
 def test_get_out_of_range_slice_time():
 	ts = TimeSeries([9,3],[3,5])
-	with raises(IndexError):
-		ts[2:4:1]
+	assert ts[2:4:1] == TimeSeries([],[])
 
 #Test setitem
 def test_set_with_time():
@@ -357,6 +355,8 @@ def test_interpolate_list():
 	ts = TimeSeries([1,2,3],[0,5,10])
 	assert ts.interpolate([7.5,15]) == TimeSeries([2.5,3],[7.5,15])
 
-
+def test_lazy_eval():
+	thunk = check_length(TimeSeries(range(0,4),range(1,5)), TimeSeries(range(1,5),range(2,6)))
+	assert thunk.eval()==True
 
 

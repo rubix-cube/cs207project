@@ -1,0 +1,5 @@
+from pytest import raises
+from SimulatedTimeSeries import ArrayTimeSeries
+import numpy as np
+import math
+

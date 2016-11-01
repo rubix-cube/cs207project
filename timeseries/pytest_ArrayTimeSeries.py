@@ -18,9 +18,12 @@ def test_valid_ts_range_time():
 
 def test_empty_ts():
 	ts = ArrayTimeSeries([],[])
-	assert ts._value == np.array([])
-	assert ts._time == np.array([])
-	assert ts._timeseries == np.array([])
+	for t in ts._value == np.array([]):
+		assert t
+	for t in ts._time == np.array([]):
+		assert t
+	for t in ts._timeseries == np.array([]):
+		assert t	
 
 def test_not_seq_time():
 	with raises(TypeError):
@@ -49,7 +52,8 @@ def test_length_empty():
 #Test getitem
 def test_get_with_time():
 	ts = ArrayTimeSeries([3,5], [9,3])
-	assert ts[1] == (5,3)
+	for t in ts[1] == [5,3]:
+		assert t
 
 def test_get_out_of_range_time():
 	ts = ArrayTimeSeries([3,5],[9,3])
@@ -59,18 +63,18 @@ def test_get_out_of_range_time():
 #Test getitem with slice object
 def test_get_slice_time():
 	ts = ArrayTimeSeries([3,5,7], [9,3,12])
-	assert ts[1:3:1] == [(5,3),(7,12)]
+	assert ts[1:3:1] == ArrayTimeSeries([5,7],[3,12])
 
 def test_get_out_of_range_slice_time():
 	ts = ArrayTimeSeries([3,5], [9,3])
-	with raises(IndexError):
-		ts[1:3:1]
+	assert ts[1:3:1] == ArrayTimeSeries([5],[3])
 
 #Test setitem
 def test_set_with_time():
 	ts = ArrayTimeSeries([3,5],[9,3])
 	ts[1] = 8
-	assert ts[1] == (5,8)
+	for t in ts[1] == [5,8]:
+		assert t
 
 def test_set_not_int_char():
 	ts = ArrayTimeSeries([3,5],[9,3])
@@ -122,7 +126,7 @@ def test_iter_time():
 
 def test_iter_pair():
 	ts = ArrayTimeSeries(range(1,8),range(0,7))
-	assert np.array_equal(ts.iteritems()), np.array([(1,0),(2,1),(3,2),(4,3),(5,4),(6,5),(7,6)])
+	assert np.array_equal(ts.iteritems(), np.array([(1,0),(2,1),(3,2),(4,3),(5,4),(6,5),(7,6)]))
 
 def test_val():
 	ts = ArrayTimeSeries(range(1,8),range(0,7))
