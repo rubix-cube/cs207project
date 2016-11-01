@@ -6,7 +6,7 @@ def make_data(m, stop=None):
 	for _ in count():
 		if stop and _ > stop:
 			break
-		yield 1.0e09 
+		yield (_,_) 
 
 class SimulatedTimeSeries(StreamTimeSeriesInterface):
 
