@@ -27,11 +27,19 @@ class SimulatedTimeSeries(StreamTimeSeriesInterface):
 		for v in self._gen:
 			yield v
 
-	# def __str__(self):
-	# 	return 'SimulatedTimeSeries'
+	def itervalues(self):
+		for v in self._gen:
+			yield v[0] # Assumes value is at index 0 in tuple
 
-	# def __repr__(self):
-	# 	return 'SimulatedTimeSeries'
+	def itertimes(self):
+		for v in self._gen:
+			yield v[1] # Assumes value is at index 1 in tuple
+
+	def __str__(self):
+		return 'SimulatedTimeSeries'
+
+	def __repr__(self):
+		return 'SimulatedTimeSeries'
 
 
 if __name__ == "__main__":
