@@ -10,9 +10,13 @@ def make_data(m, stop=None):
 
 class SimulatedTimeSeries(StreamTimeSeriesInterface):
 
+	"""Takes in a generator containing time series values"""
 	def __init__(self, gen):
 		self._gen = gen
 
+	""" Takes in an optional chunk specifying the number of tuples to return when iterating
+		Returns array of times series tuples
+	"""
 	def produce(self, chunk=1):
 		results = []
 		try:
@@ -23,15 +27,33 @@ class SimulatedTimeSeries(StreamTimeSeriesInterface):
 		finally:
 			return results
 
+	"""Iterator function that iterates through TS tuples
+	"""
 	def __iter__(self):
 		for v in self._gen:
 			yield v
 
-	# def __str__(self):
-	# 	return 'SimulatedTimeSeries'
+	"""Iterator function iterates through TS values
+	"""
+	def itervalues(self):
+		for v in self._gen:
+			yield v[1] # Assumes value is at index 0 in tuple
 
-	# def __repr__(self):
-	# 	return 'SimulatedTimeSeries'
+	"""Iterator function iterates through TS times
+	"""
+	def itertimes(self):
+		for v in self._gen:
+			yield v[0] # Assumes time is at index 1 in tuple
+
+	"""String representation of Simulated TS
+	"""
+	def __str__(self):
+		return 'SimulatedTimeSeries'
+
+	"""String representation of Simulated TS
+	"""
+	def __repr__(self):
+		return 'SimulatedTimeSeries'
 
 
 if __name__ == "__main__":
