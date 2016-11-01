@@ -21,7 +21,8 @@ class SizedContainerTimeSeriesInterface(TimeSeriesInterface):
 			Get the length of our time series
 
 		__contains__(value):
-			True if 
+			True if our time series contains certain value
+			False otherwise 
 
 	Iterations over time series:
 		__iter__():

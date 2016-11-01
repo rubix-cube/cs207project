@@ -1,5 +1,6 @@
 from StreamTimeSeriesInterface import StreamTimeSeriesInterface
 from itertools import count
+from math import sqrt
 
 
 """
@@ -132,8 +133,8 @@ class SimulatedTimeSeries(StreamTimeSeriesInterface):
 				m = x
 			else:
 				m = m + (x - m)/k
-			k += 1
 			yield (t, m)
+			k += 1
 
 	def online_std_generator(self):
 		k = 1
@@ -147,8 +148,12 @@ class SimulatedTimeSeries(StreamTimeSeriesInterface):
 				tmp_m = m + (x - m)/k
 				s = s + (x - m) * (x - tmp_m)
 				m = tmp_m
+			if k == 1:
+				yield (t, 0.0)
+			else:
+				print (t, s, k)
+				yield (t, sqrt(s/(k - 1)))
 			k += 1
-			yield (t, s)
 
 	def online_mean(self):
 		return SimulatedTimeSeries(self.online_mean_generator())
@@ -160,17 +165,9 @@ class SimulatedTimeSeries(StreamTimeSeriesInterface):
 if __name__ == "__main__":
 	for i in make_data(1,7):
 		print(i)
-	s = SimulatedTimeSeries(make_data(1,7))
-	# print(s)
-	# print(s.produce(3))
-	# print(s.produce(3))
-	s_mean = s.online_mean()
-	print(s_mean.produce(3))
-	# s_mean = s.online_mean()
-	print(s_mean.produce(3))
-
+		
 	s = SimulatedTimeSeries(make_data(1,7))
 	s_std = s.online_std()
 	print(s_std.produce(3))
-	s_std = s.online_std()
+	# s_std = s.online_std()
 	print(s_std.produce(3))
