@@ -3,6 +3,7 @@ from abc import ABCMeta, abstractmethod
 class TimeSeriesInterface(metaclass = ABCMeta):
     """
     Interface for time series class
+
     """
     
     @abstractmethod

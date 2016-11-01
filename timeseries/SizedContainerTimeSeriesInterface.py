@@ -31,7 +31,7 @@ class SizedContainerTimeSeriesInterface(TimeSeriesInterface):
 			Return a iterator to the time component of our time series
 
 		iteritems():
-			Return a iterator to the list of (time, value) tuple
+			Return a iterator that iterate through list of (time, value) tuple
 
 	Arithmetic operations:
 		__add__(otherTimeSeries):
