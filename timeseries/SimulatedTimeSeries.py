@@ -6,7 +6,7 @@ def make_data(m, stop=None):
     for _ in count():
         if stop and _ > stop:
             break
-        yield 1.0e09 
+        yield (_, _)
 
 class SimulatedTimeSeries(StreamTimeSeriesInterface):
 
@@ -57,6 +57,8 @@ class SimulatedTimeSeries(StreamTimeSeriesInterface):
 
 
 if __name__ == "__main__":
+	for i in make_data(1,7):
+		print(i)
 	s = SimulatedTimeSeries(make_data(1,7))
 	print(s)
 	print(s.produce(3))
