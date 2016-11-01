@@ -92,12 +92,14 @@ class ArrayTimeSeries(SizedContainerTimeSeriesInterface):
                     newValues.append(value[n-1])
                     break
                 elif time[counter-1] <= t <= time[counter]:
-                    newVal = t + t * ((value[counter]-value[counter-1]) / (time[counter] - time[counter-1]))
+                    # newVal = t + t * ((value[counter]-value[counter-1]) / (time[counter] - time[counter-1]))
+                    # t-time[counter-1] * value[counter]-value[counter-1]
+                    newVal = ((value[counter]-value[counter-1])/(time[counter]-time[counter-1]))*(t-time[counter-1]) + value[counter-1]
                     newValues.append(newVal)
                     break
                 else:
                     counter += 1
-        return ArrayTimeSeries(newValues, newTimes)
+        return ArrayTimeSeries(newTimes, newValues)
 
 
     def __add__(self, otherTS):
