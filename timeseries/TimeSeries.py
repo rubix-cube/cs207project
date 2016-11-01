@@ -209,7 +209,7 @@ if __name__ == "__main__":
 	# print(t.eval())
 	x = TimeSeries(range(100),range(100))
 	print(x == x.lazy.eval())
-
+	
 	t = TimeSeries([1,2,3], [0,5,10])
 	print(t.interpolate([0,1,1.2]))
 	print(t.interpolate([-100,100]))
