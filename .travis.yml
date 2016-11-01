@@ -6,8 +6,8 @@ before_install:
   - pip install coveralls
 # command to run tests
 script: 
-  - py.test pytest_TimeSeries.py
-  - py.test pytest_ArrayTimeSeries.py
-  - py.test pytest_SimulatedSeries.py
+  - py.test timeseries/pytest_TimeSeries.py
+  - py.test timeseries/pytest_ArrayTimeSeries.py
+  - py.test timeseries/pytest_SimulatedSeries.py
 after_success:
   - coveralls
