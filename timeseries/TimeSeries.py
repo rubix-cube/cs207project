@@ -112,28 +112,32 @@ class TimeSeries(SizedContainerTimeSeriesInterface):
 				else:
 					counter += 1
 		return TimeSeries(newValues, newTimes)
-
-	# def __iter__(self):
-	# 	for v in self._value:
-	# 		yield v
-
+		
 	def times(self):
 		return np.array(self._time)
-
-	# def itertimes(self):
-	# 	return iter(self._time)
 
 	def values(self):
 		return np.array(self._value)
 
-	# def itervalues(self):
-	# 	return iter(self._value)
-
 	def items(self):
 		return self._timeseries
 
-	# def iteritems(self):
-	# 	return iter(self._timeseries)
+	def __repr__(self):
+		if len(self._timeseries) > 10:
+			return "TimeSeries: " + str([(t,v) for (t, v) in zip(self._time[:5], self._value[:5])])\
+			+ ".....omitting {} pairs.....".format(len(self._value) - 10) \
+			+ str([(t,v) for (t, v) in zip(self._time[-5:], self._value[-5:])])	
+		return 'TimeSeries: ' + str([(t,v) for (t, v) in zip(self._time, self._value)])
+
+	def __str__(self):
+		""" Returns a string represenation of the TimeSeries.
+		If there are more than 10 elements, the rest are abbreviated.
+		"""
+		if len(self._timeseries) > 10:
+			return "TimeSeries: " + str([(t,v) for (t, v) in zip(self._time[:5], self._value[:5])])\
+			+ ".....omitting {} pairs.....".format(len(self._value) - 10) \
+			+ str([(t,v) for (t, v) in zip(self._time[-5:], self._value[-5:])])
+		return 'TimeSeries: ' + str([(t,v) for (t, v) in zip(self._time, self._value)])
 
 
 	def __add__(self, otherTS):
