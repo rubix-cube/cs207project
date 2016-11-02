@@ -150,6 +150,23 @@ class SizedContainerTimeSeriesInterface(TimeSeriesInterface):
 	def __pos__(self):
 		raise NotImplementedError('Concrete Implementation are missing for __pos__')
 
+	def __repr__(self):
+		if len(self._timeseries) > 10:
+			return "TimeSeries: " + str([(t,v) for (t, v) in zip(self._time[:5], self._value[:5])])\
+			+ ".....omitting {} pairs.....".format(len(self._value) - 10) \
+			+ str([(t,v) for (t, v) in zip(self._time[-5:], self._value[-5:])])	
+		return 'TimeSeries: ' + str([(t,v) for (t, v) in zip(self._time, self._value)])
+
+	def __str__(self):
+		""" Returns a string represenation of the TimeSeries.
+		If there are more than 10 elements, the rest are abbreviated.
+		"""
+		if len(self._timeseries) > 10:
+			return "TimeSeries: " + str([(t,v) for (t, v) in zip(self._time[:5], self._value[:5])])\
+			+ ".....omitting {} pairs.....".format(len(self._value) - 10) \
+			+ str([(t,v) for (t, v) in zip(self._time[-5:], self._value[-5:])])
+		return 'TimeSeries: ' + str([(t,v) for (t, v) in zip(self._time, self._value)])
+
 	def __contains__(self, value):
 		return value in self._value 	
 
