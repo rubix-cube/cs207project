@@ -24,6 +24,10 @@ class TimeSeries(SizedContainerTimeSeriesInterface):
 	-------
 	Methods are inherited from SizedContainerTimeSeriesInterface, refer to SizedContainerTimeSeriesInterface for more details
 
+	Property
+	--------
+	The class has a property called 'lazy' and it's a lazy version of our time series.
+	Call eval() to actually construct the time series we want
 	"""
 	
 

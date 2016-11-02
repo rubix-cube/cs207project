@@ -52,23 +52,6 @@ class ArrayTimeSeries(SizedContainerTimeSeriesInterface):
         else:
             raise TypeError('Index must be integers')
 
-    def __repr__(self):
-        if len(self._timeseries) > 10:
-            return "ArrayTimeSeries: " + str([(t,v) for (t, v) in zip(self._time[:5], self._value[:5])])\
-            + ".....omitting {} pairs.....".format(len(self._value) - 10) \
-            + str([(t,v) for (t, v) in zip(self._time[-5:], self._value[-5:])]) 
-        return 'ArrayTimeSeries: ' + str([(t,v) for (t, v) in zip(self._time, self._value)])
-
-    def __str__(self):
-        """ Returns a string represenation of the time series.
-        If there are more than 10 elements, the rest are abbreviated.
-        """
-        if len(self._timeseries) > 10:
-            return "ArrayTimeSeries: " + str([(t,v) for (t, v) in zip(self._time[:5], self._value[:5])])\
-            + ".....omitting {} pairs.....".format(len(self._value) - 10) \
-            + str([(t,v) for (t, v) in zip(self._time[-5:], self._value[-5:])])
-        return 'ArrayTimeSeries: ' + str([(t,v) for (t, v) in zip(self._time, self._value)])
-
     def times(self):
         return self._time
 
