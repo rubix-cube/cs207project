@@ -153,6 +153,9 @@ class TimeSeries(SizedContainerTimeSeriesInterface):
 			raise ValueError(str(self)+' and '+ str(otherTS) + ' must have the same time points')
 		return TimeSeries(list(map(lambda t: t[0] + t[1], zip(self._value, otherTS._value))), self._time)
 
+	def addConst(self, num):
+		return TimeSeries([val + num for val in self._value], self._time)
+
 	def __sub__(self, otherTS):
 		# check otherTS type
 		if not isinstance(otherTS, TimeSeries):
@@ -162,6 +165,9 @@ class TimeSeries(SizedContainerTimeSeriesInterface):
 			raise ValueError(str(self) + ' and ' + str(otherTS) + ' must have the same time points')
 		return TimeSeries(list(map(lambda t: t[0] - t[1], zip(self._value, otherTS._value))), self._time)
 
+
+	def subConst(self, num):
+		return TimeSeries([val - num for val in self._value], self._time)
 
 	def __eq__(self, otherTS):
 		# check otherTS type
@@ -182,12 +188,14 @@ class TimeSeries(SizedContainerTimeSeriesInterface):
 			raise ValueError(str(self) + ' and ' + str(otherTS) + ' must have the same time points')
 		return TimeSeries(list(map(lambda t: t[0] * t[1], zip(self._value, otherTS._value))), self._time)
 
+	def multConst(self, num):
+		return TimeSeries([val * num for val in self._value], self._time)
+
 	def __neg__(self):
 		return TimeSeries([-v for v in self._value], self._time)
 
 	def __pos__(self):
 		return TimeSeries(self._value, self._time)
-
 
 	@property
 	def lazy(self):

@@ -177,10 +177,10 @@ class SizedContainerTimeSeriesInterface(TimeSeriesInterface):
 		return bool(abs(self))
 
 	def mean(self):
-		return np.mean(self._values)
+		return np.mean(self._value)
 
 	def std(self):
-		return np.std(self._values)
+		return np.std(self._value)
 
 	@abstractmethod
 	def interpolate(self, newTimes):

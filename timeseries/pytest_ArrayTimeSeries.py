@@ -232,6 +232,17 @@ def test_mult_wrong_type():
 	with raises(TypeError):
 		ts1*4
 
+def test_add_const():
+	ts = ArrayTimeSeries([0,1,2], [3,4,5])
+	assert ts.addConst(5) == ArrayTimeSeries([0,1,2], [8,9,10])
+
+def test_sub_const():
+	ts = ArrayTimeSeries([0,1,2], [3,4,5])
+	assert ts.subConst(5) == ArrayTimeSeries([0,1,2], [-2,-1,0])
+def test_mult_const():
+	ts = ArrayTimeSeries([0,1,2], [3,4,5])
+	assert ts.multConst(5) == ArrayTimeSeries([0,1,2], [15,20,25])
+
 
 #Test contains
 def test_contains_true():
@@ -304,6 +315,12 @@ def test_interpolate_list():
 	ts = ArrayTimeSeries([0,5,10], [1,2,3])
 	assert ts.interpolate([7.5,15]) == ArrayTimeSeries([7.5,15], [2.5,3])
 
+# test stats
+def test_mean():
+	ts = ArrayTimeSeries([0,1,2], [3,4,5])
+	assert ts.mean() == np.mean([3,4,5])
 
-
+def test_std():
+	ts = ArrayTimeSeries([0,1,2], [3,4,5])
+	assert ts.std() == np.std([3,4,5])
 
