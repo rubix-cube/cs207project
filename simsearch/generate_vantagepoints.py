@@ -5,7 +5,7 @@ sys.path.insert(0,os.path.split(os.path.split(os.path.realpath(inspect.stack()[0
 import ArrayTimeSeries as ts
 import binarytree
 import pickle
-from proj6script import kernel_corr
+from util import kernel_corr
 import random
 
 #generate 20 vantage points:

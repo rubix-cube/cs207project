@@ -8,29 +8,7 @@ import pickle
 import binarytree
 import numpy.fft as nfft
 import numpy as np
-
-def ccor(ts1, ts2):
-    "given two standardized time series, compute their cross-correlation using FFT"
-    # http://lexfridman.com/blogs/research/2015/09/18/fast-cross-correlation-and-time-series-synchronization-in-python/
-    #your code here
-    fft_1 = nfft.fft(ts1.values())
-    fft_2 = nfft.fft(np.flipud(ts2.values()))
-    cc = np.real(nfft.ifft(fft_1 * fft_2))
-    return nfft.fftshift(cc)/len(ts1)
-
-def max_corr_at_phase(ts1, ts2):
-    ccorts = ccor(ts1, ts2)
-    idx = np.argmax(ccorts)
-    maxcorr = ccorts[idx]
-    return idx, maxcorr
-
-def kernel_corr(ts1, ts2, mult=1):
-    "compute a kernelized correlation so that we can get a real distance"
-    #your code here.
-    ccorts = ccor(ts1, ts2)
-    num = np.sum(np.exp(mult*ccorts))
-    denom = np.sqrt(np.sum(np.exp(mult*ccor(ts1, ts1))))*np.sqrt(np.sum(np.exp(mult*ccor(ts2, ts2))))
-    return num/denom
+import util
 
 def main(arguments):
     parser = argparse.ArgumentParser(description='Number of timeseries to generate')
@@ -41,6 +19,7 @@ def main(arguments):
 
     print('Loading the timeseries of interest...\n')
     ts = pickle.load(open(ts_name+".p", "rb" ))
+    ts_stand = util.stand(ts, ts.mean(), ts.std())
 
     print('Loading the vantage points...\n')
     vantage = pickle.load(open( "ts_data/vantage_points.p", "rb"))
@@ -50,7 +29,8 @@ def main(arguments):
     closest_distance = float("inf")
     for i in vantage:
         v = pickle.load(open( "ts_data/ts_{}.p".format(i), "rb"))
-        curr_distance = kernel_corr(ts, v)
+        v_stand = util.stand(v, v.mean(), v.std())
+        curr_distance = util.kernel_corr(ts_stand, v_stand)
         if curr_distance < closest_distance:
             closest_vantage = (i, "ts_data/ts_{}.p".format(i))
             closest_distance = curr_distance
@@ -68,7 +48,8 @@ def main(arguments):
     for d in closest_in_vantage:
         k = db.get(d)
         v = pickle.load(open( "ts_data/{}.p".format(k), "rb"))
-        curr_distance = kernel_corr(ts, v)
+        v_stand = util.stand(v, v.mean(), v.std())
+        curr_distance = util.kernel_corr(ts_stand, v_stand)
         if len(top_ten)<10:
             top_ten.append((k, curr_distance))
         else:
