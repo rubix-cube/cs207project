@@ -93,6 +93,9 @@ class ArrayTimeSeries(SizedContainerTimeSeriesInterface):
             raise ValueError(str(self)+' and '+ str(otherTS) + ' must have the same time points')
         return ArrayTimeSeries(self._time, self._value + otherTS._value)
 
+    def addConst(self, num):
+        return ArrayTimeSeries(self._time, self._value + num)
+
     def __sub__(self, otherTS):
         # check otherTS type
         if not isinstance(otherTS, ArrayTimeSeries):
@@ -102,6 +105,9 @@ class ArrayTimeSeries(SizedContainerTimeSeriesInterface):
             raise ValueError(str(self) + ' and ' + str(otherTS) + ' must have the same time points')
         return ArrayTimeSeries(self._time, self._value - otherTS._value)
 
+
+    def subConst(self, num):
+        return ArrayTimeSeries(self._time, self._value - num)
 
     def __eq__(self, otherTS):
         # check otherTS type
@@ -121,6 +127,9 @@ class ArrayTimeSeries(SizedContainerTimeSeriesInterface):
         if len(self) != len(otherTS) or np.any(self._time != otherTS._time):
             raise ValueError(str(self) + ' and ' + str(otherTS) + ' must have the same time points')
         return ArrayTimeSeries(self._time, self._value * otherTS._value)
+
+    def multConst(self, num):
+        return ArrayTimeSeries(self._time, self._value * num)
 
     def __neg__(self):
         return ArrayTimeSeries(self._time, - self._value)

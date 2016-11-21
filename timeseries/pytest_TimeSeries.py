@@ -3,6 +3,7 @@ from TimeSeries import TimeSeries
 import numpy as np
 import math
 from TimeSeries import check_length
+
 #Test constructor
 def test_valid_ts_no_time():
 	ts = TimeSeries([9,3])
@@ -239,6 +240,18 @@ def test_add_wrong_type():
 	with raises(TypeError):
 		ts1+4	
 
+def test_add_const():
+	ts = TimeSeries([1,2,3])
+	assert ts.addConst(5) == TimeSeries([6,7,8])
+
+def test_sub_const():
+	ts = TimeSeries([1,2,3])
+	assert ts.subConst(4) == TimeSeries([-3,-2,-1])
+
+def test_mult_const():
+	ts = TimeSeries([1,2,3])
+	assert ts.multConst(5) == TimeSeries([5,10,15])
+
 def test_sub_valid():
 	ts1 = TimeSeries(range(0,7))
 	ts2 = TimeSeries(range(3,10))
@@ -358,5 +371,15 @@ def test_interpolate_list():
 def test_lazy_eval():
 	thunk = check_length(TimeSeries(range(0,4),range(1,5)), TimeSeries(range(1,5),range(2,6)))
 	assert thunk.eval()==True
+
+# test stats
+def test_mean():
+	ts = TimeSeries([1,2,3])
+	assert ts.mean() == np.mean([1,2,3])
+
+def test_std():
+	ts = TimeSeries([1,2,3])
+	assert ts.std() == np.std([1,2,3])
+
 
 
