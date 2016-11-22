@@ -1,9 +1,9 @@
-from setuptools import setup, find_packages
+from setuptools import setup
 
 setup(
 	name='cs207rbtree',
 
-	version='1.0.0',
+	version='1.0.1',
 
 	description='A red-black tree implemented key-value database',
 
@@ -23,7 +23,7 @@ setup(
     'Programming Language :: Python :: 3.5'
     ],
 
-    packages=find_packages(),
+    packages=['cs207rbtree'],
 
     install_requires=['portalocker'],
 
