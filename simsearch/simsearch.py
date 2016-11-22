@@ -20,7 +20,7 @@ def main(arguments):
     print('Loading the timeseries of interest...\n')
     ts = pickle.load(open(ts_name+".p", "rb" ))
     ts_stand = util.stand(ts, ts.mean(), ts.std())
-
+    print(len(ts_stand))
     print('Loading the vantage points...\n')
     vantage = pickle.load(open( "ts_data/vantage_points.p", "rb"))
 
@@ -45,8 +45,7 @@ def main(arguments):
 
     print('Calculating 10 closest timeseries...\n')
     top_ten = []
-    for d in closest_in_vantage:
-        k = db.get(d)
+    for d, k in closest_in_vantage:
         v = pickle.load(open( "ts_data/{}.p".format(k), "rb"))
         v_stand = util.stand(v, v.mean(), v.std())
         curr_distance = util.kernel_corr(ts_stand, v_stand)

@@ -16,7 +16,7 @@ def main(arguments):
     n = args.n
 
     for i in range(n):
-        t = util.tsmaker(norm.rvs(0, 15), 5., 0.01)
+        t = util.tsmaker(util.norm.rvs(0, 15), 5., 10)
         pickle.dump(t, open( "ts_data/ts_{}.p".format(i), "wb" ))
 
 if __name__ == '__main__':

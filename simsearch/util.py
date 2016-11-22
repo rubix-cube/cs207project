@@ -9,8 +9,8 @@ from scipy.stats import norm
 
 
 def tsmaker(m, s, j):
-    t = np.arange(0.0, 1.0, 0.01)
-    v = norm.pdf(t, m, s) + j*np.random.randn(100)
+    t = np.arange(0.0, 1.0, 0.001)
+    v = norm.pdf(t, m, s) + j*np.random.randn(1000)
     return ts.ArrayTimeSeries(t, v)
 
 def random_ts(a):

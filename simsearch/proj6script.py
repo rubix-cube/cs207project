@@ -4,9 +4,9 @@ sys.path.insert(0,os.path.split(os.path.split(os.path.realpath(inspect.stack()[0
 
 import numpy.fft as nfft
 import numpy as np
-#below is your module. Use your ListTimeSeries or ArrayTimeSeries..
 import ArrayTimeSeries as ts
 from scipy.stats import norm
+import matplotlib.pyplot as plt
 
 def tsmaker(m, s, j):
     t = np.arange(0.0, 1.0, 0.01)

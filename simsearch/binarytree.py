@@ -152,7 +152,7 @@ class BinaryTree(object):
         def inner(self, node, m, res):
             try:
                 if node.key<=m:
-                    res.append(node.key)
+                    res.append((node.key, self._follow(node.value_ref)))
             except:
                 pass
 
