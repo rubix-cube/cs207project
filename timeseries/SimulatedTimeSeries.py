@@ -1,4 +1,4 @@
-from StreamTimeSeriesInterface import StreamTimeSeriesInterface
+from timeseries.StreamTimeSeriesInterface import StreamTimeSeriesInterface
 from itertools import count
 from math import sqrt
 

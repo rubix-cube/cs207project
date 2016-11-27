@@ -1,6 +1,6 @@
 import os
 
-from cs207rbtree.interface import DBDB
+from cs207rbtree.cs207rbtree.interface import DBDB
 
 
 __all__ = ['DBDB', 'connect']

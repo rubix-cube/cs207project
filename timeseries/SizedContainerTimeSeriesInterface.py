@@ -1,4 +1,4 @@
-from TimeSeriesInterface import TimeSeriesInterface
+from timeseries.TimeSeriesInterface import TimeSeriesInterface
 from abc import abstractmethod, ABCMeta
 import numpy as np
 import math

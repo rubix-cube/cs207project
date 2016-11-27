@@ -1,8 +1,8 @@
 from pytest import raises
-from TimeSeries import TimeSeries
+from timeseries.TimeSeries import TimeSeries
 import numpy as np
 import math
-from TimeSeries import check_length
+from timeseries.TimeSeries import check_length
 
 #Test constructor
 def test_valid_ts_no_time():

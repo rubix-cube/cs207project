@@ -1,7 +1,7 @@
 import reprlib, numbers, collections
 import math
-from lazy import lazy
-from SizedContainerTimeSeriesInterface import SizedContainerTimeSeriesInterface
+from timeseries.lazy import lazy
+from timeseries.SizedContainerTimeSeriesInterface import SizedContainerTimeSeriesInterface
 import numpy as np
 
 class TimeSeries(SizedContainerTimeSeriesInterface):
