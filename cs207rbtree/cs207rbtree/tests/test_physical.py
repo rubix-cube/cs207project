@@ -1,7 +1,7 @@
 import os
 import tempfile
 
-from cs207rbtree.cs207rbtree.physical import Storage
+from cs207rbtree.physical import Storage
 
 def _get_superblock_and_data(value):
 	superblock = value[:Storage.SUPERBLOCK_SIZE]

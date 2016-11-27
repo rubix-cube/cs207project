@@ -1,4 +1,4 @@
-from cs207rbtree.cs207rbtree.rbtree import RedBlackNode, RedBlackNodeRef, RedBlackTree, ValueRef
+from cs207rbtree.rbtree import RedBlackNode, RedBlackNodeRef, RedBlackTree, ValueRef
 from pytest import raises
 import pickle
 import random

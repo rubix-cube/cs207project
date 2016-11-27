@@ -2,7 +2,7 @@ import os
 import os.path
 import tempfile
 from pytest import raises
-from cs207rbtree.cs207rbtree import *
+from cs207rbtree import *
 
 def test_new_database_file():
 	temp_dir = tempfile.mkdtemp()

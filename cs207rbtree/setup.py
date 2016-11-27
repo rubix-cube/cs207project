@@ -3,7 +3,7 @@ from setuptools import setup
 setup(
 	name='cs207rbtree',
 
-	version='1.0.1',
+	version='1.0.2',
 
 	description='A red-black tree implemented key-value database',
 

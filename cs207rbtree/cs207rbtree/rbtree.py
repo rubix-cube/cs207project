@@ -1,6 +1,6 @@
 import pickle
 
-from cs207rbtree.cs207rbtree.logical import ValueRef
+from cs207rbtree.logical import ValueRef
 
 class Color:
     RED = 0
