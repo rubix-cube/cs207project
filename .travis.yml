@@ -4,11 +4,10 @@ python:
 before_install:
   - pip install pytest pytest-cov
   - pip install coveralls
+  - pip portalocker
 # command to run tests
 script: 
   - py.test --cov-report term-missing --cov timeseries/ --cov cs207rbtree/cs207rbtree tests/
-  # - py.test --cov-report term-missing --cov=timeseries/ArrayTimeSeries.py timeseries/pytest_ArrayTimeSeries.py
-  # - py.test --cov-report term-missing --cov=timeseries/SimulatedTimeSeries.py timeseries/pytest_Simulated.py
 
 after_success:
   - coveralls
