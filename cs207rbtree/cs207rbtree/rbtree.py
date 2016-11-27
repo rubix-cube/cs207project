@@ -257,7 +257,7 @@ class RedBlackTree:
                     RedBlackNode.from_node(
                         node,
                         right_ref=RedBlackNodeRef(
-                            refernet=self.rotate_right(right))
+                            referent=self.rotate_right(right))
                     )))
         return node
 
