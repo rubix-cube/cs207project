@@ -1,7 +1,7 @@
 import numpy as np
 import reprlib, numbers, collections
 import math
-from SizedContainerTimeSeriesInterface import SizedContainerTimeSeriesInterface
+from timeseries.SizedContainerTimeSeriesInterface import SizedContainerTimeSeriesInterface
 
 
 class ArrayTimeSeries(SizedContainerTimeSeriesInterface):
@@ -20,8 +20,10 @@ class ArrayTimeSeries(SizedContainerTimeSeriesInterface):
     _timeseries: numpy array of 2-tuples
         [time, value] pair representation of our time series
 
+    Methods
+    -------
+    Methods are inherited from SizedContainerTimeSeriesInterface, refer to SizedContainerTimeSeriesInterface for more details
 
-    Methods description are the same with TimeSeries class
     """ 
     def __init__(self, input_time, input_value):
         if not isinstance(input_value, collections.Sequence) and not isinstance(input_value, np.ndarray):
@@ -49,26 +51,6 @@ class ArrayTimeSeries(SizedContainerTimeSeriesInterface):
             self._timeseries[index][1] = value
         else:
             raise TypeError('Index must be integers')
-
-
-    # def __len__(self):
-    #     return len(self._value)
-
-    # def __iter__(self):
-    #     for t in self._value:
-    #         yield t
-
-    # def itervalues(self):
-    #     for v in self._value:
-    #         yield v
-
-    # def itertimes(self): 
-    #     for v in self._time:
-    #         yield v
-        
-    # def iteritems(self):
-    #     for v in self._timeseries:
-    #         yield v
 
     def times(self):
         return self._time
@@ -111,6 +93,9 @@ class ArrayTimeSeries(SizedContainerTimeSeriesInterface):
             raise ValueError(str(self)+' and '+ str(otherTS) + ' must have the same time points')
         return ArrayTimeSeries(self._time, self._value + otherTS._value)
 
+    def addConst(self, num):
+        return ArrayTimeSeries(self._time, self._value + num)
+
     def __sub__(self, otherTS):
         # check otherTS type
         if not isinstance(otherTS, ArrayTimeSeries):
@@ -120,6 +105,9 @@ class ArrayTimeSeries(SizedContainerTimeSeriesInterface):
             raise ValueError(str(self) + ' and ' + str(otherTS) + ' must have the same time points')
         return ArrayTimeSeries(self._time, self._value - otherTS._value)
 
+
+    def subConst(self, num):
+        return ArrayTimeSeries(self._time, self._value - num)
 
     def __eq__(self, otherTS):
         # check otherTS type
@@ -139,6 +127,9 @@ class ArrayTimeSeries(SizedContainerTimeSeriesInterface):
         if len(self) != len(otherTS) or np.any(self._time != otherTS._time):
             raise ValueError(str(self) + ' and ' + str(otherTS) + ' must have the same time points')
         return ArrayTimeSeries(self._time, self._value * otherTS._value)
+
+    def multConst(self, num):
+        return ArrayTimeSeries(self._time, self._value * num)
 
     def __neg__(self):
         return ArrayTimeSeries(self._time, - self._value)

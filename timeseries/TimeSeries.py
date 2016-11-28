@@ -1,7 +1,7 @@
 import reprlib, numbers, collections
 import math
-from lazy import lazy
-from SizedContainerTimeSeriesInterface import SizedContainerTimeSeriesInterface
+from timeseries.lazy import lazy
+from timeseries.SizedContainerTimeSeriesInterface import SizedContainerTimeSeriesInterface
 import numpy as np
 
 class TimeSeries(SizedContainerTimeSeriesInterface):
@@ -24,6 +24,10 @@ class TimeSeries(SizedContainerTimeSeriesInterface):
 	-------
 	Methods are inherited from SizedContainerTimeSeriesInterface, refer to SizedContainerTimeSeriesInterface for more details
 
+	Property
+	--------
+	The class has a property called 'lazy' and it's a lazy version of our time series.
+	Call eval() to actually construct the time series we want
 	"""
 	
 
@@ -112,28 +116,32 @@ class TimeSeries(SizedContainerTimeSeriesInterface):
 				else:
 					counter += 1
 		return TimeSeries(newValues, newTimes)
-
-	# def __iter__(self):
-	# 	for v in self._value:
-	# 		yield v
-
+		
 	def times(self):
 		return np.array(self._time)
-
-	# def itertimes(self):
-	# 	return iter(self._time)
 
 	def values(self):
 		return np.array(self._value)
 
-	# def itervalues(self):
-	# 	return iter(self._value)
-
 	def items(self):
 		return self._timeseries
 
-	# def iteritems(self):
-	# 	return iter(self._timeseries)
+	def __repr__(self):
+		if len(self._timeseries) > 10:
+			return "TimeSeries: " + str([(t,v) for (t, v) in zip(self._time[:5], self._value[:5])])\
+			+ ".....omitting {} pairs.....".format(len(self._value) - 10) \
+			+ str([(t,v) for (t, v) in zip(self._time[-5:], self._value[-5:])])	
+		return 'TimeSeries: ' + str([(t,v) for (t, v) in zip(self._time, self._value)])
+
+	def __str__(self):
+		""" Returns a string represenation of the TimeSeries.
+		If there are more than 10 elements, the rest are abbreviated.
+		"""
+		if len(self._timeseries) > 10:
+			return "TimeSeries: " + str([(t,v) for (t, v) in zip(self._time[:5], self._value[:5])])\
+			+ ".....omitting {} pairs.....".format(len(self._value) - 10) \
+			+ str([(t,v) for (t, v) in zip(self._time[-5:], self._value[-5:])])
+		return 'TimeSeries: ' + str([(t,v) for (t, v) in zip(self._time, self._value)])
 
 
 	def __add__(self, otherTS):
@@ -145,6 +153,9 @@ class TimeSeries(SizedContainerTimeSeriesInterface):
 			raise ValueError(str(self)+' and '+ str(otherTS) + ' must have the same time points')
 		return TimeSeries(list(map(lambda t: t[0] + t[1], zip(self._value, otherTS._value))), self._time)
 
+	def addConst(self, num):
+		return TimeSeries([val + num for val in self._value], self._time)
+
 	def __sub__(self, otherTS):
 		# check otherTS type
 		if not isinstance(otherTS, TimeSeries):
@@ -154,6 +165,9 @@ class TimeSeries(SizedContainerTimeSeriesInterface):
 			raise ValueError(str(self) + ' and ' + str(otherTS) + ' must have the same time points')
 		return TimeSeries(list(map(lambda t: t[0] - t[1], zip(self._value, otherTS._value))), self._time)
 
+
+	def subConst(self, num):
+		return TimeSeries([val - num for val in self._value], self._time)
 
 	def __eq__(self, otherTS):
 		# check otherTS type
@@ -174,12 +188,14 @@ class TimeSeries(SizedContainerTimeSeriesInterface):
 			raise ValueError(str(self) + ' and ' + str(otherTS) + ' must have the same time points')
 		return TimeSeries(list(map(lambda t: t[0] * t[1], zip(self._value, otherTS._value))), self._time)
 
+	def multConst(self, num):
+		return TimeSeries([val * num for val in self._value], self._time)
+
 	def __neg__(self):
 		return TimeSeries([-v for v in self._value], self._time)
 
 	def __pos__(self):
 		return TimeSeries(self._value, self._time)
-
 
 	@property
 	def lazy(self):

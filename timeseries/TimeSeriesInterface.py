@@ -3,6 +3,19 @@ from abc import ABCMeta, abstractmethod
 class TimeSeriesInterface(metaclass = ABCMeta):
     """
     Interface for time series class
+    Subclasses should support iteration over time series
+
+    Methods
+    -------
+    __iter__():
+        Returns an iterator or a generator that enables iteration through our time series
+
+    __str__():
+        String representations of our time series
+
+    __repr__():
+        String representations of our time series        
+
     """
 
     @abstractmethod

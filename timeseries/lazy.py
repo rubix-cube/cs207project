@@ -1,6 +1,16 @@
 # from TimeSeries import TimeSeries
 
 class LazyOperation:
+    """
+    A lazy evaluation class. The LazyOperation object takes in a function and remembers it without doing computation
+    use eval() to actually compute the operation.
+
+    Methods
+    -------
+    eval():
+        Evaluate a function(operation)
+
+    """
 
     def __init__(self, function, *args, **kwargs):
         self._function = function
@@ -14,6 +24,9 @@ class LazyOperation:
      
         return self._function(*new_args, **new_kwargs)
 
+"""
+A lazy evaluation decorator
+"""
 def lazy(function):
     def create_thunk(*args, **kwargs):
         return LazyOperation(function, *args, **kwargs)
