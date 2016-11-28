@@ -1,5 +1,5 @@
 from pytest import raises
-from ArrayTimeSeries import ArrayTimeSeries
+from timeseries.ArrayTimeSeries import ArrayTimeSeries
 import numpy as np
 import math
 
