@@ -1,4 +1,4 @@
-from TimeSeriesInterface import TimeSeriesInterface
+from timeseries.TimeSeriesInterface import TimeSeriesInterface
 import abc
 
 class StreamTimeSeriesInterface(TimeSeriesInterface):

@@ -1,7 +1,7 @@
 import numpy as np
 from numpy.fft import rfft, irfft
 #below is your module. Use your ListTimeSeries or ArrayTimeSeries..
-import TimeSeries as ts
+import timeseries.TimeSeries as ts
 from scipy.stats import norm
 from scipy import signal
 
