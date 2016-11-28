@@ -1,6 +1,6 @@
 from pytest import raises
-from SimulatedTimeSeries import SimulatedTimeSeries
-from SimulatedTimeSeries import make_data
+from timeseries.SimulatedTimeSeries import SimulatedTimeSeries
+from timeseries.SimulatedTimeSeries import make_data
 
 
 def test_iter():
