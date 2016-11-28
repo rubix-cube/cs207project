@@ -14,6 +14,7 @@ def make_data(start=0, stop=None):
 		yield (_,_) 
 
 
+
 class SimulatedTimeSeries(StreamTimeSeriesInterface):
 
 	"""

@@ -8,7 +8,7 @@ from timeseries.TimeSeries import check_length
 def test_valid_ts_no_time():
 	ts = TimeSeries([9,3])
 	assert ts._value == [9,3]
-	assert ts._time == [1,2]
+	assert list(ts._time) == [1,2]
 	assert ts._timeseries == [(1,9),(2,3)]
 
 def test_valid_ts_with_time():
@@ -20,7 +20,7 @@ def test_valid_ts_with_time():
 def test_valid_ts_range_no_time():
 	ts = TimeSeries(range(0,5))
 	assert ts._value == [0,1,2,3,4]
-	assert ts._time == [1,2,3,4,5]
+	assert list(ts._time) == [1,2,3,4,5]
 	assert ts._timeseries == [(1,0),(2,1),(3,2),(4,3),(5,4)]
 
 def test_valid_ts_range_time():
