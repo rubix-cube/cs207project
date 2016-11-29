@@ -1,7 +1,7 @@
 import numpy as np
 import reprlib, numbers, collections
 import math
-from timeseries.SizedContainerTimeSeriesInterface import SizedContainerTimeSeriesInterface
+from SizedContainerTimeSeriesInterface import SizedContainerTimeSeriesInterface
 
 
 class ArrayTimeSeries(SizedContainerTimeSeriesInterface):
