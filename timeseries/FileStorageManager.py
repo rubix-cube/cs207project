@@ -1,5 +1,5 @@
-from StorageManagerInterface import StorageManagerInterface
-from ArrayTimeSeries import ArrayTimeSeries
+from timeseries.StorageManagerInterface import StorageManagerInterface
+from timeseries.ArrayTimeSeries import ArrayTimeSeries
 import numpy as np
 import json
 
@@ -53,6 +53,8 @@ class FileStorageManager(StorageManagerInterface):
 			if rid not in self._id:
 				return rid
 			i += 1
+
+StorageManager = FileStorageManager()
 
 if __name__ == '__main__':
 	StorageManager = FileStorageManager()
