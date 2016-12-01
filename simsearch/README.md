@@ -40,6 +40,12 @@ Note:
 - `simsearch.py` takes a mandatory argument i.e. the timeseries of interest and the number of most similar timeseries desired e.g. `--n 10` and the default is set to 1. The simsearch method also has an optional argument `--save` set by default to False. This means that it will print the top n results and not return them. One could change this to True and have the results being saved as a list, which is pickled in the folder, by example:
 `python simsearch.py ts_data\ts_0 --n 10 --save True --f Results/results_1.p`
 
+if the results are saved they are in the following format:
+
+- it is a sorted python list (from closest to furthest)
+- each entries are: (filename, distance)
+
+
 #### BinaryTree Sturcture and DBS:
 
 Timeseries are considered close to each other if their kernelised cross correlation is close to 1 and far from each other if close to 0. This is why the databases have keys equal to `-kernel_corr(ts1, ts2)` and value: `ts2`. The main addition to the code written in lab10 is the addition of the function `get_closer_than` which will look for values whose corresponding keys are smaller than the value parsed as argument.
