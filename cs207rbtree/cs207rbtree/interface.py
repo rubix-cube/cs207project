@@ -25,7 +25,3 @@ class DBDB(object):
     def set(self, key, value):
         self._assert_not_closed()
         return self._tree.set(key, value)
-
-    def delete(self, key):
-        self._assert_not_closed()
-        return self._tree.delete(key)
