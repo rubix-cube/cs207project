@@ -268,39 +268,11 @@ class RedBlackTree:
         #calls RedBlackNodeRef.get
         return ref.get(self._storage)
 
-def height(tree, rootNode):
-    # print("One")
-    if rootNode == None:
-        return 0
-    return 1 + max(height(tree, tree._follow(rootNode.left_ref)), 
-                height(tree, tree._follow(rootNode.right_ref))) 
+
 
 if __name__ == "__main__":
-    f = open('test.txt', 'wb+')
-    s = Storage(f)
     
-    t = RedBlackTree(s)
-    
-    t.set(2,1)
-    t.set(7,1)
-    t.set(3,1)
-    t.set(5,1)
-    t.set(6,1)
-    t.set(1,1)
-    t.set(4,1)
-    
-    # t.set(8,1)
-    # t.set(9,1)
-    # t.set(10,1)
-    # t.set(11,1)
-    # t.set(12,1)
-    # t.set(13,1)
-    # t.set(14,1)
-    # t.set(15,1)
-    # t.set(16,1)
-
-    rootNode = t._follow(t._tree_ref)
-    print(height(t, rootNode))
+    # print(t.get(3))
 
     # def update(self, node):
     #     if node.is_empty():
