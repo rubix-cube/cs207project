@@ -19,6 +19,8 @@ class SMTimeSeries(SizedContainerTimeSeriesInterface):
 
 	Property
 	--------
+	Each SMTimeSeries will be written to disk with unique id
+	When performing operations, timeseries values will be pulled put from disk by id, and then perform operations needed. 
 	"""
 	def __init__(self, input_time, input_value, id=None):
 		"""
@@ -143,14 +145,6 @@ class SMTimeSeries(SizedContainerTimeSeriesInterface):
 
 
 	def __repr__(self):
-		#return 'TimeSeries({})'.format([i for i in self._timeseries])
-		'''
-		if len(self._timeseries) > 10:
-			return 'TimeSeries(['+','.join('{}'.format(i) for i in self._timeseries[:5])\
-					+ '...'+','.join('{}'.format(i) for i in self._timeseries[-5:]) + '])'\
-					+ ' -- omitting {} objects'.format(len(self._timeseries) - 10)
-		return 'TimeSeries({})'.format([i for i in self._timeseries]) 
-		'''
 		arrayts = StorageManager.get(self._id)
 		return repr(arrayts)
 		
