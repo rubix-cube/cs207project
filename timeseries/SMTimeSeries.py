@@ -68,6 +68,21 @@ class SMTimeSeries(SizedContainerTimeSeriesInterface):
 		arraysum = arrayts1+arrayts2
 		return SMTimeSeries(arraysum.times(), arraysum.values())
 
+	def addConst(self, num):
+		arrayts1 = StorageManager.get(self._id)
+		arraysum = arrayts1.addConst(num)
+		return SMTimeSeries(arraysum.times(), arraysum.values())
+
+	def subConst(self, num):
+		arrayts1 = StorageManager.get(self._id)
+		arraydiff = arrayts1.subConst(num)
+		return SMTimeSeries(arraydiff.times(), arraydiff.values())
+
+	def multConst(self, num):
+		arrayts1 = StorageManager.get(self._id)
+		arrayproduct = arrayts1.multConst(num)
+		return SMTimeSeries(arrayproduct.times(), arrayproduct.values())
+
 	def __eq__(self, otherTS):
 		arrayts1 = StorageManager.get(self._id)
 		arrayts2 = StorageManager.get(otherTS._id)

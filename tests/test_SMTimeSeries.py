@@ -67,11 +67,13 @@ def test_get_out_of_range_time():
 #Test getitem with slice object
 def test_get_slice_time():
 	ts = SMTimeSeries([3,5,7], [9,3,12])
-	assert ts[1:3:1] == SMTimeSeries([5,7],[3,12])
+	tsslice = ts[1:3:1]
+	assert  SMTimeSeries(tsslice.times(), tsslice.values())== SMTimeSeries([5,7],[3,12])
 
 def test_get_out_of_range_slice_time():
 	ts = SMTimeSeries([3,5], [9,3])
-	assert ts[1:3:1] == SMTimeSeries([5],[3])
+	tsslice = ts[1:3:1]
+	assert  SMTimeSeries(tsslice.times(), tsslice.values()) == SMTimeSeries([5],[3])
 
 #Test setitem
 def test_set_with_time():
