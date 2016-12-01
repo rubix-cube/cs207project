@@ -54,6 +54,8 @@ class FileStorageManager(StorageManagerInterface):
 				return rid
 			i += 1
 
+StorageManager = FileStorageManager()
+
 if __name__ == '__main__':
 	StorageManager = FileStorageManager()
 	a = ArrayTimeSeries([1,2,3],[4,5,6])
