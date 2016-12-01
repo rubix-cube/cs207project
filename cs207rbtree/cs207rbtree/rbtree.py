@@ -69,7 +69,7 @@ class RedBlackNode:
         """Method for a node to store all of its stuff
         """
         self.value_ref.store(storage)
-        #calls BinaryNodeRef.store. which calls BinaryNodeRef.prepate_to_store
+        #calls RedBlackNodeRef.store which calls RedBlackNodeRef.prepate_to_store
         #which calls this again and recursively stores the whole tree
         self.left_ref.store(storage)
         self.right_ref.store(storage)
@@ -81,9 +81,6 @@ class RedBlackNode:
                 color=Color.BLACK,
             )
         return self
-
-    # def is_empty(self):
-    #     return False
 
     def is_black(self):
         return self.color == Color.BLACK
@@ -253,4 +250,4 @@ class RedBlackTree:
         """
         #calls RedBlackNodeRef.get
         return ref.get(self._storage)
-        
+
