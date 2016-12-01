@@ -2,9 +2,9 @@ import sys, os
 import inspect
 import shutil
 import argparse
-sys.path.insert(0,os.path.split(os.path.split(os.path.realpath(inspect.stack()[0][1]))[0])[0]+'/timeseries') 
+sys.path.insert(0,os.path.split(os.path.split(os.path.realpath(inspect.stack()[0][1]))[0])[0]) 
 
-import ArrayTimeSeries as ts
+import timeseries.ArrayTimeSeries as ts
 import binarytree
 import pickle
 from util import kernel_corr, stand
@@ -62,8 +62,8 @@ def main(arguments):
         for j in range(0, nts):
             if j == i:
                 continue
-            dist = kernel_corr(ts_i_stand, stand(tss[j], tss[j].mean(), tss[j].std()))
-            db.set(-dist, 'ts_'+str(j))
+            kc = kernel_corr(ts_i_stand, stand(tss[j], tss[j].mean(), tss[j].std()))
+            db.set(2*(1-kc), 'ts_'+str(j))
         db.commit()
         db.close()
 
