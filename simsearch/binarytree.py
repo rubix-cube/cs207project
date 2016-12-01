@@ -3,6 +3,13 @@ import os
 import struct
 import portalocker
 
+'''
+Implementation of a binarytree data structure as presented in Lab10.
+
+The main addition to the code written in lab10 is the addition of the function `get_closer_than` 
+which will look for values whose corresponding keys are smaller than the value parsed as argument.
+'''
+
 class ValueRef(object):
     " a reference to a string value on disk"
     def __init__(self, referent=None, address=0):
