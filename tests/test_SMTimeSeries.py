@@ -5,6 +5,22 @@ import numpy as np
 import math
 
 #Test constructor
+def test_construct_with_id_num():
+	ts = SMTimeSeries([3,5], [9,3], 1990)
+	arrayts = StorageManager.get(ts._id)
+	assert ts._id == str(1990)
+	assert np.array_equal(arrayts._value,np.array([9,3]))
+	assert np.array_equal(arrayts._time,np.array([3,5]))
+	assert np.array_equal(arrayts._timeseries, np.array([(3,9),(5,3)]))
+
+def test_construct_with_id_str():
+	ts = SMTimeSeries([3,5], [9,3], 'givenid')
+	arrayts = StorageManager.get(ts._id)
+	assert ts._id == 'givenid'
+	assert np.array_equal(arrayts._value,np.array([9,3]))
+	assert np.array_equal(arrayts._time,np.array([3,5]))
+	assert np.array_equal(arrayts._timeseries, np.array([(3,9),(5,3)]))
+
 def test_valid_ts_with_time():
 	ts = SMTimeSeries([3,5], [9,3])
 	arrayts = StorageManager.get(ts._id)

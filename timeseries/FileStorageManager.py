@@ -2,6 +2,7 @@ from timeseries.StorageManagerInterface import StorageManagerInterface
 from timeseries.ArrayTimeSeries import ArrayTimeSeries
 import numpy as np
 import json
+import random
 
 class FileStorageManager(StorageManagerInterface):
 	def __init__(self):
@@ -47,12 +48,13 @@ class FileStorageManager(StorageManagerInterface):
 			return None
 
 	def generateId(self):
-		i = 1
+		i = random.randint(0,9)
+		rid = 'autogenid'
 		while True:
-			rid = 'autogenid'+str(i)
+			rid += str(i)
 			if rid not in self._id:
 				return rid
-			i += 1
+			i = random.randint(0,9)
 
 StorageManager = FileStorageManager()
 

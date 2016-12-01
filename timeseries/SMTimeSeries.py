@@ -11,7 +11,7 @@ class SMTimeSeries(SizedContainerTimeSeriesInterface):
 	Attributes
 	----------
 	_id: int
-		unique integer id for each SMtimeseries saved in the storage
+		unique integer id for each SMtimeseries saved on disk
 
 	Methods
 	-------
@@ -27,8 +27,8 @@ class SMTimeSeries(SizedContainerTimeSeriesInterface):
 		"""
 		if id==None:
 			id = StorageManager.generateId()
-		StorageManager.store(id, ArrayTimeSeries(input_time, input_value))
-		self._id = id
+		StorageManager.store(str(id), ArrayTimeSeries(input_time, input_value))
+		self._id = str(id)
 	
 	def __len__(self):
 		arrayts = StorageManager.get(self._id)
