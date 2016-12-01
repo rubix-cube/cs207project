@@ -1,4 +1,4 @@
-from cs207rbtree.rbtree import RedBlackNode, RedBlackNodeRef, RedBlackTree, ValueRef
+from cs207rbtree.rbtree import RedBlackNode, RedBlackNodeRef, RedBlackTree, ValueRef, Color
 from pytest import raises
 import pickle
 import random
@@ -97,18 +97,18 @@ def height(tree, rootNode):
 #     return result
             
 
-def test_blackproperty(tree, rootNode):
+def blackproperty(tree, rootNode):
     # http://stackoverflow.com/questions/13848011/how-to-check-the-black-height-of-a-node-for-all-paths-to-its-descendent-leaves
     if rootNode == None:
         return 1
 
     leftNode  = tree._follow(rootNode.left_ref)
-    leftBlackHeight = test_blackproperty(tree, leftNode)
+    leftBlackHeight = blackproperty(tree, leftNode)
     if leftBlackHeight == 0:
         return 0
 
     rightNode = tree._follow(rootNode.right_ref)    
-    rightBlackHeight = test_blackproperty(tree, rightNode)
+    rightBlackHeight = blackproperty(tree, rightNode)
     if rightBlackHeight == 0:
         return 0
 
@@ -117,7 +117,7 @@ def test_blackproperty(tree, rootNode):
     else:
         return leftBlackHeight + 1 if rootNode.color == Color.BLACK else leftBlackHeight
 
-def test_red_children_are_black(tree, rootNode):
+def red_children_are_black(tree, rootNode):
     if rootNode == None:
         return True
 
@@ -128,15 +128,13 @@ def test_red_children_are_black(tree, rootNode):
         if (leftNode != None and leftNode.color != Color.BLACK) or (rightNode != None and rightNode.color != Color.BLACK):
             return False
 
-    return test_red_children_are_black(tree, leftNode) and test_red_children_are_black(tree, rightNode)
+    return red_children_are_black(tree, leftNode) and red_children_are_black(tree, rightNode)
 
-def test_root_black(rootNode):
+def root_black(rootNode):
     return rootNode.color == Color.BLACK
 
-def unittest_blackproperty():
-	f = open('test.txt', 'wb+')
-	s = Storage(f)
-	t = RedBlackTree(s)
+def test_blackproperty():
+	t = RedBlackTree(StubStorage())
 	t.set(2,1)
 	t.set(7,1)
 	t.set(3,1)
@@ -154,13 +152,49 @@ def unittest_blackproperty():
 	t.set(15,1)
 	t.set(16,1)
 	rootNode = t._follow(t._tree_ref)
-	assert(test_blackproperty(t, rootNode) != 0)
+	assert(blackproperty(t, rootNode) != 0)
 
-def unittest_root_black_property():
-	assert test_root_black(rootNode)
+def test_root_black_property():
+	t = RedBlackTree(StubStorage())
+	t.set(2,1)
+	t.set(7,1)
+	t.set(3,1)
+	t.set(5,1)
+	t.set(6,1)
+	t.set(1,1)
+	t.set(4,1)
+	t.set(8,1)
+	t.set(9,1)
+	t.set(10,1)
+	t.set(11,1)
+	t.set(12,1)
+	t.set(13,1)
+	t.set(14,1)
+	t.set(15,1)
+	t.set(16,1)
+	rootNode = t._follow(t._tree_ref)
+	assert root_black(rootNode)
 
-def unittest_red_children_are_black():
-	assert test_red_children_are_black(t, rootNode)
+def test_red_children_are_black():
+	t = RedBlackTree(StubStorage())
+	t.set(2,1)
+	t.set(7,1)
+	t.set(3,1)
+	t.set(5,1)
+	t.set(6,1)
+	t.set(1,1)
+	t.set(4,1)
+	t.set(8,1)
+	t.set(9,1)
+	t.set(10,1)
+	t.set(11,1)
+	t.set(12,1)
+	t.set(13,1)
+	t.set(14,1)
+	t.set(15,1)
+	t.set(16,1)
+	rootNode = t._follow(t._tree_ref)
+	assert red_children_are_black(t, rootNode)
 
 
 
