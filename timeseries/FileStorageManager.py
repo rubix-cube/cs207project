@@ -2,9 +2,35 @@ from timeseries.StorageManagerInterface import StorageManagerInterface
 from timeseries.ArrayTimeSeries import ArrayTimeSeries
 import numpy as np
 import json
+import random
 
 class FileStorageManager(StorageManagerInterface):
+	
+	"""
+	FileStorageManager class inherited from StorageManagerInterface
+	
+	Attributes
+	----------
+	_id: int
+		unique integer id for object saved on disk
+		TimeSeries objects are stored as 2-D numpy array
+
+	Methods
+	-------
+	Basic methods are inherited from StorageManagerInterface, with method for generating unique id for storage if no user specified given
+	
+	Usage
+	--------
+	FileStorageManager used to communicate with disk, can store to/get from disk
+	sizes are tracked
+	Saved as json file
+	"""
+
 	def __init__(self):
+		"""
+		The constructor either creates a json file called "id.json" to store an id dictionary if none existed, or open the existing "id.json" file. 
+		The json file stores dictionary of existing ids with correspondoing length. 
+		"""
 		try:
 			json_file = open('id.json', 'r')
 			self._id = json.load(json_file)
@@ -12,6 +38,15 @@ class FileStorageManager(StorageManagerInterface):
 			self._id = dict()
 
 	def store(self, tid, t):
+		"""
+		The function stores the given timeseries with corresponding id
+
+		Args
+		--------
+		 - tid: unique id of type string to be used to store the timeseries. if is already exists, will overwrite current data
+		 - t: timeseries object, implemented to take in either TimeSeries or ArrayTImeSeries. 
+
+		"""
 		if isinstance(tid, int):
 			tid = str(tid)
 		# Convert time series to correct format
@@ -29,6 +64,19 @@ class FileStorageManager(StorageManagerInterface):
 
 
 	def size(self, tid):
+		"""
+		The function returns the size of given stored timeseries. 
+
+		Args
+		--------
+`		 - tid: id of timeseries to look up length
+
+		Return
+		--------
+		return the stored length with corresponding id from the id dictionary, will return -1 if id does not exist
+
+		"""
+
 		if not isinstance(tid, str):
 			tid = str(tid)
 		if tid in self._id:
@@ -37,6 +85,19 @@ class FileStorageManager(StorageManagerInterface):
 			return -1
 
 	def get(self, tid):
+		"""
+		The function gets the stored timeseries value on disk with the given id 
+
+		Args
+		------
+		- tid: id for the time series values to be looked up from disk
+
+		Return
+		------
+		values returned in the form of ArrayTimeSeries object. 
+		will return non if no file existed with the given tid
+
+		"""
 		# Returns SizedContainerTimeSeriesInterface object
 		if not isinstance(tid, str):
 			tid = str(tid)
@@ -47,19 +108,24 @@ class FileStorageManager(StorageManagerInterface):
 			return None
 
 	def generateId(self):
-		i = 1
+		"""
+		Function to generate id if no user specified one given, as string with prefix "autogenid"
+		will randomly get an integer between 0 and 9, and check if existed in file already. 
+		If existed, will generate another integer and append to the existing id. 
+		Repeat until unique one generated. 
+		
+		"""
+
+		i = random.randint(0,9)
+		rid = 'autogenid'
 		while True:
-			rid = 'autogenid'+str(i)
+			rid += str(i)
 			if rid not in self._id:
 				return rid
-			i += 1
+			i = random.randint(0,9)
 
-if __name__ == '__main__':
-	StorageManager = FileStorageManager()
-	a = ArrayTimeSeries([1,2,3],[4,5,6])
-	print(a)
-	autoId = StorageManager.generateId()
-	StorageManager.store(autoId, a)
-	s = StorageManager.get(autoId)
-	print(s)
+"""
+A global StorageManager object is created to be passed into SMTimeSeries
+"""
+StorageManager = FileStorageManager()
 
