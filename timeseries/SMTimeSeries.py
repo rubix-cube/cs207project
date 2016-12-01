@@ -1,5 +1,5 @@
-from SizedContainerTimeSeriesInterface import SizedContainerTimeSeriesInterface
-from FileStorageManager import FileStorageManager
+from timeseries.SizedContainerTimeSeriesInterface import SizedContainerTimeSeriesInterface
+from timeseries.FileStorageManager import FileStorageManager
 import numpy as np
 
 
