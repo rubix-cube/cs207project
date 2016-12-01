@@ -69,7 +69,7 @@ class RedBlackNode:
         """Method for a node to store all of its stuff
         """
         self.value_ref.store(storage)
-        #calls BinaryNodeRef.store. which calls BinaryNodeRef.prepate_to_store
+        #calls RedBlackNodeRef.store which calls RedBlackNodeRef.prepate_to_store
         #which calls this again and recursively stores the whole tree
         self.left_ref.store(storage)
         self.right_ref.store(storage)
@@ -82,9 +82,6 @@ class RedBlackNode:
             )
         return self
 
-    # def is_empty(self):
-    #     return False
-
     def is_black(self):
         return self.color == Color.BLACK
 
@@ -93,7 +90,8 @@ class RedBlackNode:
 
 
 class RedBlackTree:
-
+    """Immutable red-black tree
+    """
     def __init__(self, storage):
         self._storage = storage
         self._refresh_tree_ref()
@@ -110,21 +108,6 @@ class RedBlackTree:
         self._tree_ref = RedBlackNodeRef(
             address=self._storage.get_root_address())
 
-    # @property
-    # def color(self):
-    #     return self.color
-
-    # @property
-    # def value(self):
-    #     return self.value
-
-    # @property
-    # def right(self):
-    #     return self.right
-
-    # @property
-    # def left(self):
-    #     return self._left
     def get(self, key):
         """Get value for a key
         """
@@ -268,112 +251,3 @@ class RedBlackTree:
         #calls RedBlackNodeRef.get
         return ref.get(self._storage)
 
-
-
-
-if __name__ == "__main__":
-    
-
-# def height(tree, rootNode):
-#     # print("One")
-#     if rootNode == None:
-#         return 0
-#     return 1 + max(height(tree, tree._follow(rootNode.left_ref)), 
-#                 height(tree, tree._follow(rootNode.right_ref))) 
-
-# if __name__ == "__main__":
-#     f = open('test.txt', 'wb+')
-#     s = Storage(f)
-    
-#     t = RedBlackTree(s)
-    
-#     t.set(2,1)
-#     t.set(7,1)
-#     t.set(3,1)
-#     t.set(5,1)
-#     t.set(6,1)
-#     t.set(1,1)
-#     t.set(4,1)
-    
-#     # t.set(8,1)
-#     # t.set(9,1)
-#     # t.set(10,1)
-#     # t.set(11,1)
-#     # t.set(12,1)
-#     # t.set(13,1)
-#     # t.set(14,1)
-#     # t.set(15,1)
-#     # t.set(16,1)
-
-#     rootNode = t._follow(t._tree_ref)
-#     print(height(t, rootNode))
-
-
-    # def update(self, node):
-    #     if node.is_empty():
-    #         return self
-    #     if node.value < self.value:
-    #         return RedBlackTree(
-    #             self.left.update(node).balance(),
-    #             self.value,
-    #             self.right,
-    #             color=self.color,
-    #         ).balance()
-    #     return RedBlackTree(
-    #         self.left,
-    #         self.value,
-    #         self.right.update(node).balance(),
-    #         color=self.color,
-    #     ).balance()
-
-    # def insert(self, value):
-    #     return self.update(
-    #         RedBlackTree(
-    #             EmptyRedBlackTree(),
-    #             value,
-    #             EmptyRedBlackTree(),
-    #             color=Color.RED,
-    #         )
-    #     ).blacken()
-
-    # def is_member(self, value):
-    #     if value < self._value:
-    #         return self.left.is_member(value)
-    #     if value > self._value:
-    #         return self.right.is_member(value)
-    #     return True
-
-
-
-# class EmptyRedBlackTree(RedBlackTree):
-
-#     def __init__(self):
-#         self._color = Color.BLACK
-
-#     def is_empty(self):
-#         return True
-
-#     def insert(self, value):
-#         return RedBlackTree(
-#             EmptyRedBlackTree(),
-#             value,
-#             EmptyRedBlackTree(),
-#             color=Color.RED,
-#         )
-
-#     def update(self, node):
-#         return node
-
-#     def is_member(self, value):
-#         return False
-
-#     @property
-#     def left(self):
-#         return EmptyRedBlackTree()
-
-#     @property
-#     def right(self):
-#         return EmptyRedBlackTree()
-
-#     def __len__(self):
-#         return 0
