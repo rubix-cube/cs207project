@@ -6,7 +6,7 @@ import random
 
 class FileStorageManager(StorageManagerInterface):
 	
-"""
+	"""
 	FileStorageManager class inherited from StorageManagerInterface
 	
 	Attributes
@@ -24,7 +24,7 @@ class FileStorageManager(StorageManagerInterface):
 	FileStorageManager used to communicate with disk, can store to/get from disk
 	sizes are tracked
 	Saved as json file
-"""
+	"""
 
 	def __init__(self):
 		"""
