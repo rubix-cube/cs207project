@@ -1,6 +1,10 @@
 # cs207project
 We implemented 3 time series interfaces along with 3 kinds of time series classes.
 
+For our *cs207rbtree* module, see documentation [here](https://github.com/rubix-cube/cs207project/tree/master/cs207rbtree)
+
+Team 9 implements similarity search for us which can be found [here](https://github.com/rubix-cube/cs207project/tree/master/simsearch)
+
 ## Interfaces
 
 ### TimeSeriesInterface
