@@ -1,5 +1,5 @@
 # cs207project
-We implemented 3 time series interfaces along with 3 kinds of time series classes.
+We implemented 3 time series interfaces along with 4 kinds of time series classes.
 
 For our *cs207rbtree* module, see documentation [here](https://github.com/rubix-cube/cs207project/tree/master/cs207rbtree)
 
@@ -25,6 +25,14 @@ Almost the same as TimeSeries class, except that it uses numpy array rather than
 Inherited from StreamTimeSeriesInterface, this class has no underlying storage. Rather, it takes into a generator and produces time series data on demand.
 
 The class supports online mean and standard deviation calculation. See class documentation and examples for more details.
+
+### SMTimeSeries Class
+Inherited from SizedContainerTimeSeriesInterface, this class has no on memory storage. Instead, the class store the timeseries values on disk via a storage manager class.
+
+The class support all member method of SizedContainerTimeSeriesInterface, like add, multiple, len etc. It will also automatically save the result of t1 + t2 onto disk.
+
+### FileStorageManager Class
+Inherited from StorageManagerInterface and implemented 3 major method, store, get, size. It could store any timeseries as a 2D numpy array on the disk persistently with given id as key. It could also return SMTimeseries instance for query with key. The key and file relation is also kept on disk. So even when the server goes down, we will not lose our timeseries data nor the key-file relation.
 
 [![Build Status](https://travis-ci.org/rubix-cube/cs207project.svg?branch=master)](https://travis-ci.org/rubix-cube/cs207project)
 
