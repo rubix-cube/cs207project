@@ -1,5 +1,5 @@
 # cs207project
-We implemented 3 time series interfaces along with 4 kinds of time series classes.
+We implemented 4 time series interfaces along with 5 kinds of time series classes.
 
 For our *cs207rbtree* module, see documentation [here](https://github.com/rubix-cube/cs207project/tree/master/cs207rbtree)
 
