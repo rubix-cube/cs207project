@@ -13,6 +13,9 @@ This is the ABC for all subclasses we implemented. It contains 3 abstract method
 ### SizedContainerTimeSeriesInterface
 Inherited from TimeSeriesInterface, this interface is the base class for TimeSeries class and ArrayTimeSeries class. It has a large amount of methods, both abstract and non-abstract, that we consider important for a sized container-typed time series class. We want its subcalsses to support common sequence operations such as `__getitem__`, `__setitem__`, `__len__` etc, and also some element-wise arithmetic operations such as addition, substraction and multiplication.
 
+### StreamTimeSeriesInterface
+Inherited from TimeseriesInterface, this interface is the base class for SimulatedTimeSeries class. It has no underlying storage for our time series, and the subclasses should suppport a produce method that produce certain size of data on demand.
+
 ### StorageManagerInterface
 This is the base class for FileStorageManager class. It has only 3 abstract method as described below:
 1. store(id:int/string, t:SizedContainerTimeSeriesInterface)->SizedContainerTimeSeriesInterface
