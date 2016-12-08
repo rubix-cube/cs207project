@@ -1,10 +1,10 @@
 import sys, os
 import inspect
 import shutil
-sys.path.insert(0,os.path.split(os.path.split(os.path.realpath(inspect.stack()[0][1]))[0])[0]+'/timeseries')
+sys.path.insert(0,os.path.split(os.path.split(os.path.realpath(inspect.stack()[0][1]))[0])[0])
 
 import numpy as np
-import ArrayTimeSeries as ts
+import timeseries.ArrayTimeSeries as ts
 import util
 
 import pickle

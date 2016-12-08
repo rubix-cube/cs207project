@@ -37,7 +37,14 @@ Note:
 
 - `generate_data.py` has a mandatory argument which must be parsed in the command line as the number of timeseries wanted e.g. 1000
 - `generate_vantagepoints.py` takes an optional argument equal to the number of desired vantage points e.g. `--n 20` and the default is set to 20 and another one corresponding to the number of timeseries in the database, default 1000
-- `simsearch.py` takes a mandatory argument i.e. the timeseries of interest and the number of most similar timeseries desired e.g. `--n 10` and the default is set to 1
+- `simsearch.py` takes a mandatory argument i.e. the timeseries of interest and the number of most similar timeseries desired e.g. `--n 10` and the default is set to 1. The simsearch method also has an optional argument `--save` set by default to False. This means that it will print the top n results and not return them. One could change this to True and have the results being saved as a list, which is pickled in the folder, by example:
+`python simsearch.py ts_data\ts_0 --n 10 --save True --f Results/results_1.p`
+
+if the results are saved they are in the following format:
+
+- it is a sorted python list (from closest to furthest)
+- each entries are: (filename, distance)
+
 
 #### BinaryTree Sturcture and DBS:
 

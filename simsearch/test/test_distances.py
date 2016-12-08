@@ -57,8 +57,7 @@ class DistancesTest(unittest.TestCase):
         closest_in_all = list(set(closest_in_all))
         te=simsearch.return_top(ts_stand, closest_in_all, 10, False, True)
         san = simsearch.sanity(ts_stand, 10)
-        
-        self.assertTrue(all(san[len(san)-i-1][0]=='ts_data/'+te[i][0]+'.p' for i in range(len(san))))
+        self.assertTrue(all(san[i][0]=='ts_data/'+te[i][0]+'.p' for i in range(len(san))))
 
 def suite():
     suite = unittest.TestSuite()
