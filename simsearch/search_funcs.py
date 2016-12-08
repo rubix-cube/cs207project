@@ -55,7 +55,8 @@ def simsearch_non_exist(input_ts, n):
 
 
 def simsearch_existed(id, n):
-	if id >= NUM_TS_DATA:
+	# make sure id is a integer
+	if type(id) is not int or int(id) >= NUM_TS_DATA or int(id) < 0:
 		return None
 	
 	input_ts = pickle.load(open('ts_data/ts_' + id + '.dat', 'rb'))
