@@ -6,7 +6,7 @@ __pycache__/
 *.json
 # C extensions
 *.so
-
+.DS_Store
 # Distribution / packaging
 .Python
 env/

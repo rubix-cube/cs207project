@@ -250,4 +250,7 @@ class RedBlackTree:
         """
         #calls RedBlackNodeRef.get
         return ref.get(self._storage)
+<<<<<<< HEAD
+=======
 
+>>>>>>> dabe4cd98dcbcb6698db71d8187d6a3db1da6209
