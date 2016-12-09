@@ -67,14 +67,17 @@ def timeseries():
 	if request.method == 'POST':
 		# adds a new timeseries into the database given a json which has a
 		# key for an id and a key for the timeseries, and returns the timeseries
+		# print(request.files['file'].read())
+		data = request.get_json(force=True)
+		data['cmd'] = "ADDTS"
 		try:
 			s = connectSM()
-			while True:
-				toSend = input("Enter something to send to server: ")
-				test = {"id":4, "time":[1,2,3],"value":[3,4,5]}
-				s.send(pickle.dumps(test))
+			s.send(pickle.dumps(data))
+			response = pickle.loads(s.recv(1024))
+
 		finally:
 			s.close()
+			return json.dumps(response)
 		
 	else:
 		# should send back a json with metadata from all the time series

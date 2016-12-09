@@ -22,6 +22,26 @@
 	  			<p><button type="button" id="display-button" class="btn btn-success">Display TS</button></p>
 	  		</div>
   		</div>
+      <p>--------</p>
+      <div class="row top7">
+        <!-- <div class="col-md-2">
+          <form action = "http://localhost:5000/timeseries" method = "POST" 
+             enctype = "multipart/form-data">
+             <input type = "file" name = "file" />
+             <input type = "submit"/>
+          </form>
+        </div> -->
+
+        <div class="col-md-2">
+          <label class="btn btn-primary btn-file">
+            Browse <input type="file" id="ts-file2" style="display: none;">
+          </label>
+        </div>
+        <div class="col-md-2">
+          <p><button type="button" id="save-ts" class="btn btn-success">Save to Database</button></p>
+        </div>
+      </div>
+
   		<div class="row top7">
   			<div class="col-md-10">
   				<div id="placeholder" style="width:600px;height:300px"></div>

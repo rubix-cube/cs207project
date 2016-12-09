@@ -20,10 +20,13 @@ def clientThread(conn, sm):
     if receivedData['cmd'] == "BYID":
       # Get ts storage using id received
       conn.send(pickle.dumps("---Some timeseries---"))
-    else:
-      break
-    # data += rec
-    # print("DATA",pickle.loads(data))    
+    elif receivedData['cmd'] == 'ADDTS':
+      conn.send(pickle.dumps("Saved to DB!"))
+
+      # Save to storage manager
+      time, value = receivedData['time'], receivedData['value']
+      # TODO
+    
   conn.close()
 
 
