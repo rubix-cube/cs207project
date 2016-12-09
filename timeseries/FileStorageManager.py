@@ -106,6 +106,7 @@ class FileStorageManager(StorageManagerInterface):
 		# Returns SizedContainerTimeSeriesInterface object
 		if not isinstance(tid, str):
 			tid = str(tid)
+		print("SELF_ID",self._id)
 		if tid in self._id:
 			timeseries = np.load(tid+".npy")
 			return ArrayTimeSeries(timeseries[0], timeseries[1])

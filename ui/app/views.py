@@ -70,8 +70,8 @@ def timeseries():
 		# print(request.files['file'].read())
 		data = request.get_json(force=True)
 		data['cmd'] = "ADDTS"
+		s = connectSM()
 		try:
-			s = connectSM()
 			s.send(pickle.dumps(data))
 			response = pickle.loads(s.recv(1024))
 
@@ -122,8 +122,8 @@ def simquery():
 		#  take a id=the_id querystring and use that as an id into the database
 		# to find the timeseries that are similar, sending back the ids of (say) the top 5
 		sim_id = request.args.get('id')
+		s = connectRBTree()
 		try:
-			s = connectRBTree()
 			while True:
 				toSend = {"cmd":"SIMID", "id":5}
 				s.send(pickle.dumps(toSend))
@@ -143,9 +143,9 @@ def timeseries_id(id):
 	t = Timeseries.query.get(id).serialize()
 
 	# Get timeseries 
+	s = connectSM()
 	try:
-		s = connectSM()
-		toSend = {"cmd":"BYID","id":5} # A = get timeseries by id, B = get all timeseries etc
+		toSend = {"cmd":"BYID","id":id} # A = get timeseries by id, B = get all timeseries etc
 		s.send(pickle.dumps(toSend))
 		rec = s.recv(1024)
 		rec = pickle.loads(rec)

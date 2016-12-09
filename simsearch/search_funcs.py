@@ -7,7 +7,7 @@ import os
 import pickle
 import heapq
 
-from tsbtreedb import *
+from cs207rbtree import *
 from calculateDistance import calcDist, standardize
 import click
 
