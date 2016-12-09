@@ -74,7 +74,7 @@ class FileStorageManager(StorageManagerInterface):
 
 		Args
 		--------
-`		 - tid: id of timeseries to look up length
+		 - tid: id of timeseries to look up length
 
 		Return
 		--------

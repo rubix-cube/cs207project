@@ -23,7 +23,6 @@ def search(input, n, show_dist, clear_dir):
 	input_ts = pickle.load(open(input, 'rb'))
 	
 	# load vantage points
-	vantage_pts = []
 	vantage_ids = pickle.load(open('vantage_pts.dat', 'rb'))
 	# calc dist from input_ts to vantage points
 	dist = []

@@ -6,7 +6,7 @@ from socket import *
 import threading
 import pickle
 from _thread import *
-from timeseries.FileStorageManager import FileStorageManager
+from timeseries.FileStorageManager import StorageManager
 
 def clientThread(conn, sm):
   data = b''
@@ -27,13 +27,18 @@ def clientThread(conn, sm):
   conn.close()
 
 
-StorageManager = FileStorageManager()
-a = ArrayTimeSeries([1,2,3],[4,5,6])
-print(a)
-autoId = StorageManager.generateId()
-StorageManager.store(autoId, a)
-s = StorageManager.get(autoId)
-print(s)
+# store 1000 randomly generated ts data from simsearch/
+for id in range(1000):
+  cur_ts = pickle.load(open('simsearch/ts_data/ts_%d.dat'%id, 'rb'))
+  StorageManager.store(id, cur_ts)
+
+# StorageManager = FileStorageManager()
+# a = ArrayTimeSeries([1,2,3],[4,5,6])
+# print(a)
+# autoId = StorageManager.generateId()
+# StorageManager.store(autoId, a)
+# s = StorageManager.get(autoId)
+# print(s)
 
 s = socket()
 host = gethostname()
