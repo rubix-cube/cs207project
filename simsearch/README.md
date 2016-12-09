@@ -1,59 +1,61 @@
-# SIMSEARCH
+## Similarity Search
+This file provides several functionality, including generate random timeseries data, randomly select vantage timeseries points and create a database for each of the point, and most importantly find closest timeseries points to a given timeseries input.
 
-This directory contains methods to search the most similar timeseries from a database of timeseries where each index is an unbalanced binary tree, as presented in CS207's lab 10.
-This script will only with the ArrayTimeSeries format.
+### Generate random timeseries data
+Run `genTS.py` to generate randome timeseries data.
+```
+$ python genTS.py --help
 
-## NB:
-Due to the fact that the timeseries code provided in rubixcube was not installable, please look at the way these packages are imported in the files of this directory.
+Usage: genTS.py [OPTIONS]
 
-### Files:
+  generate n standardized time series, each stored in a file in ts_data/.
 
-A number of files are contained in this directory. Here's a quick presentation of each of them:
+Options:
+  -n INTEGER   number of ts to generate, default 1000
+  --n INTEGER  number of ts to generate, default 1000
+  --help       Show this message and exit.
+```
+For example, run `python genTS.py --n 500` to generate 500 timeseries data.
 
-- util.py: contains methods to evaluate different types of correlation as well as generating timeseries.
-- binarytree.py: contains the data structure
-- proj6script.py: demo script to illustrate the use of the Kernelized Cross Correlation
-- generate_data.py: script to generate timeseries data using the tsmaker function
-- generate_vantagepoints.py: script to select randomly vantage points and generate the indices
-- simsearch.py: script to look for the top N most similar timeseries to a timeseries parsed as argument in the command line
+The generated data would be stored as `.dat` files in `ts_data/`.
 
-### Usage:
+### Select vantage timeseries points and create databases
+Run `genVantage.py` to randomly select vantage points and create corresponding database.
+```
+$ python genVantage.py --help
 
-#### Scripts
+Usage: genVantage.py [OPTIONS]
 
-Scripts should be called in the following order:
+  generate n vantage points for our ts data
 
-1. generate_data.py
-2. generate_vantagepoints.py
-3. simsearch.py
+Options:
+  -n INTEGER   number of vantage points to generate, default 20
+  --n INTEGER  number of vantage points to generate, default 20
+  --help       Show this message and exit.
+```
+For example, run `python genVantage.py --n 10` to randomly select 10 timeseries data points and create corresponding database. Each database is stored as `.db` file in  `ts_db_index/`. 
 
-Taking into account arguments:
+### Find similar timeseries points
+Run `find_closest.py` to find closest timeseries points to a given point. 
+```
+$ python find_closest.py --help
 
-1. `python generate_data.py 1000`
-2. `python generate_vantagepoints.py --n 20`
-3. `python simsearch.py ts_data\ts_0 --n 10`
+Usage: find_closest.py [OPTIONS]
 
-Note:
+  search for n closest points to input ts, results are stored as .dat file
+  in search_res/
 
-- `generate_data.py` has a mandatory argument which must be parsed in the command line as the number of timeseries wanted e.g. 1000
-- `generate_vantagepoints.py` takes an optional argument equal to the number of desired vantage points e.g. `--n 20` and the default is set to 20 and another one corresponding to the number of timeseries in the database, default 1000
-- `simsearch.py` takes a mandatory argument i.e. the timeseries of interest and the number of most similar timeseries desired e.g. `--n 10` and the default is set to 1. The simsearch method also has an optional argument `--save` set by default to False. This means that it will print the top n results and not return them. One could change this to True and have the results being saved as a list, which is pickled in the folder, by example:
-`python simsearch.py ts_data\ts_0 --n 10 --save True --f Results/results_1.p`
+Options:
+  --input TEXT  name of your input ts file
+  --n INTEGER   number of similar points to find, default 10
+  -n INTEGER    number of similar points to find, default 10
+  --show-dist   set this flag to show (and store) corresponding distance from
+                similar points to input point
+  --clear-dir   set this flag to clear the search result directory
+  --help        Show this message and exit.
+```
+For example, run `python find_closest.py 10` to find 10 closest points.
+  
+By default, the function would return only the name of the timseries files. You can add `--show-dist` to return the distance associated with these files. The results will be saved to `search_res/` directory.
 
-if the results are saved they are in the following format:
-
-- it is a sorted python list (from closest to furthest)
-- each entries are: (filename, distance)
-
-
-#### BinaryTree Sturcture and DBS:
-
-Timeseries are considered close to each other if their kernelised cross correlation is close to 1 and far from each other if close to 0. This is why the databases have keys equal to `-kernel_corr(ts1, ts2)` and value: `ts2`. The main addition to the code written in lab10 is the addition of the function `get_closer_than` which will look for values whose corresponding keys are smaller than the value parsed as argument.
-
-### Data:
-
-This directory holds two main data file: ts_data and dbs. Both of them are respectively filled by `generate_data.py` and `generate_vantagepoints.py`.
-
-### Testing:
-Testing is also provided in this directory. A first testing file is used to assess the data structure and the second file is used to test kernel correlation and the lookup methods.
-
+If you want to clear the `search_res/` directory in order to store new search results, you can add `--clear-dir` flag when you run the command.
