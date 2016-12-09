@@ -18,7 +18,7 @@ def random_ts(a):
 
 def stand(x, m, s):
     "standardize timeseries x my mean m and std deviation s"
-    return ts.TimeSeries((x.values() - m) / s, x.times())
+    return ts.TimeSeries(list(x.values() - m / s), list(x.times()))
 
 def standardize(x):
     return stand(x, x.mean(), x.std())
