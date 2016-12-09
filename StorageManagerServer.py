@@ -8,7 +8,7 @@ import pickle
 from _thread import *
 from timeseries.FileStorageManager import FileStorageManager
 
-def clientThread(conn):
+def clientThread(conn, sm):
   data = b''
   while True:
   #    conn.send("Server waiting for input:".encode())
@@ -16,11 +16,14 @@ def clientThread(conn):
     if not rec:
       break
     print("Server received:",rec)
-    print("REC:",pickle.loads(rec))
-
-    data += rec
-    print("DATA",pickle.loads(data))
-    
+    receivedData = pickle.loads(rec)
+    if receivedData['cmd'] == "BYID":
+      # Get ts storage using id received
+      conn.send(pickle.dumps("---Some timeseries---"))
+    else:
+      break
+    # data += rec
+    # print("DATA",pickle.loads(data))    
   conn.close()
 
 
@@ -42,46 +45,8 @@ try:
   while True:
     c, addr = s.accept()
     print("Got connection from:",addr)
-    t = threading.Thread(target=clientThread,args=(c,))
+    t = threading.Thread(target=clientThread,args=(c,StorageManager))
     t.start()
 finally:
   s.close()
 
-# s = socket()
-# host = gethostname()
-# port = 12340
-# s.setsockopt(SOL_SOCKET, SO_REUSEADDR, 1)
-# s.bind((host, port))
-
-# s.listen(5)
-
-# def clientThread(conn):
-#   data = b''
-#   while True:
-# #    conn.send("Server waiting for input:".encode())
-# #    data = conn.recv(1024)
-# #    if data == b"quit":
-# #      break
-# #    print("Server received:",data)
-#     received = conn.recv(1024)
-#     if not received:
-#       break
-#     data += received
-
-#   print(pickle.loads(data))
-#   conn.close()
-    
-# try:
-#   while True:
-
-#     # init sm   
-
-#     c, addr = s.accept()
-#     print("Got connection from:",addr)
-#     t = threading.Thread(target=clientThread,args=(c,))
-#     t.start()
-# finally:
-#   s.close()
-#     start_new_thread(clientThread, (c,))
-#     c.send("Thank you for connecting!".encode())
-#     c.close()
