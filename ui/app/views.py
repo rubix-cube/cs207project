@@ -125,7 +125,7 @@ def simquery():
 		s = connectRBTree()
 		try:
 			while True:
-				toSend = {"cmd":"SIMID", "id":5}
+				toSend = {"cmd":"SIMID", "id":5, "n":5}
 				s.send(pickle.dumps(toSend))
 				rec = s.recv(1024)
 				# TODO data MORE THAN 1024, protocol?
