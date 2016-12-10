@@ -6,7 +6,7 @@ import random
 import pickle
 
 from calculateDistance import calcDist, standardize
-from tsbtreedb import *
+from cs207rbtree import *
 import click
 
 @click.command()

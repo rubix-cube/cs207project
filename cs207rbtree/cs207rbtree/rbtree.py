@@ -245,6 +245,29 @@ class RedBlackTree:
                     )))
         return node
 
+    def get_smaller_than(self, key):
+        if not self._storage.locked:
+            self._refresh_tree_ref()
+        smaller_nodes = []
+        node = self._follow(self._tree_ref)
+        while node is not None:
+            if node.key < key:
+                smaller_nodes.append((node.key, self._follow(node.value_ref)))
+                smaller_nodes.extend(self.get_all_nodes(node.left_ref))
+                node = self._follow(node.right_ref)
+            else:
+                node = self._follow(node.left_ref)
+        return smaller_nodes
+
+    def get_all_nodes(self, nodeRef):
+        node = self._follow(nodeRef)
+        if node is None:
+            return []
+        all_nodes = [(node.key, self._follow(node.value_ref))]
+        all_nodes.extend(self.get_all_nodes(node.left_ref))
+        all_nodes.extend(self.get_all_nodes(node.right_ref))
+        return all_nodes
+
     def _follow(self, ref):
         """Get a node from a reference
         """
