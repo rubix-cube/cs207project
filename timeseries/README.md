@@ -3,6 +3,7 @@ We implemented 4 time series interfaces along with 5 kinds of time series classe
 
 * Install: `$ python setup.py install`
 * Test: `$ python setup.py test`
+* Documentation: `$ python setup.py docs`
 
 ## Interfaces
 
