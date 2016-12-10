@@ -61,10 +61,10 @@ class FileStorageManager(StorageManagerInterface):
 		self._id[tid] = len(t.times())
 
 		# Save time series
-		np.save(str(tid), timeseries)
+		np.save("data/"+str(tid), timeseries)
 
 		# Save sizes dict with each store of time series
-		with open("id.json", "w") as json_file:
+		with open("data/id.json", "w") as json_file:
 			json.dump(self._id, json_file)
 
 
@@ -108,7 +108,7 @@ class FileStorageManager(StorageManagerInterface):
 			tid = str(tid)
 		print("SELF_ID",self._id)
 		if tid in self._id:
-			timeseries = np.load(tid+".npy")
+			timeseries = np.load("data/"+tid+".npy")
 			return ArrayTimeSeries(timeseries[0], timeseries[1])
 		else:
 			return None

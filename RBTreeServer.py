@@ -1,4 +1,4 @@
-from simsearch.search_funcs import simsearch_non_exist, simsearch_existed
+from simsearch.simSearcher import similaritySearcher
 from timeseries.TimeSeries import TimeSeries
 from socket import *
 import threading
@@ -6,21 +6,22 @@ import pickle
 from _thread import *
 
 
-def clientThread(conn):
+def clientThread(conn, ss):
 	while True:
 		rec = conn.recv(1024)
+
 		if not rec:
 			break
 		
 		receivedData = pickle.loads(rec)
 		if receivedData['cmd'] == "SIMID":
 			# Find 5 similar points by id
-			results = simsearch_existed(receivedData['id'], receivedData['n'])
+			results = ss.simsearch_existed(receivedData['id'], receivedData['n'])
 			conn.send(pickle.dumps(results))
 		elif receivedData['cmd'] == "SIMTS":
 			# Find 5 similar points by ts
 			ts = TimeSeries(input_value=receivedData['value'], input_time=receivedData['time'])
-			results = simsearch_non_exist(ts, receivedData['n'])
+			results = ss.simsearch_non_exist(ts, receivedData['n'])
 			conn.send(pickle.dumps(results))
 		else:
 			break
@@ -28,7 +29,7 @@ def clientThread(conn):
 	conn.close()
 
 if __name__ == "__main__":
-
+	ss = similaritySearcher()
 	s = socket()
 	host = gethostname()
 	port = 12341
@@ -39,7 +40,7 @@ if __name__ == "__main__":
 		while True:
 			c, addr = s.accept()
 			print("Got connection from:",addr)
-			t = threading.Thread(target=clientThread,args=(c,))
+			t = threading.Thread(target=clientThread,args=(c,ss))
 			t.start()
 	finally:
 		s.close()
