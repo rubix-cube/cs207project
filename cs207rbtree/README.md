@@ -4,6 +4,7 @@ This is the cs207rbtree pip installable module.
 
 * Install: `$ python setup.py install`
 * Test: `$ python setup.py test`
+* Documentation: `$ python setup.py docs`
 
 There's also a PyPI version that you can download [here](https://pypi.python.org/pypi?%3Aaction=pkg_edit&name=cs207rbtree). Or you can simply run `pip install cs207rbtree` and import in your script.
 
@@ -30,6 +31,3 @@ db.get(1) # will return '1'
 db.close()
 
 ```
-
-
-
