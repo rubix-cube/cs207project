@@ -7,7 +7,7 @@ before_install:
   - pip install portalocker
 # command to run tests
 script: 
-  - py.test --cov-report term-missing --cov timeseries/ tests/
+  - py.test --cov-report term-missing --cov timeseries/timeseries/ timeseries/timeseries/tests/
   - py.test --cov-report term-missing --cov cs207rbtree/cs207rbtree/ cs207rbtree/cs207rbtree/tests/
 
 after_success:

@@ -44,7 +44,7 @@ if __name__ == "__main__":
 	
 	StorageManager.store(1000,ArrayTimeSeries([1,2,3],[4,5,6]))
 	s = socket()
-	host = gethostname()
+	host = gethostbyname("")
 	port = 12340
 	s.setsockopt(SOL_SOCKET, SO_REUSEADDR, 1)
 	s.bind((host, port))

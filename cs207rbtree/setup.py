@@ -27,4 +27,10 @@ setup(
 
     install_requires=['portalocker'],
 
+    setup_requires=['pytest-runner'],
+
+    test_suite='tests',
+
+    test_require=['pytest'],
+
 )

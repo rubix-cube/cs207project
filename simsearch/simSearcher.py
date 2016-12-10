@@ -14,6 +14,7 @@ import click
 
 NUM_TS_DATA = 1000
 
+	
 class similaritySearcher:
 
 	def __init__(self):
