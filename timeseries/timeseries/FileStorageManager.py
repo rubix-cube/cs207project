@@ -1,13 +1,15 @@
-from timeseries.StorageManagerInterface import StorageManagerInterface
-from timeseries.ArrayTimeSeries import ArrayTimeSeries
+import os
 import numpy as np
 import json
 import random
-
 from socket import *
 import threading
 import pickle
 from _thread import *
+
+
+from timeseries.StorageManagerInterface import StorageManagerInterface
+from timeseries.ArrayTimeSeries import ArrayTimeSeries
 
 class FileStorageManager(StorageManagerInterface):
 	
@@ -36,8 +38,11 @@ class FileStorageManager(StorageManagerInterface):
 		The constructor either creates a json file called "id.json" to store an id dictionary if none existed, or open the existing "id.json" file. 
 		The json file stores dictionary of existing ids with correspondoing length. 
 		"""
+		if not os.path.exists('sm_data/'):
+			os.makedirs('sm_data/')
+
 		try:
-			json_file = open('id.json', 'r')
+			json_file = open('sm_data/id.json', 'r')
 			self._id = json.load(json_file)
 		except:
 			self._id = dict()
@@ -61,10 +66,10 @@ class FileStorageManager(StorageManagerInterface):
 		self._id[tid] = len(t.times())
 
 		# Save time series
-		np.save("data/"+str(tid), timeseries)
+		np.save("sm_data/"+str(tid), timeseries)
 
 		# Save sizes dict with each store of time series
-		with open("data/id.json", "w") as json_file:
+		with open("sm_data/id.json", "w") as json_file:
 			json.dump(self._id, json_file)
 
 
@@ -108,7 +113,7 @@ class FileStorageManager(StorageManagerInterface):
 			tid = str(tid)
 		print("SELF_ID",self._id)
 		if tid in self._id:
-			timeseries = np.load("data/"+tid+".npy")
+			timeseries = np.load("sm_data/"+tid+".npy")
 			return ArrayTimeSeries(timeseries[0], timeseries[1])
 		else:
 			return None
@@ -119,7 +124,6 @@ class FileStorageManager(StorageManagerInterface):
 		will randomly get an integer between 0 and 9, and check if existed in file already. 
 		If existed, will generate another integer and append to the existing id. 
 		Repeat until unique one generated. 
-		
 		"""
 
 		i = random.randint(0,9)
