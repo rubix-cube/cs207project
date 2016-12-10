@@ -1,4 +1,4 @@
-# TimeSeries Package
+## TimeSeries Package
 We implemented 4 time series interfaces along with 5 kinds of time series classes.
 
 ## Interfaces
