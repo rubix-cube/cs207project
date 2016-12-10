@@ -134,6 +134,11 @@ class FileStorageManager(StorageManagerInterface):
 				return rid
 			i = random.randint(0,9)
 
+	def clean_up(self):
+		if os.path.exists('sm_data/'):
+			for f in os.listdir('sm_data/'):
+				os.remove(os.path.join('sm_data/', f))
+
 """
 A global StorageManager object is created to be passed into SMTimeSeries
 """

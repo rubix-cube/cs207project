@@ -1,8 +1,17 @@
+import pytest
 from pytest import raises
-from timeseries.SMTimeSeries import SMTimeSeries
-from timeseries.FileStorageManager import StorageManager
 import numpy as np
 import math
+
+from timeseries.SMTimeSeries import SMTimeSeries
+from timeseries.FileStorageManager import StorageManager
+
+def clean_up():
+	StorageManager.clean_up()
+
+@pytest.fixture(scope='session', autouse=True)
+def finalize(request):
+	request.addfinalizer(clean_up)
 
 #Test constructor
 def test_construct_with_id_num():
