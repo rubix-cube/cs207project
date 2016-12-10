@@ -1,9 +1,5 @@
-# cs207project
+# TimeSeries Package
 We implemented 4 time series interfaces along with 5 kinds of time series classes.
-
-For our *cs207rbtree* module, see documentation [here](https://github.com/rubix-cube/cs207project/tree/master/cs207rbtree)
-
-Team 9 implements similarity search for us which can be found [here](https://github.com/rubix-cube/cs207project/tree/master/simsearch)
 
 ## Interfaces
 
@@ -43,7 +39,3 @@ The class support all member method of SizedContainerTimeSeriesInterface, like a
 
 ### FileStorageManager Class
 Inherited from StorageManagerInterface and implemented 3 major method, store, get, size. It could store any timeseries as a 2D numpy array on the disk persistently with given id as key. It could also return SMTimeseries instance for query with key. The key and file relation is also kept on disk. So even when the server goes down, we will not lose our timeseries data nor the key-file relation.
-
-[![Build Status](https://travis-ci.org/rubix-cube/cs207project.svg?branch=master)](https://travis-ci.org/rubix-cube/cs207project)
-
-[![Coverage Status](https://coveralls.io/repos/github/Peilin-D/cs207project/badge.svg?branch=master)](https://coveralls.io/github/Peilin-D/cs207project?branch=master)
