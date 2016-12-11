@@ -12,7 +12,7 @@ from cs207rbtree import *
 from simsearch.calculateDistance import calcDist, standardize
 import click
 
-NUM_TS_DATA = 1000
+from simsearch.Globals import NUM_TS_DATA, NUM_VANTAGE_PTS
 
 	
 class similaritySearcher:
@@ -62,14 +62,20 @@ class similaritySearcher:
 					heapq.heappush(similar_ts_pQ, (-ds_to_input, Id))
 					if len(similar_ts_pQ) > n:
 							heapq.heappop(similar_ts_pQ)
-
-		return similar_ts_pQ
+		sim_ts = sorted([(-ds, Id) for (ds, Id) in similar_ts_pQ])
+		return sim_ts
 
 
 	def simsearch_existed(self, id, n):
 		# make sure id is a integer
-		if type(id) is not int or int(id) >= NUM_TS_DATA or int(id) < 0:
-			return None
+		if type(id) is not int or type(n) is not int:
+			raise TypeError('Invalid Input Type')
+		
+		if id >= NUM_TS_DATA or id < 0:
+			raise ValueError('Input Id Out of Range')
+
+		if n > NUM_VANTAGE_PTS:
+			raise ValueError('Number of Queries exceeds the Number of Vantage Points')
 		
 		input_ts = pickle.load(open('simsearch/ts_data/ts_' + str(id) + '.dat', 'rb'))
 
@@ -101,4 +107,5 @@ class similaritySearcher:
 					if len(similar_ts_pQ) > n:
 							heapq.heappop(similar_ts_pQ)
 
-		return similar_ts_pQ
+		sim_ts = sorted([(-ds, Id) for (ds, Id) in similar_ts_pQ])
+		return sim_ts
