@@ -205,11 +205,17 @@ def init_sqldb():
 	for id in range(1000):
 		cur_ts = pickle.load(open('../simsearch/ts_data/ts_%d.dat'%id, 'rb'))
 		
-		t = Timeseries(id=id, 
-						blarg=np.random.uniform(low=0.0, high=1.0),
-						level=random.choice(['A','B','C','D','E']),
-						mean=cur_ts.mean(),
-						std=cur_ts.std())
+		t = db.session.query(Timeseries).filter_by(id=id).first()
+		if t:
+			t.mean = cur_ts.mean()
+			t.std = cur_ts.std()
+		else:
+			t = Timeseries(id=id,
+					blarg=np.random.uniform(low=0.0, high=1.0),
+					level=random.choice(['A','B','C','D','E']),
+					mean=cur_ts.mean(),
+					std=cur_ts.std())
+
 		db.session.add(t)
 	db.session.commit()
 
