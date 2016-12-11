@@ -8,6 +8,9 @@ from sqlalchemy import and_
 import socket
 import sys
 import pickle
+from timeseries.FileStorageManager import FileStorageManager
+import numpy as np
+import random
 
 def connectRBTree():
 	port = 12341
@@ -116,16 +119,29 @@ def simquery():
 	if request.method == 'POST':
 		# take a timeseries as an input in a JSON, carry out the query, and 
 		# return the appropriate ids as well. 
-		ts = request.form['timeseries'] # json format
-		pass
+		data = request.get_json(force=True)
+		data['cmd'] = "SIMTS"
+		if 'n' not in data:
+			data['n'] = 5
+		s = connectRBTree()
+		try:
+			s.send(pickle.dumps(data))
+			response = pickle.loads(s.recv(1024))
+
+		finally:
+			s.close()
+			return json.dumps(response)
 	else:
 		#  take a id=the_id querystring and use that as an id into the database
 		# to find the timeseries that are similar, sending back the ids of (say) the top 5
 		sim_id = request.args.get('id')
+		n = request.args.get('n')
+		if n is None:
+			n = 5
 		s = connectRBTree()
 		try:
 			while True:
-				toSend = {"cmd":"SIMID", "id":5, "n":5}
+				toSend = {"cmd":"SIMID", "id":sim_id, "n":n}
 				s.send(pickle.dumps(toSend))
 				rec = s.recv(1024)
 				# TODO data MORE THAN 1024, protocol?
@@ -147,12 +163,30 @@ def timeseries_id(id):
 	try:
 		toSend = {"cmd":"BYID","id":id} # A = get timeseries by id, B = get all timeseries etc
 		s.send(pickle.dumps(toSend))
-		rec = s.recv(1024)
+		rec = s.recv(8192)
 		rec = pickle.loads(rec)
 		return json.dumps({"timeseries": rec, "metadata": t})	
 
 	finally:
 		s.close()
+
+@app.route('/initsqldb')
+def init_sqldb():
+	StorageManager = FileStorageManager()
+	for id in range(1000):
+		cur_ts = pickle.load(open('../simsearch/ts_data/ts_%d.dat'%id, 'rb'))
+		
+		t = Timeseries(id=id, 
+						blarg=np.random.uniform(low=0.0, high=1.0),
+						level=random.choice(['A','B','C','D','E']),
+						mean=cur_ts.mean(),
+						std=cur_ts.std())
+		db.session.add(t)
+	db.session.commit()
+
+	return json.dumps("Success")
+
+
 
 
 

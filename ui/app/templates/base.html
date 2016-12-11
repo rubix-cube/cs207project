@@ -82,17 +82,37 @@
         });
 
         $("#save-ts").click(function(event){
-          var file = $("#ts-file2")[0].files[0];
+          var file = $("#ts-file")[0].files[0];
           var reader = new FileReader();
           reader.onload = function(e){
             var ts = e.target.result;//JSON.parse(e.target.result);
-            console.log(ts);
             $.ajax({
               url: '/timeseries',
               type: 'POST',
               data: ts,
               success: function(response){
-                console.log("POST timeseries!",response);
+                console.log("Saved timeseries to database!",response);
+              },
+              error: function(error){
+                console.log("Error POST timeseries!",error);
+              }
+            });
+          }
+
+          reader.readAsText(file);
+        });
+
+        $("#sim-ts").click(function(event){
+          var file = $("#ts-file")[0].files[0];
+          var reader = new FileReader();
+          reader.onload = function(e){
+            var ts = e.target.result;//JSON.parse(e.target.result);
+            $.ajax({
+              url: '/simquery',
+              type: 'POST',
+              data: ts,
+              success: function(response){
+                console.log("Similar timeseries:",response);
               },
               error: function(error){
                 console.log("Error POST timeseries!",error);
