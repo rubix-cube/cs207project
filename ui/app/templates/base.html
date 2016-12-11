@@ -1,19 +1,25 @@
 <html>
   <head>
   	{% if title %}
-  	<title>{{title}} - microblog</title>
+  	<title>{{title}} - Timeseries</title>
   	{% else %}
-  	<title>Welcome to microblog</title>
+  	<title>Welcome to CS207</title>
   	{% endif %}
     <link href="/static/css/bootstrap.css" rel="stylesheet">
     <link href="/static/css/custom.css" rel="stylesheet">
     <script src="http://code.jquery.com/jquery-latest.js"></script>
     <script src="/static/js/flot.js"></script>
+    <script src="https://npmcdn.com/tether@1.2.4/dist/js/tether.min.js"></script>
     <script src="/static/js/bootstrap.js"></script>
   </head>
   <body>
     <div class="container">
-  	<div>Microblog: <a href="/index">Home</a></div>
+  	<div class="top30">
+      <h1><b>CS207 - Final Project</b></h1> <br>
+      <h3>Team Members: Peilin Duan, Kevin Qi, Zelong Qiu, Xindi Zhao</h3><br>
+
+    </div>
+    
     <hr>
     {% with messages = get_flashed_messages() %}
       {% if messages %}
@@ -41,7 +47,7 @@
             var reader = new FileReader();
             reader.onload = function(e){
               var ts = JSON.parse(e.target.result);
-              console.log("ts=",ts);
+              
               var x = $.map(ts['time'], function(v){return parseInt(v);});
               var y = $.map(ts['value'], function(v){return parseInt(v);});
               var z = x.map(function(e,i){return [e, y[i]]});

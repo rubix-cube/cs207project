@@ -172,7 +172,7 @@ def timeseries_id(id):
 
 @app.route('/initsqldb')
 def init_sqldb():
-	StorageManager = FileStorageManager()
+	# Create fake metadata for 1000 timeseries
 	for id in range(1000):
 		cur_ts = pickle.load(open('../simsearch/ts_data/ts_%d.dat'%id, 'rb'))
 		
