@@ -1,5 +1,3 @@
-from timeseries.ArrayTimeSeries import ArrayTimeSeries
-from timeseries.TimeSeries import TimeSeries
 import numpy as np
 import json
 
@@ -7,7 +5,13 @@ from socket import *
 import threading
 import pickle
 from _thread import *
+import os
+import argparse
+
+from timeseries.ArrayTimeSeries import ArrayTimeSeries
+from timeseries.TimeSeries import TimeSeries
 from timeseries.FileStorageManager import FileStorageManager
+from simsearch.Globals import NUM_TS_DATA
 
 def clientThread(conn, sm):
 	
@@ -32,15 +36,25 @@ def clientThread(conn, sm):
 		
 	conn.close()
 
+
 if __name__ == "__main__":
-	# store 1000 randomly generated ts data from simsearch/
+	# store 1000 randomly generated ts data from simsearch/ if necessary
 	StorageManager = FileStorageManager()
 
-	for id in range(1000):
-		cur_ts = pickle.load(open('simsearch/ts_data/ts_%d.dat'%id, 'rb'))
-		StorageManager.store(id, cur_ts)
+	parser = argparse.ArgumentParser()
+	parser.add_argument('--update', action='store_true')
 
-	
+	args = parser.parse_args()
+
+	if args.update:
+		print('Loading Data')
+		for id in range(NUM_TS_DATA):
+			cur_ts = pickle.load(open('simsearch/ts_data/ts_%d.dat'%id, 'rb'))
+			StorageManager.store(id, cur_ts)
+		print('Data Loaded')
+	else:
+		print('Data Already Loaded')
+		
 	StorageManager.store(1000,ArrayTimeSeries([1,2,3],[4,5,6]))
 	s = socket()
 	host = gethostbyname("")
