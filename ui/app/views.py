@@ -12,6 +12,16 @@ from timeseries.FileStorageManager import FileStorageManager
 import numpy as np
 import random
 
+def randomTSMetadata(id, cur_ts):
+	if id is None:
+		return None
+
+	return Timeseries(id=id, 
+						blarg=np.random.uniform(low=0.0, high=1.0),
+						level=random.choice(['A','B','C','D','E']),
+						mean=cur_ts.mean(),
+						std=cur_ts.std())
+
 def connectRBTree():
 	port = 12341
 	s = socket.socket()
@@ -75,8 +85,27 @@ def timeseries():
 		data['cmd'] = "ADDTS"
 		s = connectSM()
 		try:
+			# Send POST request to server
 			s.send(pickle.dumps(data))
 			response = pickle.loads(s.recv(1024))
+
+			# Add metadata to db
+			t = db.session.query(Timeseries).filter_by(id=data['id']).first()
+			print("T=",t)
+			if t:
+				print("T exists, updating...")
+				t.mean = np.mean(data['value'])
+				t.std = np.std(data['value'])
+			else:
+				print("T does not exist, updating...")
+				t = Timeseries(id=data['id'],
+						blarg=np.random.uniform(low=0.0, high=1.0),
+						level=random.choice(['A','B','C','D','E']),
+						mean=np.mean(data['value']),
+						std=np.std(data['value']))
+
+			db.session.add(t)
+			db.session.commit()
 
 		finally:
 			s.close()
