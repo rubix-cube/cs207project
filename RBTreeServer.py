@@ -8,7 +8,7 @@ from _thread import *
 
 def clientThread(conn, ss):
 	while True:
-		rec = conn.recv(1024)
+		rec = conn.recv(8192)
 
 		if not rec:
 			break
@@ -16,11 +16,13 @@ def clientThread(conn, ss):
 		receivedData = pickle.loads(rec)
 		if receivedData['cmd'] == "SIMID":
 			# Find 5 similar points by id
-			results = ss.simsearch_existed(receivedData['id'], receivedData['n'])
+			results = ss.simsearch_existed(int(receivedData['id']), receivedData['n'])
 			conn.send(pickle.dumps(results))
+
 		elif receivedData['cmd'] == "SIMTS":
 			# Find 5 similar points by ts
-			ts = TimeSeries(input_value=receivedData['value'], input_time=receivedData['time'])
+			ts = TimeSeries(input_value=list(receivedData['value'].values()),
+			 				input_time=list(receivedData['time'].values()))
 			results = ss.simsearch_non_exist(ts, receivedData['n'])
 			conn.send(pickle.dumps(results))
 		else:
