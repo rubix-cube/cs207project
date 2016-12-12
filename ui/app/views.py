@@ -1,4 +1,4 @@
-from flask import render_template, flash, redirect, session, url_for, request,g
+from flask import render_template, flash, redirect, session, url_for, request, g, abort
 from app import app, db
 from .forms import LoginForm
 from .models import User, Post, Timeseries
@@ -146,7 +146,11 @@ def simquery():
 				rec = s.recv(1024)
 				# TODO data MORE THAN 1024, protocol?
 				rec = pickle.loads(rec)
-				return json.dumps({"similar_points": rec})	
+				return json.dumps({"similar_points": rec})
+		except Exception as err:
+			print(str(err))
+			# not found
+			abort(404)
 		finally:
 			s.close()
 		
