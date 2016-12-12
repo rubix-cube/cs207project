@@ -20,7 +20,7 @@ def clientThread(conn, sm):
 		rec = conn.recv(8192)
 		if not rec:
 			break
-		print("Server received:",rec)
+			
 		receivedData = pickle.loads(rec)
 		if receivedData['cmd'] == "BYID":
 			# Get ts storage using id received

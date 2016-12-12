@@ -7,7 +7,7 @@
   	{% endif %}
     <link href="/static/css/bootstrap.css" rel="stylesheet">
     <link href="/static/css/custom.css" rel="stylesheet">
-    <script src="http://code.jquery.com/jquery-latest.js"></script>
+    <script src="/static/js/jquery.js"></script>
     <script src="/static/js/flot.js"></script>
     <script src="https://npmcdn.com/tether@1.2.4/dist/js/tether.min.js"></script>
     <script src="/static/js/bootstrap.js"></script>
@@ -59,25 +59,19 @@
 
           }else{
             // Get ts data from server
-            $.ajax({
-              url: '/timeseries',
-              type: 'GET',
-              success: function(response){
-                console.log("Success",response);
-
-              },
-              error: function(error){
-                console.log("Error", error);
-              }
-            });
-
             $("#placeholder").empty();
+
             // Get all metadata
             $.ajax({
-              url: '/timeseries',
+              url: '/timeseries/'+ts_id,
               type: 'GET',
               success: function(response){
                 console.log("GET timeseries!",response);
+                var x = response['timeseries']['time'];
+                var y = response['timeseries']['value'];
+                var z = x.map(function(e,i){return [e, y[i]]});
+                console.log("Z=",z);
+                $.plot($("#placeholder"), [z], {});
               },
               error: function(error){
                 console.log("Error GET timeseries!",error);
@@ -98,6 +92,7 @@
               data: ts,
               success: function(response){
                 console.log("Saved timeseries to database!",response);
+                $("#results").html("<h3>Saved timeseries to database! :-)</h3>")
               },
               error: function(error){
                 console.log("Error POST timeseries!",error);
@@ -109,24 +104,53 @@
         });
 
         $("#sim-ts").click(function(event){
-          var file = $("#ts-file")[0].files[0];
-          var reader = new FileReader();
-          reader.onload = function(e){
-            var ts = e.target.result;//JSON.parse(e.target.result);
+
+          var ts_id = $("#ts-id").val();
+          
+          if(!ts_id){
+            // No id was provided, make POST request
+            var file = $("#ts-file")[0].files[0];
+            var reader = new FileReader();
+            reader.onload = function(e){
+              var ts = e.target.result;//JSON.parse(e.target.result);
+              $.ajax({
+                url: '/simquery',
+                type: 'POST',
+                data: ts,
+                success: function(response){
+                  console.log("Similar timeseries:",response);
+                  response = JSON.parse(response);
+                  var newHTML = ['<h3>Here are the similar timeseries</h3><br><ul>'];
+                  for (var i = 0; i < response.length; i++) {
+                      newHTML.push('<li>Length=' + response[i][0]+' id='+response[i][1] + '</li>');
+                  }
+                  newHTML.push('</ul>')
+                  $("#results").html(newHTML.join(""));
+                },
+                error: function(error){
+                  console.log("Error POST timeseries!",error);
+                }
+              });
+            }
+
+            reader.readAsText(file);
+          }else{
+            // ID was provided
             $.ajax({
               url: '/simquery',
-              type: 'POST',
-              data: ts,
+              type: 'GET',
+              data: {"id":ts_id},
               success: function(response){
-                console.log("Similar timeseries:",response);
+                console.log("GET timeseries!",response);
+
               },
               error: function(error){
-                console.log("Error POST timeseries!",error);
+                console.log("Error GET timeseries!",error);
               }
             });
           }
 
-          reader.readAsText(file);
+          
         });
 
       });

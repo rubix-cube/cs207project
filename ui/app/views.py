@@ -1,9 +1,10 @@
-from flask import render_template, flash, redirect, session, url_for, request,g
+from flask import jsonify, render_template, flash, redirect, session, url_for, request,g
 from app import app, db
 from .forms import LoginForm
 from .models import User, Post, Timeseries
 import json
 from sqlalchemy import and_
+
 
 import socket
 import sys
@@ -45,35 +46,7 @@ def index():
 			{'author': {'nickname': 'Susan'},
 			'body': 'The movie was cool!'}]
 
-	return render_template('index.html',title='Home',user=user,posts=posts)
-
-@app.route('/success/<name>')
-@app.route('/success')
-def success(name=None):
-	return 'welcome %s' % name
-
-@app.route('/login', methods=['POST','GET'])
-def login():
-	if request.method == 'POST':
-		user = request.form['nm']
-		return redirect(url_for('success', name=user))
-	else:
-		user = request.args.get('nm')
-		return redirect(url_for('success', name=user))
-
-@app.route('/loginPage')
-def loginPage():
-	return render_template('login.html',
-		title='Login')
-
-@app.route('/createUser', methods=['GET'])
-def createUser():
-	u = User(nickname='keasadvin',email='ka@gmail.com')
-	db.session.add(u)
-	db.session.commit()
-	print("Added user to db!")
-	return json.dumps({"1":"1"});
-	
+	return render_template('index.html',title='Home',user=user,posts=posts)	
 
 @app.route('/timeseries', methods=['POST','GET'])
 def timeseries():
@@ -91,7 +64,6 @@ def timeseries():
 
 			# Add metadata to db
 			t = db.session.query(Timeseries).filter_by(id=data['id']).first()
-			print("T=",t)
 			if t:
 				print("T exists, updating...")
 				t.mean = np.mean(data['value'])
@@ -141,7 +113,7 @@ def timeseries():
 		
 		# Serialize objects 
 		r = [e.serialize() for e in results]
-		return json.dumps(r)
+		return jsonify(r)
 	
 @app.route('/simquery', methods=['POST','GET'])
 def simquery():
@@ -165,6 +137,7 @@ def simquery():
 		# to find the timeseries that are similar, sending back the ids of (say) the top 5
 		sim_id = request.args.get('id')
 		n = request.args.get('n')
+		print("SIMID=",sim_id)
 		if n is None:
 			n = 5
 		s = connectRBTree()
@@ -172,10 +145,10 @@ def simquery():
 			while True:
 				toSend = {"cmd":"SIMID", "id":sim_id, "n":n}
 				s.send(pickle.dumps(toSend))
-				rec = s.recv(1024)
+				rec = s.recv(8192)
 				# TODO data MORE THAN 1024, protocol?
 				rec = pickle.loads(rec)
-				return json.dumps({"similar_points": rec})	
+				return jsonify({"similar_points": rec})	
 		finally:
 			s.close()
 		
@@ -183,9 +156,13 @@ def simquery():
 @app.route('/timeseries/<id>')
 def timeseries_id(id):
 	# should send back metadata and the timeseries itself in a JSON payload
-	
+
 	# Get metadata
-	t = Timeseries.query.get(id).serialize()
+	t = Timeseries.query.get(id)
+	if t is None:
+		return jsonify("Timeseries id does not exist")
+
+	t = t.serialize()
 
 	# Get timeseries 
 	s = connectSM()
@@ -194,7 +171,8 @@ def timeseries_id(id):
 		s.send(pickle.dumps(toSend))
 		rec = s.recv(8192)
 		rec = pickle.loads(rec)
-		return json.dumps({"timeseries": rec, "metadata": t})	
+		# return json.dumps({"timeseries": rec, "metadata": t})	
+		return jsonify({"timeseries": rec, "metadata": t})
 
 	finally:
 		s.close()
