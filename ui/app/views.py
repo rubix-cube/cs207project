@@ -1,6 +1,5 @@
 from flask import jsonify, render_template, flash, redirect, session, url_for, request,g
 from app import app, db
-from .forms import LoginForm
 from .models import User, Post, Timeseries
 import json
 from sqlalchemy import and_
