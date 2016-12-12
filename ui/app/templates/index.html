@@ -1,10 +1,11 @@
 {% extends "base.html" %}
 {% block content%}
-	<h1>Hi {{user.nickname}}</h1>
-  	{% for post in posts %}
-  	<div><p>{{post.author.nickname}} says <b>{{post.body}}</b></p></div>
-  	{% endfor %}
   	<div class="container">
+      <div class="row">
+        <p>
+        Welcome to our final project for CS207. On this page you will be able to add, query, and plot timeseries. Using the blue 'browse' button you can upload a timeseries JSON file of the format {"id":1, "time":{"0":1,...}, "value":{"0":1.2}, "n":5}. n is the number of similar timeseries points you want returned. After uploading the file, you can choose to display the timeseries, save it to the database server, or query the server for similar timeseries. 
+        </p>
+      </div>
   		<div class="row">
   			<div class="col-md-6">
   				Enter timeseries ID: <input type="text" id="ts-id" /></div>
@@ -28,23 +29,15 @@
           <p><button type="button" id="sim-ts" class="btn btn-success">Get similar TS</button></p>
         </div>
   		</div>
-      <p>--------</p>
-      <!-- <div class="row top7">
-        <div class="col-md-2">
-          <form action = "http://localhost:5000/timeseries" method = "POST" 
-             enctype = "multipart/form-data">
-             <input type = "file" name = "file" />
-             <input type = "submit"/>
-          </form>
-        </div>
+      <div class="row top7">
+        <div class="col-md-10">
+          <div>
+            <p id="results">
 
-        <div class="col-md-2">
-          <label class="btn btn-primary btn-file">
-            Browse <input type="file" id="ts-file2" style="display: none;">
-          </label>
+            </p>
+          </div>
         </div>
-        
-      </div> -->
+      </div>
 
   		<div class="row top7">
   			<div class="col-md-10">
@@ -52,11 +45,6 @@
   			</div>
   		</div>
   	</div>
-<!-- 
-  	<form action="http://localhost:5000/login" method="post">
-  		
-  		<p><input type="submit" value="submit" /></p>
-  	</form> -->
   	
 {% endblock %}
 

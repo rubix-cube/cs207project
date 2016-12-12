@@ -1,8 +1,4 @@
 from app import db
-import enum
-
-class LevelEnum(enum.Enum):
-	A,B,C,D,E,F = "A","B","C","D","E","F"
 
 class User(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
