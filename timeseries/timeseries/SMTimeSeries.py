@@ -1,8 +1,9 @@
 from timeseries.SizedContainerTimeSeriesInterface import SizedContainerTimeSeriesInterface
-from timeseries.FileStorageManager import StorageManager
+from timeseries.FileStorageManager import FileStorageManager
 from timeseries.ArrayTimeSeries import ArrayTimeSeries
 import numpy as np
 
+StorageManager = FileStorageManager()
 
 class SMTimeSeries(SizedContainerTimeSeriesInterface):
 	"""
