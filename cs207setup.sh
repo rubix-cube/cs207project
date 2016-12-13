@@ -50,6 +50,7 @@ cd /var/www/
 sudo chmod 777 cs207project/
 
 # change permission for ui
+cd cs207project/
 sudo chmod 777 ui/
 cd ui
 sudo chmod 777 app.db
