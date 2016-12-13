@@ -5,7 +5,8 @@
         <div class="col-md-6">
           <p>
         Welcome to our final project for CS207. On this page you will be able to add, query, and plot timeseries. Using the blue 'browse' button you can upload a timeseries JSON file of the format displayed to the right.
-        <b>n</b> is the number of similar timeseries points you want returned. After uploading the file, you can choose to display the timeseries and similar points or save it to the database server. 
+        <b>n</b> is the number of similar timeseries points you want returned. After uploading the file, you can choose to display the timeseries and similar points or save it to the database server. If you would like to access all the metadata, you can visit the url at <a href="/timeseries">timeseries.json</a>
+
         </p>
         </div>
         <div class="col-md-6">
@@ -51,7 +52,7 @@
 	  			<p><button type="button" id="display-button" class="btn btn-success">Display Timeseries</button></p>
 	  		</div>
         <div class="col-md-4">
-          <p><button type="button" id="save-ts" class="btn btn-success">Save to Database</button></p>
+          <p><button type="button" id="save-ts" class="btn btn-info">Save to Database</button></p>
         </div>
         <!-- <div class="col-md-4">
           <p><button type="button" id="sim-ts" class="btn btn-success">Get similar TS</button></p>
@@ -81,7 +82,7 @@
         <div class="col-md-3">
           Max: <input type="text" id="maxRange">
         </div>
-        <div class="col-md-4">
+        <div class="col-md-2">
           <div class="controls span2">
             <label class="checkbox"><input type="checkbox" value="A">A</label>
             <label class="checkbox"><input type="checkbox" value="B">B</label>
@@ -95,7 +96,9 @@
         </div>
         
         <div class="col-md-2">
-          <button type="button" id="search-metadata" class="btn btn-success">Search</button>
+          <span class="pull-right">
+            <button type="button" id="search-metadata" class="btn btn-success">Search</button>
+          </span>
         </div>
       </div>
 
@@ -103,7 +106,7 @@
 
         <textarea class="form-control" id="textarea" rows="3"></textarea>
       </div>
-      
+
       <div class="row top60 plotting">
         <div class="col-md-10">
           <div id="metadata"></div>
@@ -123,6 +126,15 @@
             </div>
         </div>
       </div>
+
+      <div class="row top60">
+        <div class="col-md-12">
+          <h3> 
+            <a href="https://github.com/rubix-cube/cs207project">Find it on Github</a>
+          </h3>
+        </div>
+      </div>
+
   	</div>
   	
 {% endblock %}

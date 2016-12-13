@@ -185,7 +185,7 @@
           .scale(xscale)
           .orient('bottom');
 
-          // svg.selectAll("rect.m").remove();
+          svg.selectAll("rect.m").remove();
           var bars = svg.selectAll("rect.m")
               .data(dataset);
 
@@ -313,7 +313,7 @@
                             "</li>");
             }
 
-            $("#blarg").attr("checked", true);
+            $("#blarg").prop("checked", true);
             plotMetadata(metadata.map(function(d){return Math.abs(d['blarg']);}));
             
 
@@ -443,10 +443,14 @@
         
         $("#search-metadata").on("click", function(){
           var levels=[];
-          var mean_in = null;
-          if($("#minRange").val() != "" && $("#maxRange").val() != ""){
-            mean_in = $("#minRange").val()+"-"+$("#maxRange").val();
-          }
+          var left = "inf", right = "inf";
+          if($("#minRange").val() != ""){
+            left = $("#minRange").val();
+          } 
+          if($("#maxRange").val() != ""){
+            right = $("#maxRange").val();
+          } 
+          
           $("input[type=checkbox]:checked").each(function(){    
             levels.push(this.value);
           });
@@ -454,7 +458,7 @@
             url: '/timeseries',
             type:'GET',
             data: {
-                "mean_in": mean_in,
+                "mean_in": left+"-"+right,
                 "level_in": levels.join(",")
               },
               success: function(response){  
