@@ -53,80 +53,112 @@
           }
         });
         
+        function plotSimilar(response, metadata, timeseries){
+          var similar_ids = [];
+
+          // Get similar ids
+          response = response['similar_points'];
+          var i;
+          for(i=0;i<response.length;i++){
+            similar_ids.push(response[i][1]);
+          }
+
+          // For each id, get timeseries data from SM and plot
+          for(i=0;i<similar_ids.length;i++){
+            $.ajax({
+              url: '/timeseries/'+similar_ids[i],
+              type: 'GET',
+              success: function(response){
+                metadata.push(response['metadata']);
+                timeseries.push(response['timeseries']);
+              },
+              error: function(response){
+                console.log("Error getting timeseries from sm");
+              }
+            });
+          }
+
+          $(document).ajaxStop(function(){
+            console.log("Finished ALL AJAX");
+            var plots = [];
+            var meta_msg = ["<h3>Metadata</h3><ul>"];
+            for(i=0;i<timeseries.length;i++){
+              var x = timeseries[i]['time'];
+              var y = timeseries[i]['value'];
+              var z = x.map(function(e,i){return [e, y[i]]});
+
+              plots.push({"label":"ID"+timeseries[i]['id'],"data":z});
+            }
+            
+            for(i=0;i<metadata.length;i++){
+              meta_msg.push("<li>Blarg: " + metadata[i]['blarg'] + 
+                            " ID: " + metadata[i]['id']+  
+                            " Level: " + metadata[i]['level'] +
+                            " Mean: " + metadata[i]['mean'] + 
+                            " Standard Dev: " + metadata[i]['std'] +
+                            "</li>");
+            }
+
+            meta_msg.push("</ul>")
+            $("#results").html(meta_msg.join(""));
+            $.plot($("#placeholder"), plots,{legend: {"show": true}});
+          });
+        }
 
         $("#display-button").click(function(event){
           
           var ts_id = $("#ts-id").val();
+          var metadata = [];
+          var timeseries = [];
           
+          clearResults();
+
           if(!ts_id){
             // Use uploaded ts data 
-             $("#results").html("Fetching data...");
-            var file = $("#ts-file")[0].files[0];
+              $("#results").html("Fetching data...");
+              var file = $("#ts-file")[0].files[0];
             
-            var reader = new FileReader();
-            reader.onload = function(e){
-              var ts = JSON.parse(e.target.result);
-              
-              var x = $.map(ts['time'], function(v){return parseInt(v);});
-              var y = $.map(ts['value'], function(v){return parseInt(v);});
-              var z = x.map(function(e,i){return [e, y[i]]});
+              var reader = new FileReader();
+              reader.onload = function(e){
+                var ts = JSON.parse(e.target.result);
+                timeseries.push(ts);
 
-              $.plot($("#placeholder"), [z], {});
+                var ts = e.target.result;//JSON.parse(e.target.result);
 
-
-              var ts = e.target.result;//JSON.parse(e.target.result);
-
-              $.ajax({
-                  url: '/simquery',
-                  type: 'POST',
-                  data: ts,
-                  success: function(response){
-                    console.log("Similar timeseries:",response);
-                    response = JSON.parse(response);
-                    var newHTML = ['<h3>Here are the similar timeseries</h3><br><ul>'];
-                    for (var i = 0; i < response.length; i++) {
-                        newHTML.push('<li>Length=' + response[i][0]+' id='+response[i][1] + '</li>');
+                $.ajax({
+                    url: '/simquery',
+                    type: 'POST',
+                    data: ts,
+                    success: function(response){
+                      plotSimilar(response, metadata, timeseries);
+                    },
+                    error: function(error){
+                      console.log("Error POST timeseries!",error);
                     }
-                    newHTML.push('</ul>')
-                    $("#results").html(newHTML.join(""));
-                  },
-                  error: function(error){
-                    console.log("Error POST timeseries!",error);
-                  }
-                });
+                  });
             };
 
             reader.readAsText(file);
 
           }else{
             // Get ts data from server
-            clearResults();
             $("#results").html("Fetching data...");
+
             // Get all metadata
             $.ajax({
               url: '/timeseries/'+ts_id,
               type: 'GET',
               success: function(response){
-                console.log("GET timeseries!",response);
-                var x = response['timeseries']['time'];
-                var y = response['timeseries']['value'];
-                var z = x.map(function(e,i){return [e, y[i]]});
-                console.log("Z=",z);
-                $.plot($("#placeholder"), [z], {});
+                metadata.push(response['metadata']);
+                timeseries.push(response['timeseries']);
+
                 $.ajax({
                   url: '/simquery',
                   type: 'GET',
                   data: {"id":ts_id},
                   success: function(response){
-                    console.log("GET timeseries!",response);
-                    response = response['similar_points'];
-                    
-                    var newHTML = ['<h3>Here are the similar timeseries</h3><br><ul>'];
-                    for (var i = 0; i < response.length; i++) {
-                          newHTML.push('<li>Length=' + response[i][0]+' id='+response[i][1] + '</li>');
-                    }
-                    newHTML.push('</ul>');
-                    $("#results").html(newHTML.join(""));
+                    plotSimilar(response, metadata, timeseries);
+
                   },
                   error: function(error){
                     console.log("Error GET timeseries!",error);
@@ -161,6 +193,7 @@
               },
               error: function(error){
                 console.log("Error POST timeseries!",error);
+                sweetAlert("Error", error['responseText'], "error");
               }
             });
           }

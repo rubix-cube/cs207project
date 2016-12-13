@@ -21,8 +21,8 @@ def clientThread(conn, ss):
 
 		elif receivedData['cmd'] == "SIMTS":
 			# Find 5 similar points by ts
-			ts = TimeSeries(input_value=list(receivedData['value'].values()),
-			 				input_time=list(receivedData['time'].values()))
+			ts = TimeSeries(input_value=receivedData['value'],
+			 				input_time=receivedData['time'])
 			results = ss.simsearch_non_exist(ts, receivedData['n'])
 			conn.send(pickle.dumps(results))
 		else:

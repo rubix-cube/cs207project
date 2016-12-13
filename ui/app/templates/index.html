@@ -2,26 +2,59 @@
 {% block content%}
   	<div class="container">
       <div class="row">
-        <p>
-        Welcome to our final project for CS207. On this page you will be able to add, query, and plot timeseries. Using the blue 'browse' button you can upload a timeseries JSON file of the format {"id":1, "time":{"0":1,...}, "value":{"0":1.2}, "n":5}. n is the number of similar timeseries points you want returned. After uploading the file, you can choose to display the timeseries, save it to the database server, or query the server for similar timeseries. 
+        <div class="col-md-6">
+          <p>
+        Welcome to our final project for CS207. On this page you will be able to add, query, and plot timeseries. Using the blue 'browse' button you can upload a timeseries JSON file of the format displayed to the right.
+        <b>n</b> is the number of similar timeseries points you want returned. After uploading the file, you can choose to display the timeseries and similar points or save it to the database server. By issuing a call to /timeseries/id 
+        you will be able to get metadata related to a timeseries of that id. You can also pass arguments to /timeseries like so: 
+        <pre>
+          /timeseries?mean_in=1.5-1.53&level_in=A,B,C 
+            or 
+          /timeseries?level=A
+        </pre>
         </p>
+        </div>
+        <div class="col-md-6">
+          <pre>
+            JSON File format
+            {
+            "id":1, 
+            "time":[1,2,3,4,5,...], 
+            "value":[2,3,4,5,6,...], 
+            "n":5
+            }. 
+          </pre>
+        </div>
+        
       </div>
   		<div class="row">
-  			<div class="col-md-6">
-  				Enter timeseries ID: <input type="text" id="ts-id" /></div>
+  			<div class="col-md-5">
+  				Enter timeseries ID: <input type="text" id="ts-id" />
+          
+          </div>
   			<div class="col-md-2">
   				<p class="">OR</p>
   			</div>
-  			<div class="col-md-4">
-  				<label class="btn btn-primary btn-file">
-		    	Browse <input type="file" id="ts-file" style="display: none;">
-				</label>
-        <p id="file-name"></p>
+  			<div class="col-md-5">
+          
   			</div>
   		</div>
+      <div class="row top5">
+        <div class="col-md-5">
+          
+            Upload JSON file  
+            <label class="btn btn-primary btn-file">
+              Browse 
+              <input type="file" id="ts-file" style="display: none;">
+            </label>
+            <p id="file-name"></p>
+          
+
+        </div>
+      </div>
   		<div class="row top5">
   			<div class="col-md-4">
-	  			<p><button type="button" id="display-button" class="btn btn-success">Fetch Timeseries</button></p>
+	  			<p><button type="button" id="display-button" class="btn btn-success">Display Timeseries</button></p>
 	  		</div>
         <div class="col-md-4">
           <p><button type="button" id="save-ts" class="btn btn-success">Save to Database</button></p>
