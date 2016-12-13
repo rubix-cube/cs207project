@@ -63,7 +63,7 @@
           <p><button type="button" id="sim-ts" class="btn btn-success">Get similar TS</button></p>
         </div> -->
   		</div>
-      <div class="row top7">
+      <div class="row top10">
         <div class="col-md-10">
           <div>
             <p id="results">
@@ -73,11 +73,59 @@
         </div>
       </div>
 
-  		<div class="row top7">
+  		<div class="row top10">
   			<div class="col-md-10">
   				<div id="placeholder" style="width:600px;height:300px"></div>
   			</div>
   		</div>
+
+      <div class="row top30">
+        <div class="col-md-3">
+          Min: <input type="text" id="minRange">
+        </div>
+        <div class="col-md-3">
+          Max: <input type="text" id="maxRange">
+        </div>
+        <div class="col-md-4">
+          <div class="controls span2">
+            <label class="checkbox"><input type="checkbox" value="A">A</label>
+            <label class="checkbox"><input type="checkbox" value="B">B</label>
+            <label class="checkbox"><input type="checkbox" value="C">C</label>
+          </div>
+          <div class="controls span2">
+            <label class="checkbox"><input type="checkbox" value="D">D</label>
+            <label class="checkbox"><input type="checkbox" value="E">E</label>
+            <label class="checkbox"><input type="checkbox" value="F">F</label>
+          </div>
+        </div>
+        
+        <div class="col-md-2">
+          <button type="button" id="search-metadata" class="btn btn-success">Search</button>
+        </div>
+      </div>
+
+      <div class="row top10">
+
+        <textarea class="form-control" id="textarea" rows="3"></textarea>
+      </div>
+      <div class="row top30">
+        <div class="col-md-10">
+          <div id="metadata"></div>
+        </div>
+        <div class="col-md-2">
+            <div id="options" class="options">
+              <div class="radio">
+                <label><input type="radio" name="optradio" id="blarg" value="blarg">Blarg</label>
+              </div>
+              <div class="radio">
+                <label><input type="radio" name="optradio" value="mean">Mean</label>
+              </div>
+              <div class="radio">
+                <label><input type="radio" name="optradio" value="std">Std</label>
+              </div>
+            </div>
+        </div>
+      </div>
   	</div>
   	
 {% endblock %}

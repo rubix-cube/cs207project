@@ -111,6 +111,8 @@ def timeseries():
 		# Serialize objects 
 
 		r = [e.serialize() for e in results]
+		print("R=",r)
+		print("Jsonify",jsonify(r))
 		return jsonify(r)
 	
 @app.route('/simquery', methods=['POST','GET'])
