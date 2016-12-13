@@ -18,7 +18,7 @@ def clientThread(conn, sm):
 	while True:
 	#    conn.send("Server waiting for input:".encode())
 		rec = conn.recv(8192)
-		
+
 		if not rec:
 			print("1")
 			break
@@ -35,7 +35,7 @@ def clientThread(conn, sm):
 			# Save to storage manager
 			print("4")
 			id, time, value = receivedData['id'], receivedData['time'], receivedData['value']
-			sm.store(id, ArrayTimeSeries(input_time=list(time.values()), input_value=list(value.values())))
+			sm.store(id, ArrayTimeSeries(input_time=time, input_value=value))
 			print("Saved to db on SM!")
 			conn.send(pickle.dumps("Saved to DB!"))
 		

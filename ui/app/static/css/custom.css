@@ -6,6 +6,7 @@
 .top30 { margin-top:30px; }
 .top35 { margin-top:35px; }
 .top40 { margin-top:40px; }
+.top60 { margin-top:60px; }
 
 
 .col-centered{
@@ -33,5 +34,5 @@
 
 #textarea {
 	width: 600px;
-	height:400px;
+	height:200px;
 }
