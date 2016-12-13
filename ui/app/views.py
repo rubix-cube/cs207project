@@ -4,7 +4,7 @@ from .models import User, Post, Timeseries
 import json
 from sqlalchemy import and_
 
-
+import os
 import socket
 import sys
 import pickle
@@ -148,10 +148,6 @@ def simquery():
 				# TODO data MORE THAN 1024, protocol?
 				rec = pickle.loads(rec)
 				return jsonify({"similar_points": rec})	
-		except Exception as err:
-			print(str(err))
-			# not found
-			abort(404)
 		finally:
 			s.close()
 		
@@ -183,9 +179,10 @@ def timeseries_id(id):
 @app.route('/initsqldb')
 def init_sqldb():
 	# Create fake metadata for 1000 timeseries
+	filePath = os.path.dirname(__file__)
 	for id in range(1000):
-		cur_ts = pickle.load(open('../simsearch/ts_data/ts_%d.dat'%id, 'rb'))
-		
+		relPath = '../../simsearch/ts_data/ts_%d.dat'%id
+		cur_ts = pickle.load(open(os.path.join(filePath, relPath), 'rb'))
 		t = db.session.query(Timeseries).filter_by(id=id).first()
 		if t:
 			t.mean = cur_ts.mean()

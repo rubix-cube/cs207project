@@ -45,7 +45,9 @@ sudo python3 setup.py install
 cd ../cs207rbtree/
 sudo python3 setup.py install
 
-cd ../
+# change permission for cs207project
+cd /var/www/
+sudo chmod 777 cs207project/
 
 # change permission for ui
 sudo chmod 777 ui/
@@ -57,13 +59,18 @@ cd  /var/www/cs207project/simsearch/
 sudo chmod -R 777 ts_db_index/
 
 # mv config file to sites-available, and enable
-sudo a2enmod wsgi
-sudo service apache2 restart
 sudo mv /var/www/cs207project/cs207.conf /etc/apache2/sites-available/
 cd /etc/apache2/sites-available
 sudo a2ensite cs207
+sudo a2enmod wsgi
+sudo service apache2 restart
 sudo service apache2 reload
 cd /etc/apache2/sites-enabled
 sudo rm 000-default.conf
+
+# uncomment below when release
+# cd /var/www/cs207project/
+# python3 StorageManagerServer.py --update &
+# python3 RBTreeServer.py &
 
 
