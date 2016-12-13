@@ -35,7 +35,7 @@
   			</div>
   		</div>
       <div class="row top5">
-        <div class="col-md-5">
+        <div class="col-md-4">
           
             Upload JSON file  
             <label class="btn btn-primary btn-file">
@@ -43,17 +43,20 @@
               <input type="file" id="ts-file" style="display: none;">
             </label>
             <p id="file-name"></p>
+        </div>
+        <div class="col-md-4">
+          <p><button type="button" id="display-button" class="btn btn-success">Display Timeseries</button></p>
+        </div>
+
+        <div class="col-md-4">
+          <p><button type="button" id="save-ts" class="btn btn-info">Save to Database</button></p>
+        </div>
           
 
         </div>
       </div>
   		<div class="row top5">
-  			<div class="col-md-4">
-	  			<p><button type="button" id="display-button" class="btn btn-success">Display Timeseries</button></p>
-	  		</div>
-        <div class="col-md-4">
-          <p><button type="button" id="save-ts" class="btn btn-info">Save to Database</button></p>
-        </div>
+  			
         <!-- <div class="col-md-4">
           <p><button type="button" id="sim-ts" class="btn btn-success">Get similar TS</button></p>
         </div> -->
@@ -76,10 +79,8 @@
       
       <div class="row top30">
         <h2>Search by metadata</h2>
-        <div class="col-md-3">
+        <div class="col-md-6">
           Min: <input type="text" id="minRange">
-        </div>
-        <div class="col-md-3">
           Max: <input type="text" id="maxRange">
         </div>
         <div class="col-md-2">
