@@ -67,6 +67,7 @@ class similaritySearcher:
 
 
 	def simsearch_existed(self, id, n):
+		# return n ts except id itself
 		# make sure id is a integer
 		if type(id) is not int or type(n) is not int:
 			raise TypeError('Invalid Input Type')
@@ -74,7 +75,7 @@ class similaritySearcher:
 		if id >= NUM_TS_DATA or id < 0:
 			raise ValueError('Input Id Out of Range')
 
-		if n > NUM_VANTAGE_PTS:
+		if n + 1 > NUM_VANTAGE_PTS:
 			raise ValueError('Number of Queries exceeds the Number of Vantage Points')
 		
 		input_ts = pickle.load(open('simsearch/ts_data/ts_' + str(id) + '.dat', 'rb'))
@@ -89,7 +90,7 @@ class similaritySearcher:
 		# print(dist)
 		id_set = set()
 		similar_ts_pQ = []
-		for i in range(n):
+		for i in range(n + 1):
 			cur_dist = dist[i][0]
 			cur_vt_id = dist[i][1]
 			cur_db = connect('simsearch/ts_db_index/ts_' + cur_vt_id + '.db')
@@ -104,8 +105,8 @@ class similaritySearcher:
 					cur_ts = pickle.load(open('simsearch/ts_data/ts_' + Id + '.dat', 'rb'))
 					ds_to_input = calcDist(input_ts, cur_ts)
 					heapq.heappush(similar_ts_pQ, (-ds_to_input, Id))
-					if len(similar_ts_pQ) > n:
+					if len(similar_ts_pQ) > n + 1:
 							heapq.heappop(similar_ts_pQ)
-
+		# except id itself
 		sim_ts = sorted([(-ds, Id) for (ds, Id) in similar_ts_pQ])
-		return sim_ts
+		return sim_ts[1:]

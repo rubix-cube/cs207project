@@ -3,8 +3,8 @@ from pytest import raises
 import numpy as np
 import math
 
-from timeseries.SMTimeSeries import SMTimeSeries
-from timeseries.FileStorageManager import StorageManager
+from timeseries.SMTimeSeries import SMTimeSeries, StorageManager
+# from timeseries.FileStorageManager import FileStorageManager
 
 def clean_up():
 	StorageManager.clean_up()

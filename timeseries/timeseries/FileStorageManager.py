@@ -6,6 +6,7 @@ from socket import *
 import threading
 import pickle
 from _thread import *
+import shutil
 
 
 from timeseries.StorageManagerInterface import StorageManagerInterface
@@ -138,11 +139,13 @@ class FileStorageManager(StorageManagerInterface):
 		if os.path.exists('sm_data/'):
 			for f in os.listdir('sm_data/'):
 				os.remove(os.path.join('sm_data/', f))
+		shutil.rmtree('sm_data/')
+
 
 """
 A global StorageManager object is created to be passed into SMTimeSeries
 """
-StorageManager = FileStorageManager()
+# StorageManager = FileStorageManager()
 
 
 
