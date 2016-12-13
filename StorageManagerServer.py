@@ -18,11 +18,14 @@ def clientThread(conn, sm):
 	while True:
 	#    conn.send("Server waiting for input:".encode())
 		rec = conn.recv(8192)
+		
 		if not rec:
+			print("1")
 			break
-			
+		print("2")
 		receivedData = pickle.loads(rec)
 		if receivedData['cmd'] == "BYID":
+			print("3")
 			# Get ts storage using id received
 			ts = sm.get(receivedData['id'])
 			toSend = {"time":list(ts.times()),"value":list(ts.values()),"id":receivedData['id']}
@@ -30,8 +33,10 @@ def clientThread(conn, sm):
 
 		elif receivedData['cmd'] == 'ADDTS':
 			# Save to storage manager
+			print("4")
 			id, time, value = receivedData['id'], receivedData['time'], receivedData['value']
 			sm.store(id, ArrayTimeSeries(input_time=list(time.values()), input_value=list(value.values())))
+			print("Saved to db on SM!")
 			conn.send(pickle.dumps("Saved to DB!"))
 		
 	conn.close()

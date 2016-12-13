@@ -1,4 +1,4 @@
-from flask import jsonify, render_template, flash, redirect, session, url_for, request,g
+from flask import jsonify, render_template, flash, redirect, session, url_for, request,g, abort
 from app import app, db
 from .models import User, Post, Timeseries
 import json
@@ -39,21 +39,18 @@ def connectSM():
 @app.route('/')
 @app.route('/index')
 def index():
-	user = {'nickname': 'Kevin'}
-	posts = [{'author': {'nickname':'John'},
-			'body': 'Beautiful day in Portland!'},
-			{'author': {'nickname': 'Susan'},
-			'body': 'The movie was cool!'}]
-
-	return render_template('index.html',title='Home',user=user,posts=posts)	
+	return render_template('index.html',title='Home')	
 
 @app.route('/timeseries', methods=['POST','GET'])
 def timeseries():
 	if request.method == 'POST':
 		# adds a new timeseries into the database given a json which has a
 		# key for an id and a key for the timeseries, and returns the timeseries
-		# print(request.files['file'].read())
 		data = request.get_json(force=True)
+		if('id' not in data or 'time' not in data or 'value' not in data):
+			return json.dumps("Invalid file."), 20, {'ContentType':'application/json'} 
+		
+		
 		data['cmd'] = "ADDTS"
 		s = connectSM()
 		try:
@@ -68,7 +65,6 @@ def timeseries():
 				t.mean = np.mean(data['value'])
 				t.std = np.std(data['value'])
 			else:
-				print("T does not exist, updating...")
 				t = Timeseries(id=data['id'],
 						blarg=np.random.uniform(low=0.0, high=1.0),
 						level=random.choice(['A','B','C','D','E']),
@@ -77,7 +73,9 @@ def timeseries():
 
 			db.session.add(t)
 			db.session.commit()
-
+			print("Saved ts with id=",data['id'])
+		except Exception as e:
+			print("Exception ",e)
 		finally:
 			s.close()
 			return json.dumps(response)
@@ -111,6 +109,7 @@ def timeseries():
 			results &= tmp
 		
 		# Serialize objects 
+
 		r = [e.serialize() for e in results]
 		return jsonify(r)
 	
@@ -126,11 +125,11 @@ def simquery():
 		s = connectRBTree()
 		try:
 			s.send(pickle.dumps(data))
-			response = pickle.loads(s.recv(1024))
-
+			response = pickle.loads(s.recv(8192))
+			return jsonify({"similar_points": response})	
 		finally:
 			s.close()
-			return json.dumps(response)
+			
 	else:
 		#  take a id=the_id querystring and use that as an id into the database
 		# to find the timeseries that are similar, sending back the ids of (say) the top 5
@@ -170,7 +169,6 @@ def timeseries_id(id):
 		s.send(pickle.dumps(toSend))
 		rec = s.recv(8192)
 		rec = pickle.loads(rec)
-		# return json.dumps({"timeseries": rec, "metadata": t})	
 		return jsonify({"timeseries": rec, "metadata": t})
 
 	finally:
