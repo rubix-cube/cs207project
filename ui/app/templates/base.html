@@ -118,54 +118,6 @@
              svg.select(".x.axis").transition().duration(300).call(xAxis);
              svg.select(".y.axis").transition().duration(300).call(yAxis);
 
-          // var xscale = d3.scale.ordinal().domain(d3.range(dataset.length))
-          //           .rangeRoundBands([0, width], 0.05);
-
-          // var yscale = d3.scale.linear()
-          //     .domain([0,d3.max(dataset, function(d){return d;})])
-          //     .range([height,0]);
-          // var yAxis = d3.svg.axis()
-          // .scale(yscale)
-          // .orient('left');
-          // var xAxis = d3.svg.axis()
-          // .scale(xscale)
-          // .orient('bottom');
-
-          // // Update bar chart
-          // svg.selectAll("rect.m")
-          //     .data(dataset).transition().duration(300)
-          //     .attr("x", function(d, i){
-          //       return xscale(i);
-          //     })
-          //     .attr("y", function(d){
-          //       return yscale(d);
-          //     })
-          //     .attr("width", xscale.rangeBand())
-          //     .attr("height",function(d){
-          //       return height-yscale(d);
-          //     })
-          //     .attr("fill", "teal");
-
-          //     // update text
-          //     var text = svg.selectAll("text.b")
-          //     .data(dataset).transition().duration(300)
-          //       .text(function(d){
-          //       return d.toFixed(2);
-          //     })
-          //     .attr("x", function(d, i) {
-          //         return xscale(i)+xscale.rangeBand()/2;
-          //    })
-          //    .attr("y", function(d) {
-          //         return yscale(d);
-          //    })
-          //    .attr("fill", "black")
-          //    .attr("font-size", "21px")
-          //    .attr("text-anchor", "middle")
-          //    .attr("class","b");
-
-          //    // update axis
-          //    svg.select(".x.axis").transition().duration(300).call(xAxis);
-          //    svg.select(".y.axis").transition().duration(300).call(yAxis);
         }
 
         function plotMetadata(dataset){
@@ -295,7 +247,15 @@
           $(document).ajaxStop(function(){
             console.log("Finished ALL AJAX");
             var plots = [];
-            var meta_msg = ["<h4>Metadata</h4><ul>"];
+            var meta_msg = [`<table class="table table-hover">
+            <thead><tr>
+                <th>ID</th>
+                <th>Blarg</th>
+                <th>Level</th>
+                <th>Mean</th>
+                <th>Std</th>
+              </tr></thead><tbody>`];
+            //'</tbody></table>'
             for(i=0;i<timeseries.length;i++){
               var x = timeseries[i]['time'];
               var y = timeseries[i]['value'];
@@ -305,19 +265,19 @@
             }
 
             for(i=0;i<metadata.length;i++){
-              meta_msg.push("<li>Blarg: " + metadata[i]['blarg'] + 
-                            " ID: " + metadata[i]['id']+  
-                            " Level: " + metadata[i]['level'] +
-                            " Mean: " + metadata[i]['mean'] + 
-                            " Standard Dev: " + metadata[i]['std'] +
-                            "</li>");
+              meta_msg.push("<tr>");
+              meta_msg.push("<td>" + metadata[i]['blarg'] + "</td>"+
+                            "<td>" + metadata[i]['id']+ "</td>"+
+                            "<td>" + metadata[i]['level'] + "</td>"+
+                            "<td>" + metadata[i]['mean'] + "</td>"+
+                            "<td>" + metadata[i]['std'] + "</td>");
+              meta_msg.push("</tr>")
             }
+            meta_msg.push('</tbody></table>');
 
             $("#blarg").prop("checked", true);
             plotMetadata(metadata.map(function(d){return Math.abs(d['blarg']);}));
             
-
-            meta_msg.push("</ul>")
             $("#results").html(meta_msg.join(""));
             $.plot($("#placeholder"), plots,{
                 legend: {
@@ -341,21 +301,20 @@
           metadata = [];
           timeseries = [];
           
-          $(".plotting").show();
+          
           clearResults();
 
           if(!ts_id){
             // Use uploaded ts data 
               
-              var file = $("#ts-file")[0];//.files[0];
+              var file = $("#ts-file")[0];
               if(file.files['length'] == 0){
                 sweetAlert("Error", "Please enter an Id or upload a file. XD", "error");
-                $(".plotting").hide();
-                clearResults();
                 return;
               }
+
+              $(".plotting").show();
               file = file.files[0];
-              $("#results").html("Fetching data...");
             
               var reader = new FileReader();
               reader.onload = function(e){
@@ -380,14 +339,18 @@
             reader.readAsText(file);
 
           }else{
-            // Get ts data from server
-            $("#results").html("Fetching data...");
-
             // Get all metadata
             $.ajax({
               url: '/timeseries/'+ts_id,
               type: 'GET',
               success: function(response){
+                if(response == "NOT_EXIST"){
+                  sweetAlert("Error", "ID does not exist.", "error");
+                  console.log("ID NOT EXIST");
+                  return;
+                }
+
+                $(".plotting").show();
                 metadata.push(response['metadata']);
                 timeseries.push(response['timeseries']);
 

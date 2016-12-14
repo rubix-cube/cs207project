@@ -170,8 +170,10 @@ def timeseries_id(id):
 
 	# Get metadata
 	t = Timeseries.query.get(id)
+
 	if t is None:
-		return jsonify("Timeseries id does not exist")
+		print("None t=",t)
+		return jsonify("NOT_EXIST")
 
 	t = t.serialize()
 
