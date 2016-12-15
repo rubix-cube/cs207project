@@ -71,7 +71,7 @@ sudo rm 000-default.conf
 
 # uncomment below when release
 cd /var/www/cs207project/
-python3 StorageManagerServer.py --update &
-python3 RBTreeServer.py &
+nohup python3 StorageManagerServer.py --update &
+nohup python3 RBTreeServer.py &
 
 
