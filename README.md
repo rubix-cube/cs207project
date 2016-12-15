@@ -7,7 +7,10 @@ For the *cs207rbtree* module, there's a PyPI version that you can directly pip i
 
 The *similarity search* module and its usage can be found [here](https://github.com/rubix-cube/cs207project/tree/master/simsearch).
 
-#How to deploy the Web-interface on AWS EC2
+#Deploy the Web-interface on AWS EC2
+The web-service in currently host in AWS EC2, our webpage is accessible at ec2-54-87-240-36.compute-1.amazonaws.com.
+
+If you want to deploy a web page by yourself, follow the steps below:
 * Launch a EC2 instance with Ubuntu Server 14.04, during the launching process add a new rule to the security group "HTTP -- From Anywhere"
 * Connect to your EC2 instance using ssh
 * At the desktop of your EC2 instance desktop, git clone this directory
