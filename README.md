@@ -12,14 +12,10 @@ The web-service in currently host in AWS EC2, our webpage is accessible at [this
 )
 If you want to deploy a web page by yourself, follow the steps below:
 * Launch a EC2 instance with Ubuntu Server 14.04, during the launching process add a new rule to the security group "HTTP -- From Anywhere"
-* Connect to your EC2 instance using ssh
-* At the desktop of your EC2 instance desktop, git clone this directory
+* upload cs207setup.sh bash script to ec2 instance using `scp -i 'key.pem' cs207setup.py ubuntu@your-ec2-dns:cs207setup.sh`
+* Connect to your EC2 instance using `ssh -i 'key.pem' unbuntu@your-ec2-dns`
+* Then run
 ```
-git clone https://github.com/rubix-cube/cs207project.git
-``` 
-* Get into the cs207project folder and run the setup bash
-``` 
-cd cs207project/
 chmod a+x cs207setup.sh
 ./cs207setup.sh
 ``` 
